@@ -4,7 +4,7 @@ import {useState, useEffect, useRef} from 'react';
 import {User, Copy, Check, RefreshCw, Volume2, VolumeX, Download, ZoomIn, X, Maximize2} from 'lucide-react';
 import {cn} from '@/lib/utils';
 import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
-import {type Message} from '@/lib/types';
+import {type Message, type Settings} from '@/lib/types';
 import {useAuth} from '@/hooks/use-auth';
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui/tooltip';
 import {formatDistanceToNow} from 'date-fns';
@@ -22,6 +22,7 @@ import {VoiceFilter} from '@/lib/voice-filter';
 
 interface ChatMessageProps {
   message: Message;
+  settings: Settings;
   onRegenerate?: () => void;
 }
 
@@ -105,7 +106,7 @@ function GeneratedImage({ src: rawSrc, alt }: { src: string; alt?: string }) {
   return (
     <>
       {/* ── Card ── */}
-      <div className="not-prose group my-4 overflow-hidden rounded-xl border border-border/60 bg-muted/30 shadow-sm">
+      <div className="not-prose group my-4 w-full overflow-hidden rounded-xl border border-border/60 bg-muted/30 shadow-sm">
         <div
           className="relative cursor-zoom-in overflow-hidden"
           role="button"
@@ -132,8 +133,8 @@ function GeneratedImage({ src: rawSrc, alt }: { src: string; alt?: string }) {
         </div>
 
         {/* Action bar */}
-        <div className="flex items-center justify-between border-t border-border/40 bg-background/60 px-3 py-2">
-          <div className="min-w-0">
+        <div className="flex flex-col gap-3 border-t border-border/40 bg-background/60 px-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:py-2">
+          <div className="min-w-0 flex-1">
             <div className="text-xs text-muted-foreground">AI Generated Image</div>
             <a
               href={src}
@@ -144,8 +145,8 @@ function GeneratedImage({ src: rawSrc, alt }: { src: string; alt?: string }) {
               {src}
             </a>
           </div>
-          <div className="flex items-center gap-1">
-            <Button asChild variant="ghost" size="sm" className="h-9 min-w-[2.5rem] gap-1.5 px-2 text-xs touch-manipulation">
+          <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap sm:justify-end">
+            <Button asChild variant="ghost" size="sm" className="h-10 w-full justify-center gap-1.5 px-2 text-xs touch-manipulation sm:h-9 sm:min-w-[2.5rem] sm:w-auto">
               <a href={src} target="_blank" rel="noopener noreferrer">
                 <span className="hidden sm:inline">View in browser</span>
                 <span className="sm:hidden">View</span>
@@ -153,20 +154,21 @@ function GeneratedImage({ src: rawSrc, alt }: { src: string; alt?: string }) {
             </Button>
             <Button
               variant="ghost" size="sm"
-              className="h-9 min-w-[2.5rem] gap-1.5 px-2 text-xs touch-manipulation"
+              className="h-10 w-full justify-center gap-1.5 px-2 text-xs touch-manipulation sm:h-9 sm:min-w-[2.5rem] sm:w-auto"
               onClick={() => setLightboxOpen(true)}
             >
               <ZoomIn className="h-4 w-4" />
               <span className="hidden sm:inline">Preview</span>
+              <span className="sm:hidden">Preview</span>
             </Button>
             <Button
               variant="ghost" size="sm"
-              className="h-9 min-w-[2.5rem] gap-1.5 px-2 text-xs touch-manipulation"
+              className="col-span-2 h-10 w-full justify-center gap-1.5 px-2 text-xs touch-manipulation sm:col-span-1 sm:h-9 sm:min-w-[2.5rem] sm:w-auto"
               onClick={handleDownload}
               disabled={downloading}
             >
               <Download className="h-4 w-4" />
-              <span className="hidden sm:inline">{downloading ? 'Saving…' : 'Download'}</span>
+              <span>{downloading ? 'Saving…' : 'Download'}</span>
             </Button>
           </div>
         </div>
@@ -253,7 +255,7 @@ function sanitizeAIContent(content: string): string {
     .trim();
 }
 
-export function ChatMessage({message, onRegenerate}: ChatMessageProps) {
+export function ChatMessage({message, settings, onRegenerate}: ChatMessageProps) {
   const {user} = useAuth();
   const [isMounted, setIsMounted] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -282,6 +284,13 @@ export function ChatMessage({message, onRegenerate}: ChatMessageProps) {
 
   const isAssistant = message.role === 'assistant';
   const shouldRenderAttachedImage = isAssistant && !!message.imageUrl && !hasEmbeddedImage(message.content);
+  const responseFontWeight = settings.responseFontWeight ?? 'medium';
+  const assistantTypographyClass =
+    responseFontWeight === 'bold'
+      ? 'font-semibold prose-p:font-semibold prose-li:font-semibold prose-strong:font-bold'
+      : responseFontWeight === 'regular'
+        ? 'font-normal prose-p:font-normal prose-li:font-normal prose-strong:font-semibold'
+        : 'font-medium prose-p:font-medium prose-li:font-medium prose-strong:font-bold';
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(message.content);
@@ -479,19 +488,20 @@ export function ChatMessage({message, onRegenerate}: ChatMessageProps) {
             )}
           >
             <div className={cn(
-              'prose prose-sm max-w-none',
+              'prose prose-sm max-w-none text-[0.97rem] leading-8 md:text-[1rem]',
               // Base prose resets
               'prose-pre:my-4 prose-pre:p-0 prose-pre:bg-transparent',
               'prose-code:text-sm prose-code:bg-transparent prose-code:px-0 prose-code:py-0 prose-code:rounded-none',
-              'prose-headings:mt-5 prose-headings:mb-3 prose-headings:scroll-mt-20 prose-headings:font-semibold',
+              'prose-headings:mt-6 prose-headings:mb-3 prose-headings:scroll-mt-20 prose-headings:font-semibold',
               'prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg',
               'prose-ul:my-4 prose-ol:my-4',
-              'prose-li:my-1.5 prose-li:leading-7',
+              'prose-li:my-2 prose-li:leading-8',
               'prose-hr:my-6',
               // Assistant bubble — dark/light adaptive
               isAssistant && [
                 'dark:prose-invert',
-                'prose-p:my-3 prose-p:leading-7 prose-p:text-foreground/95',
+                assistantTypographyClass,
+                'prose-p:my-3.5 prose-p:leading-8 prose-p:text-foreground/95',
                 'prose-strong:font-bold prose-strong:text-foreground',
                 'prose-a:text-primary prose-a:no-underline hover:prose-a:underline',
                 'prose-blockquote:border-primary/60 prose-blockquote:bg-primary/5 prose-blockquote:text-foreground/90',
@@ -500,7 +510,7 @@ export function ChatMessage({message, onRegenerate}: ChatMessageProps) {
               // User bubble — always light text on primary bg
               !isAssistant && [
                 'prose-invert',
-                'prose-p:my-2 prose-p:leading-7',
+                'prose-p:my-2.5 prose-p:leading-7',
                 'prose-a:text-white/90 prose-a:underline',
                 'prose-strong:text-white',
                 'prose-code:text-white/90',
@@ -582,7 +592,16 @@ export function ChatMessage({message, onRegenerate}: ChatMessageProps) {
                       isAssistant ? 'border-border bg-muted' : 'border-white/30 bg-white/10'
                     )} {...props} />
                   ),
-                  p: ({node, ...props}) => <p className="my-3 leading-7" {...props} />,
+                  p: ({node, ...props}) => (
+                    <p
+                      className={cn(
+                        'my-3.5 leading-8',
+                        isAssistant && responseFontWeight === 'bold' && 'font-semibold',
+                        isAssistant && responseFontWeight === 'medium' && 'font-medium'
+                      )}
+                      {...props}
+                    />
+                  ),
                   br: () => <br className="block my-1" />,
                   hr: ({node, ...props}) => (
                     <hr className={cn('my-6 border-0 h-px', isAssistant ? 'bg-border/50' : 'bg-white/20')} {...props} />

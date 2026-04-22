@@ -3,7 +3,7 @@
 import {useEffect, useRef} from 'react';
 import {ScrollArea} from '@/components/ui/scroll-area';
 import {cn} from '@/lib/utils';
-import {type Message} from '@/lib/types';
+import {type Message, type Settings} from '@/lib/types';
 import {ChatMessage} from './chat-message';
 import {ThinkingAnimation} from './thinking-animation';
 
@@ -12,6 +12,7 @@ interface ChatMessagesProps extends React.HTMLAttributes<HTMLDivElement> {
   isLoading?: boolean;
   header?: React.ReactNode;
   onRegenerateMessage?: (messageId: string) => void;
+  settings: Settings;
 }
 
 export function ChatMessages({
@@ -20,6 +21,7 @@ export function ChatMessages({
   className,
   header,
   onRegenerateMessage,
+  settings,
 }: ChatMessagesProps) {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -51,6 +53,7 @@ export function ChatMessages({
             <ChatMessage 
               key={message.id} 
               message={message}
+              settings={settings}
               onRegenerate={
                 message.role === 'assistant' && index === messages.length - 1 && onRegenerateMessage
                   ? () => onRegenerateMessage(message.id)

@@ -54,6 +54,7 @@ const defaultSettings: Settings = {
   model: 'auto',
   tone: 'helpful',
   technicalLevel: 'intermediate',
+  responseFontWeight: 'medium',
   enableSpeech: false,
   voice: 'troy',
 };
@@ -579,6 +580,25 @@ export default function AccountPage() {
                         <SelectItem value="beginner">Beginner</SelectItem>
                         <SelectItem value="intermediate">Intermediate</SelectItem>
                         <SelectItem value="expert">Expert</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="response-font-weight">Reply Font Weight</Label>
+                    <Select
+                      value={settings.responseFontWeight ?? 'medium'}
+                      onValueChange={(value: NonNullable<Settings['responseFontWeight']>) =>
+                        setSettings({...settings, responseFontWeight: value})
+                      }
+                    >
+                      <SelectTrigger id="response-font-weight" className="h-11">
+                        <SelectValue placeholder="Select font weight" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="regular">Regular</SelectItem>
+                        <SelectItem value="medium">Medium</SelectItem>
+                        <SelectItem value="bold">Bold</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

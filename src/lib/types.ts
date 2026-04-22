@@ -62,6 +62,7 @@ export type Settings = {
   preferredCategory?: ModelCategory;
   tone: 'helpful' | 'formal' | 'casual';
   technicalLevel: 'beginner' | 'intermediate' | 'expert';
+  responseFontWeight?: 'regular' | 'medium' | 'bold';
   enableSpeech: boolean;
   voice: Voice;
 };

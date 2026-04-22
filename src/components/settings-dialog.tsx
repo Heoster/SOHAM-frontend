@@ -34,6 +34,7 @@ import {Switch} from '@/components/ui/switch';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
 import type {Settings, Model} from '@/lib/types';
 import {
+  Bold,
   ChevronDown,
   LogOut,
   Monitor,
@@ -167,6 +168,25 @@ export function QuickSettingsPopover({
               <SelectItem value="helpful">Helpful</SelectItem>
               <SelectItem value="formal">Formal</SelectItem>
               <SelectItem value="casual">Casual</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="quick-font-weight">Reply font weight</Label>
+          <Select
+            value={settings.responseFontWeight ?? 'medium'}
+            onValueChange={(value: NonNullable<Settings['responseFontWeight']>) =>
+              onSettingsChange({...settings, responseFontWeight: value})
+            }
+          >
+            <SelectTrigger id="quick-font-weight" className="h-10">
+              <SelectValue placeholder="Select font weight" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="regular">Regular</SelectItem>
+              <SelectItem value="medium">Medium</SelectItem>
+              <SelectItem value="bold">Bold</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -354,6 +374,37 @@ export function SettingsDialog({
                   <SelectItem value="system">System</SelectItem>
                 </SelectContent>
               </Select>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Bold className="h-5 w-5" />
+                Chat Typography
+              </CardTitle>
+              <CardDescription>Adjust assistant reply weight for easier reading.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <Label htmlFor="response-font-weight">Reply font weight</Label>
+              <Select
+                value={settings.responseFontWeight ?? 'medium'}
+                onValueChange={(value: NonNullable<Settings['responseFontWeight']>) =>
+                  onSettingsChange({...settings, responseFontWeight: value})
+                }
+              >
+                <SelectTrigger id="response-font-weight" className="h-11">
+                  <SelectValue placeholder="Select font weight" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="regular">Regular</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="bold">Bold</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                Applies to assistant replies in chat, including markdown text.
+              </p>
             </CardContent>
           </Card>
         </TabsContent>

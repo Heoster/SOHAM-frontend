@@ -22,6 +22,7 @@ export const DEFAULT_SETTINGS: Settings = {
   preferredCategory: undefined,
   tone: 'helpful',
   technicalLevel: 'intermediate',
+  responseFontWeight: 'medium',
   enableSpeech: false,
   voice: 'troy',
 };
@@ -56,6 +57,10 @@ function migrateSettings(stored: StoredSettings): Settings {
     }
   }
 
+  if (!settings.responseFontWeight) {
+    settings.responseFontWeight = DEFAULT_SETTINGS.responseFontWeight;
+  }
+
   return settings;
 }
 
@@ -69,6 +74,12 @@ function validateSettings(settings: unknown): settings is Settings {
   if (typeof s.model !== 'string' || !VALID_MODEL_IDS.has(s.model)) return false;
   if (!['helpful', 'formal', 'casual'].includes(s.tone as string)) return false;
   if (!['beginner', 'intermediate', 'expert'].includes(s.technicalLevel as string)) return false;
+  if (
+    s.responseFontWeight !== undefined &&
+    !['regular', 'medium', 'bold'].includes(s.responseFontWeight as string)
+  ) {
+    return false;
+  }
   if (typeof s.enableSpeech !== 'boolean') return false;
   if (!['troy', 'diana', 'hannah', 'autumn', 'austin', 'daniel'].includes(s.voice as string)) {
     return false;

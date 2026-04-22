@@ -53,6 +53,7 @@ const defaultSettings: Settings = {
   model: 'auto',
   tone: 'helpful',
   technicalLevel: 'intermediate',
+  responseFontWeight: 'medium',
   enableSpeech: false,
   voice: 'troy',
 };

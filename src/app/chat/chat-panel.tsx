@@ -279,6 +279,7 @@ export function ChatPanel({
         className="flex-1"
         header={greetingHeader}
         onRegenerateMessage={handleRegenerateMessage}
+        settings={settings}
       />
 
       {messages.length <= 1 && (
