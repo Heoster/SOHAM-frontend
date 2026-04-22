@@ -1,0 +1,312 @@
+{
+  "providers": {
+    "groq": {
+      "type": "groq",
+      "apiKeyEnvVar": "GROQ_API_KEY",
+      "baseUrl": "https://api.groq.com/openai/v1",
+      "enabled": true
+    },
+    "cerebras": {
+      "type": "cerebras",
+      "apiKeyEnvVar": "CEREBRAS_API_KEY",
+      "baseUrl": "https://api.cerebras.ai/v1",
+      "enabled": true
+    },
+    "google": {
+      "type": "google",
+      "apiKeyEnvVar": "GOOGLE_API_KEY",
+      "baseUrl": "https://generativelanguage.googleapis.com/v1beta",
+      "enabled": true
+    },
+    "huggingface": {
+      "type": "huggingface",
+      "apiKeyEnvVar": "HUGGINGFACE_API_KEY",
+      "baseUrl": "https://router.huggingface.co/v1",
+      "enabled": true
+    },
+    "openrouter": {
+      "type": "openrouter",
+      "apiKeyEnvVar": "OPENROUTER_API_KEY",
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "enabled": true
+    }
+  },
+  "models": [
+    {
+      "id": "llama-3.1-8b-instant",
+      "name": "Llama 3.1 8B Instant",
+      "provider": "groq",
+      "modelId": "llama-3.1-8b-instant",
+      "category": "general",
+      "description": "Fast Llama 3.1 8B — primary fast model for simple tasks",
+      "contextWindow": 131072,
+      "supportsStreaming": true,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "maxOutputTokens": 4096 },
+      "enabled": true
+    },
+    {
+      "id": "llama-3.3-70b-versatile",
+      "name": "Llama 3.3 70B Versatile",
+      "provider": "groq",
+      "modelId": "llama-3.3-70b-versatile",
+      "category": "general",
+      "description": "Powerful Llama 3.3 70B — primary model for complex tasks",
+      "contextWindow": 131072,
+      "supportsStreaming": true,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "maxOutputTokens": 8192 },
+      "enabled": true
+    },
+    {
+      "id": "groq-llama-4-scout-17b",
+      "name": "Llama 4 Scout 17B",
+      "provider": "groq",
+      "modelId": "meta-llama/llama-4-scout-17b-16e-instruct",
+      "category": "multimodal",
+      "description": "Meta Llama 4 Scout 17B — multimodal with vision support",
+      "contextWindow": 131072,
+      "supportsStreaming": true,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "maxOutputTokens": 8192 },
+      "enabled": true
+    },
+    {
+      "id": "groq-qwen3-32b",
+      "name": "Qwen3 32B",
+      "provider": "groq",
+      "modelId": "qwen/qwen3-32b",
+      "category": "general",
+      "description": "Qwen3 32B — multilingual and reasoning tasks",
+      "contextWindow": 32768,
+      "supportsStreaming": true,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "maxOutputTokens": 8192 },
+      "enabled": true
+    },
+    {
+      "id": "groq-gpt-oss-120b",
+      "name": "GPT-OSS 120B",
+      "provider": "groq",
+      "modelId": "openai/gpt-oss-120b",
+      "category": "coding",
+      "description": "OpenAI open-weight 120B — coding and complex reasoning",
+      "contextWindow": 131072,
+      "supportsStreaming": true,
+      "defaultParams": { "temperature": 0.5, "topP": 0.9, "maxOutputTokens": 8192 },
+      "enabled": true
+    },
+    {
+      "id": "groq-gpt-oss-20b",
+      "name": "GPT-OSS 20B",
+      "provider": "groq",
+      "modelId": "openai/gpt-oss-20b",
+      "category": "general",
+      "description": "OpenAI open-weight 20B — fast general purpose",
+      "contextWindow": 131072,
+      "supportsStreaming": true,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "maxOutputTokens": 8192 },
+      "enabled": true
+    },
+    {
+      "id": "cerebras-llama3.1-8b",
+      "name": "Cerebras Llama 3.1 8B",
+      "provider": "cerebras",
+      "modelId": "llama3.1-8b",
+      "category": "general",
+      "description": "Ultra-fast Llama 3.1 8B on Cerebras hardware",
+      "contextWindow": 8192,
+      "supportsStreaming": true,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "maxOutputTokens": 4096 },
+      "enabled": true
+    },
+    {
+      "id": "cerebras-qwen-3-235b",
+      "name": "Cerebras Qwen 3 235B",
+      "provider": "cerebras",
+      "modelId": "qwen-3-235b-a22b-instruct-2507",
+      "category": "general",
+      "description": "Massive 235B Qwen model on Cerebras — complex reasoning",
+      "contextWindow": 32768,
+      "supportsStreaming": true,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "maxOutputTokens": 8192 },
+      "enabled": true
+    },
+    {
+      "id": "gemini-2.5-flash",
+      "name": "Gemini 2.5 Flash",
+      "provider": "google",
+      "modelId": "gemini-2.5-flash",
+      "category": "multimodal",
+      "description": "Fast multimodal Gemini with 1M context — vision + text",
+      "contextWindow": 1048576,
+      "supportsStreaming": false,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "topK": 40, "maxOutputTokens": 8192 },
+      "enabled": true
+    },
+    {
+      "id": "gemini-2.5-flash-lite",
+      "name": "Gemini 2.5 Flash Lite",
+      "provider": "google",
+      "modelId": "gemini-2.5-flash-lite",
+      "category": "conversation",
+      "description": "Lightweight Gemini 2.5 Flash — fast conversational responses",
+      "contextWindow": 1048576,
+      "supportsStreaming": false,
+      "defaultParams": { "temperature": 0.8, "topP": 0.95, "topK": 40, "maxOutputTokens": 4096 },
+      "enabled": true
+    },
+    {
+      "id": "gemini-2.5-pro",
+      "name": "Gemini 2.5 Pro",
+      "provider": "google",
+      "modelId": "gemini-2.5-pro",
+      "category": "multimodal",
+      "description": "Advanced Gemini Pro — best reasoning (paid quota required)",
+      "contextWindow": 1048576,
+      "supportsStreaming": false,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "topK": 40, "maxOutputTokens": 8192 },
+      "enabled": true
+    },
+    {
+      "id": "hf-llama-3.1-8b-instruct",
+      "name": "Llama 3.1 8B Instruct (HF)",
+      "provider": "huggingface",
+      "modelId": "meta-llama/Llama-3.1-8B-Instruct",
+      "category": "general",
+      "description": "Llama 3.1 8B via HuggingFace Router — free fallback",
+      "contextWindow": 131072,
+      "supportsStreaming": false,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "maxOutputTokens": 4096 },
+      "enabled": true
+    },
+    {
+      "id": "hf-llama-3.3-70b-instruct",
+      "name": "Llama 3.3 70B Instruct (HF)",
+      "provider": "huggingface",
+      "modelId": "meta-llama/Llama-3.3-70B-Instruct",
+      "category": "general",
+      "description": "Llama 3.3 70B via HuggingFace Router — free fallback",
+      "contextWindow": 131072,
+      "supportsStreaming": false,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "maxOutputTokens": 4096 },
+      "enabled": true
+    },
+    {
+      "id": "hf-qwen2.5-72b-instruct",
+      "name": "Qwen 2.5 72B Instruct (HF)",
+      "provider": "huggingface",
+      "modelId": "Qwen/Qwen2.5-72B-Instruct",
+      "category": "general",
+      "description": "Qwen 2.5 72B via HuggingFace Router — free fallback",
+      "contextWindow": 131072,
+      "supportsStreaming": false,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "maxOutputTokens": 4096 },
+      "enabled": true
+    },
+    {
+      "id": "hf-qwen2.5-7b-instruct",
+      "name": "Qwen 2.5 7B Instruct (HF)",
+      "provider": "huggingface",
+      "modelId": "Qwen/Qwen2.5-7B-Instruct",
+      "category": "general",
+      "description": "Qwen 2.5 7B fast model via HuggingFace Router — free fallback",
+      "contextWindow": 32768,
+      "supportsStreaming": false,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "maxOutputTokens": 2048 },
+      "enabled": true
+    },
+    {
+      "id": "hf-deepseek-r1-distill-llama-70b",
+      "name": "DeepSeek R1 Distill 70B (HF)",
+      "provider": "huggingface",
+      "modelId": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "category": "coding",
+      "description": "DeepSeek R1 reasoning via HuggingFace Router — free fallback",
+      "contextWindow": 65536,
+      "supportsStreaming": false,
+      "defaultParams": { "temperature": 0.5, "topP": 0.9, "maxOutputTokens": 4096 },
+      "enabled": true
+    },
+    {
+      "id": "openrouter-gpt-oss-20b-free",
+      "name": "GPT-OSS 20B (OpenRouter Free)",
+      "provider": "openrouter",
+      "modelId": "openai/gpt-oss-20b:free",
+      "category": "general",
+      "description": "OpenAI GPT-OSS 20B — verified free via OpenRouter",
+      "contextWindow": 131072,
+      "supportsStreaming": false,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "maxOutputTokens": 4096 },
+      "enabled": true
+    },
+    {
+      "id": "openrouter-gpt-oss-120b-free",
+      "name": "GPT-OSS 120B (OpenRouter Free)",
+      "provider": "openrouter",
+      "modelId": "openai/gpt-oss-120b:free",
+      "category": "coding",
+      "description": "OpenAI GPT-OSS 120B — verified free via OpenRouter",
+      "contextWindow": 131072,
+      "supportsStreaming": false,
+      "defaultParams": { "temperature": 0.5, "topP": 0.9, "maxOutputTokens": 4096 },
+      "enabled": true
+    },
+    {
+      "id": "openrouter-nvidia-nemotron-super-free",
+      "name": "NVIDIA Nemotron 3 Super 120B (Free)",
+      "provider": "openrouter",
+      "modelId": "nvidia/nemotron-3-super-120b-a12b:free",
+      "category": "general",
+      "description": "NVIDIA 120B hybrid MoE — verified free via OpenRouter",
+      "contextWindow": 262144,
+      "supportsStreaming": false,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "maxOutputTokens": 4096 },
+      "enabled": true
+    },
+    {
+      "id": "openrouter-gemma-3-12b-free",
+      "name": "Gemma 3 12B IT (OpenRouter Free)",
+      "provider": "openrouter",
+      "modelId": "google/gemma-3-12b-it:free",
+      "category": "general",
+      "description": "Google Gemma 3 12B — verified free via OpenRouter",
+      "contextWindow": 131072,
+      "supportsStreaming": false,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "maxOutputTokens": 4096 },
+      "enabled": true
+    },
+    {
+      "id": "openrouter-arcee-trinity-free",
+      "name": "Arcee Trinity Large (OpenRouter Free)",
+      "provider": "openrouter",
+      "modelId": "arcee-ai/trinity-large-preview:free",
+      "category": "general",
+      "description": "Arcee 400B MoE — verified free via OpenRouter",
+      "contextWindow": 131072,
+      "supportsStreaming": false,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "maxOutputTokens": 4096 },
+      "enabled": true
+    },
+    {
+      "id": "openrouter-minimax-m2.5-free",
+      "name": "MiniMax M2.5 (OpenRouter Free)",
+      "provider": "openrouter",
+      "modelId": "minimax/minimax-m2.5:free",
+      "category": "coding",
+      "description": "MiniMax M2.5 agentic model — verified free via OpenRouter",
+      "contextWindow": 196608,
+      "supportsStreaming": false,
+      "defaultParams": { "temperature": 0.5, "topP": 0.9, "maxOutputTokens": 4096 },
+      "enabled": true
+    },
+    {
+      "id": "openrouter-elephant-alpha",
+      "name": "Elephant Alpha (OpenRouter Free)",
+      "provider": "openrouter",
+      "modelId": "openrouter/elephant-alpha",
+      "category": "general",
+      "description": "OpenRouter Elephant Alpha 100B — verified free",
+      "contextWindow": 262144,
+      "supportsStreaming": false,
+      "defaultParams": { "temperature": 0.7, "topP": 0.9, "maxOutputTokens": 4096 },
+      "enabled": true
+    }
+  ]
+}
