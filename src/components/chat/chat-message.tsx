@@ -106,7 +106,7 @@ function GeneratedImage({ src: rawSrc, alt }: { src: string; alt?: string }) {
   return (
     <>
       {/* ── Card ── */}
-      <div className="not-prose group my-4 w-full overflow-hidden rounded-xl border border-border/60 bg-muted/30 shadow-sm">
+      <div className="not-prose group my-4 w-full max-w-full overflow-hidden rounded-xl border border-border/60 bg-muted/30 shadow-sm">
         <div
           className="relative cursor-zoom-in overflow-hidden"
           role="button"
@@ -140,7 +140,7 @@ function GeneratedImage({ src: rawSrc, alt }: { src: string; alt?: string }) {
               href={src}
               target="_blank"
               rel="noopener noreferrer"
-              className="block truncate text-[11px] text-primary underline underline-offset-2"
+              className="block max-w-full truncate break-all text-[11px] text-primary underline underline-offset-2"
             >
               {src}
             </a>
@@ -420,6 +420,8 @@ export function ChatMessage({message, settings, onRegenerate}: ChatMessageProps)
           customStyle={{
             margin: 0,
             background: 'transparent',
+            maxWidth: '100%',
+            overflowX: 'auto',
           }}
           {...props}
         >
@@ -427,7 +429,7 @@ export function ChatMessage({message, settings, onRegenerate}: ChatMessageProps)
         </SyntaxHighlighter>
       </div>
     ) : (
-      <code className={cn('rounded bg-background/60 px-1.5 py-0.5 text-[0.92em]', className)} {...props}>
+      <code className={cn('break-all rounded bg-background/60 px-1.5 py-0.5 text-[0.92em]', className)} {...props}>
         {children}
       </code>
     );
@@ -437,7 +439,7 @@ export function ChatMessage({message, settings, onRegenerate}: ChatMessageProps)
     <TooltipProvider delayDuration={100}>
       <div
         className={cn(
-          'group flex items-start gap-3 md:gap-4 animate-in fade-in-0 slide-in-from-bottom-4 duration-500',
+          'group flex w-full max-w-full items-start gap-3 overflow-hidden md:gap-4 animate-in fade-in-0 slide-in-from-bottom-4 duration-500',
           !isAssistant && 'flex-row-reverse'
         )}
       >
@@ -478,17 +480,17 @@ export function ChatMessage({message, settings, onRegenerate}: ChatMessageProps)
           </TooltipContent>
         </Tooltip>
 
-        <div className={cn('flex min-w-0 flex-col gap-2 max-w-[90%] sm:max-w-[86%] lg:max-w-[78%]', !isAssistant && 'items-end')}>
+        <div className={cn('flex min-w-0 w-full max-w-[calc(100vw-5rem)] flex-col gap-2 sm:max-w-[86%] lg:max-w-[78%]', !isAssistant && 'items-end')}>
           <div
             className={cn(
-              'relative w-full rounded-2xl px-3 py-3 shadow-sm transition-all hover:shadow-md md:px-4',
+              'relative w-full max-w-full overflow-hidden rounded-2xl px-3 py-3 shadow-sm transition-all hover:shadow-md md:px-4',
               isAssistant
                 ? 'bg-muted text-foreground rounded-tl-sm'
                 : 'bg-primary text-primary-foreground rounded-tr-sm'
             )}
           >
             <div className={cn(
-              'prose prose-sm max-w-none text-[0.97rem] leading-8 md:text-[1rem]',
+              'prose prose-sm min-w-0 max-w-full break-words text-[0.97rem] leading-8 [overflow-wrap:anywhere] md:text-[1rem]',
               // Base prose resets
               'prose-pre:my-4 prose-pre:p-0 prose-pre:bg-transparent',
               'prose-code:text-sm prose-code:bg-transparent prose-code:px-0 prose-code:py-0 prose-code:rounded-none',
@@ -528,7 +530,7 @@ export function ChatMessage({message, settings, onRegenerate}: ChatMessageProps)
                       target="_blank"
                       rel="noopener noreferrer"
                       className={cn(
-                        'underline underline-offset-2 transition-colors',
+                        'break-all underline underline-offset-2 transition-colors',
                         isAssistant
                           ? 'text-primary decoration-primary/40 hover:decoration-primary'
                           : 'text-white/90 decoration-white/40 hover:decoration-white'
@@ -541,7 +543,7 @@ export function ChatMessage({message, settings, onRegenerate}: ChatMessageProps)
                   code: ({node, inline, className, children, ...props}: any) =>
                     renderMarkdownCode({inline, className, children, ...props}),
                   table: ({node, ...props}) => (
-                    <div className="not-prose my-5 overflow-x-auto rounded-xl border border-border/60 shadow-sm">
+                    <div className="not-prose my-5 max-w-full overflow-x-auto rounded-xl border border-border/60 shadow-sm">
                       <table className="w-full border-collapse text-sm" {...props} />
                     </div>
                   ),
