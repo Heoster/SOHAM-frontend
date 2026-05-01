@@ -22,7 +22,7 @@ export const DEFAULT_SETTINGS: Settings = {
   preferredCategory: undefined,
   tone: 'helpful',
   technicalLevel: 'intermediate',
-  responseFontWeight: 'medium',
+  responseFontWeight: 'regular',
   enableSpeech: false,
   voice: 'troy',
 };

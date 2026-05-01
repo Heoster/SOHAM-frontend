@@ -16,6 +16,7 @@ type SolutionState = {
   recognizedEquation: string;
   solutionSteps: string;
   isSolvable: boolean;
+  modelUsed?: string;
 } | null;
 
 export default function VisualMathPage() {
@@ -77,6 +78,9 @@ export default function VisualMathPage() {
             You can also return to <Link href="/chat" className="font-medium text-foreground hover:underline">AI chat</Link> or explore the full{' '}
             <Link href="/documentation/math-solver" className="font-medium text-foreground hover:underline">math solver guide</Link>.
           </p>
+          <p className="text-sm text-muted-foreground">
+            Vision model: Google Gemini 2.5 Flash free tier.
+          </p>
         </section>
         <div className="grid gap-6 md:gap-8 md:grid-cols-2">
           {/* Input Section */}
@@ -114,7 +118,7 @@ export default function VisualMathPage() {
                 ) : (
                   <Wand2 className="mr-2 h-4 w-4" />
                 )}
-                {isLoading ? 'Analyzing...' : 'Solve with AI'}
+                {isLoading ? 'Analyzing...' : 'Solve with Gemini 2.5 Flash'}
               </Button>
             </CardContent>
           </Card>
@@ -138,6 +142,11 @@ export default function VisualMathPage() {
               )}
               {solution && (
                 <div className="space-y-6">
+                  {solution.modelUsed && (
+                    <div className="rounded-md border bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
+                      Reading model: {solution.modelUsed}
+                    </div>
+                  )}
                   <div>
                     <h3 className="mb-2 font-semibold">Recognized Equation:</h3>
                     {solution.isSolvable ? (
@@ -153,13 +162,8 @@ export default function VisualMathPage() {
                   </div>
                   <div>
                     <h3 className="mb-2 font-semibold">Step-by-step Solution:</h3>
-                    <div className="overflow-x-auto p-2 rounded-md bg-muted">
-                        {/**
-                         * The `BlockMath` component from `react-katex` is used to render mathematical equations.
-                         * It takes a string of LaTeX as input and displays it as a formatted math block.
-                         * This is used to show the user the step-by-step solution to the equation.
-                         */}
-                        <BlockMath math={solution.solutionSteps} />
+                    <div className="rounded-md bg-muted p-4 text-sm leading-7 whitespace-pre-wrap break-words">
+                        {solution.solutionSteps}
                     </div>
                   </div>
                 </div>

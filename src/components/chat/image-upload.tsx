@@ -7,7 +7,12 @@ import { useToast } from '@/hooks/use-toast';
 
 interface ImageUploadProps {
   userId: string;
-  onImageUploaded: (url: string, path: string) => void;
+  onImageUploaded: (payload: {
+    url: string;
+    path: string;
+    imageDataUri: string;
+    contentType?: string;
+  }) => void;
   onCancel?: () => void;
 }
 
@@ -79,7 +84,12 @@ export function ImageUpload({ userId, onImageUploaded, onCancel }: ImageUploadPr
         description: 'Your image is ready to analyze',
       });
 
-      onImageUploaded(data.url, data.path);
+      onImageUploaded({
+        url: data.url,
+        path: data.path,
+        imageDataUri: preview || '',
+        contentType: data.contentType,
+      });
       
       // Reset state
       setPreview(null);
@@ -146,6 +156,9 @@ export function ImageUpload({ userId, onImageUploaded, onCancel }: ImageUploadPr
         </div>
       ) : (
         <div className="space-y-3">
+          <div className="rounded-md border bg-muted/40 px-3 py-2 text-xs leading-5 text-muted-foreground">
+            Uploaded images are read with Google Gemini 2.5 Flash free vision.
+          </div>
           <div className="relative rounded-lg overflow-hidden border">
             <img
               src={preview}

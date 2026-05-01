@@ -11,6 +11,7 @@
 
 import { serverClient } from "@/lib/server-client";
 import { sendWelcomeEmail } from "@/ai/flows/send-welcome-email";
+import { enhancedImageSolver } from "@/ai/flows/enhanced-image-solver";
 import type {
   AnalyzePdfInput,
   AnalyzePdfOutput,
@@ -86,18 +87,17 @@ export async function solveEquationFromImage(
   input: SolveImageEquationInput
 ): Promise<SolveImageEquationOutput | { error: string }> {
   try {
-    // Strip the data URI prefix to get raw base64
-    const imageBase64 = input.photoDataUri.replace(/^data:[^;]+;base64,/, "");
-
-    const data = await serverClient.imageSolver({
-      imageBase64,
+    const data = await enhancedImageSolver({
+      imageDataUri: input.photoDataUri,
       problemType: "math",
+      preferredModel: "gemini-2.5-flash",
     });
 
     return {
       recognizedEquation: data.recognizedContent,
       solutionSteps: data.solution,
       isSolvable: data.isSolvable,
+      modelUsed: data.modelUsed,
     };
   } catch (error) {
     return handleError(error);

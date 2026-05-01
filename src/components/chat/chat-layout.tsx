@@ -53,7 +53,7 @@ const defaultSettings: Settings = {
   model: 'auto',
   tone: 'helpful',
   technicalLevel: 'intermediate',
-  responseFontWeight: 'medium',
+  responseFontWeight: 'regular',
   enableSpeech: false,
   voice: 'troy',
 };
@@ -353,7 +353,7 @@ export function ChatLayout() {
         </header>
 
         {activeChat ? (
-          <div className="pb-16 md:pb-0">
+          <div className="h-[calc(100svh-4rem)] overflow-hidden pb-16 md:pb-0">
             <ChatPanel
               key={activeChat.id}
               chat={activeChat}

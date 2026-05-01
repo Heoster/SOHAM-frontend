@@ -54,7 +54,7 @@ const defaultSettings: Settings = {
   model: 'auto',
   tone: 'helpful',
   technicalLevel: 'intermediate',
-  responseFontWeight: 'medium',
+  responseFontWeight: 'regular',
   enableSpeech: false,
   voice: 'troy',
 };
@@ -587,7 +587,7 @@ export default function AccountPage() {
                   <div className="space-y-2">
                     <Label htmlFor="response-font-weight">Reply Font Weight</Label>
                     <Select
-                      value={settings.responseFontWeight ?? 'medium'}
+                      value={settings.responseFontWeight ?? 'regular'}
                       onValueChange={(value: NonNullable<Settings['responseFontWeight']>) =>
                         setSettings({...settings, responseFontWeight: value})
                       }

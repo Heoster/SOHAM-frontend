@@ -22,6 +22,7 @@ import {generateImageSOHAM} from './generate-image-soham';
 import {getAutoRouter} from '@/ai/auto-router';
 import {getCommandRouter} from '@/ai/command-router';
 import {getIntentDetector} from '@/lib/intent-detector';
+import {getIntentQualityRecommendations, recordIntentFeedback} from '@/lib/intent-feedback-loop';
 
 // Extended schema to support all model IDs
 const ProcessUserMessageInputSchema = z.object({
@@ -90,8 +91,23 @@ const processUserMessageFlow = ai.defineFlow(
     // ============================================================================
     // STEP 1: INTELLIGENT INTENT DETECTION
     // ============================================================================
-    const intentResult = intentDetector.detect(message);
+    const intentResult = intentDetector.detect(message, history);
     console.log(`[Process] Intent detected: ${intentResult.intent} (confidence: ${intentResult.confidence})`);
+    const recommendations = getIntentQualityRecommendations(
+      intentResult,
+      intentResult.ranking ?? [],
+      intentResult.contextWindow ?? []
+    );
+    if (recommendations.length > 0) {
+      recordIntentFeedback({
+        message,
+        historyTail: intentResult.contextWindow ?? [],
+        result: intentResult,
+        recommendations,
+        timestamp: new Date().toISOString(),
+      });
+      console.warn('[IntentQuality]', recommendations.join(' | '));
+    }
     
     // ============================================================================
     // STEP 2: Handle IMAGE_GENERATION intent

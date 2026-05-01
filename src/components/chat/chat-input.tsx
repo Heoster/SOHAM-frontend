@@ -19,6 +19,7 @@ import {ImageUpload} from './image-upload';
 import {CameraCapture} from './camera-capture';
 import {AudioRecorder} from './audio-recorder';
 import {useIsMobile} from '@/hooks/use-mobile';
+import {useToast} from '@/hooks/use-toast';
 
 const chatSchema = z.object({
   message: z.string().min(1, 'Message cannot be empty.'),
@@ -34,6 +35,7 @@ interface ChatInputProps {
 
 export function ChatInput({onSendMessage, isLoading, userId = 'anonymous'}: ChatInputProps) {
   const isMobile = useIsMobile();
+  const {toast} = useToast();
   const form = useForm<ChatFormValues>({
     resolver: zodResolver(chatSchema),
     defaultValues: {
@@ -46,6 +48,7 @@ export function ChatInput({onSendMessage, isLoading, userId = 'anonymous'}: Chat
   const [showImageUpload, setShowImageUpload] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
   const [showAudioRecorder, setShowAudioRecorder] = useState(false);
+  const [isAnalyzingImage, setIsAnalyzingImage] = useState(false);
   const recognitionRef = useRef<any>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
 
@@ -154,14 +157,70 @@ export function ChatInput({onSendMessage, isLoading, userId = 'anonymous'}: Chat
     setIsVoiceChatActive(prev => !prev);
   };
 
-  const handleImageUpload = (url: string, path: string) => {
-    onSendMessage(`[Image uploaded: ${url}] What's in this image?`);
-    setShowImageUpload(false);
+  const analyzeUploadedImage = async (payload: {
+    url: string;
+    path: string;
+    imageDataUri: string;
+    contentType?: string;
+  }) => {
+    setIsAnalyzingImage(true);
+
+    try {
+      const response = await fetch('/api/ai/image-solver', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          imageDataUri: payload.imageDataUri,
+          problemType: 'general',
+          preferredModel: 'gemini-2.5-flash',
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok || data.error) {
+        throw new Error(data.error || 'Image analysis failed');
+      }
+
+      onSendMessage(
+        [
+          `I uploaded an image: ${payload.url}`,
+          `Vision model used: ${data.modelUsed || 'gemini-2.5-flash via Google Gemini 2.5 Flash (free tier)'}`,
+          `Recognized content: ${data.recognizedContent}`,
+          `Initial analysis: ${data.solution}`,
+          'Use this uploaded image context for my next requests.',
+        ].join('\n\n')
+      );
+    } catch (error) {
+      toast({
+        title: 'Image analysis failed',
+        description: error instanceof Error ? error.message : 'Please try again',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsAnalyzingImage(false);
+      setShowImageUpload(false);
+      setShowCamera(false);
+    }
   };
 
-  const handleCameraCapture = (url: string, path: string) => {
-    onSendMessage(`[Image captured: ${url}] What's in this image?`);
-    setShowCamera(false);
+  const handleImageUpload = async (payload: {
+    url: string;
+    path: string;
+    imageDataUri: string;
+    contentType?: string;
+  }) => {
+    await analyzeUploadedImage(payload);
+  };
+
+  const handleCameraCapture = async (payload: {
+    url: string;
+    path: string;
+    imageDataUri: string;
+    contentType?: string;
+  }) => {
+    await analyzeUploadedImage(payload);
   };
 
   const handleAudioTranscription = (text: string) => {
@@ -246,7 +305,7 @@ export function ChatInput({onSendMessage, isLoading, userId = 'anonymous'}: Chat
                         isVoiceChatActive && 'border-destructive'
                       )}
                       onKeyDown={handleKeyDown}
-                      disabled={isLoading || isVoiceChatActive}
+                      disabled={isLoading || isVoiceChatActive || isAnalyzingImage}
                       {...field}
                     />
                     <div className={cn(
@@ -260,7 +319,7 @@ export function ChatInput({onSendMessage, isLoading, userId = 'anonymous'}: Chat
                         size="icon"
                         variant="ghost"
                         className="h-9 w-9 rounded-xl transition-all"
-                        disabled={isLoading || isVoiceChatActive}
+                        disabled={isLoading || isVoiceChatActive || isAnalyzingImage}
                         onClick={() => setShowImageUpload(true)}
                         title="Upload image"
                       >
@@ -274,7 +333,7 @@ export function ChatInput({onSendMessage, isLoading, userId = 'anonymous'}: Chat
                         size="icon"
                         variant="ghost"
                         className="h-9 w-9 rounded-xl transition-all"
-                        disabled={isLoading || isVoiceChatActive}
+                        disabled={isLoading || isVoiceChatActive || isAnalyzingImage}
                         onClick={() => setShowCamera(true)}
                         title="Take photo"
                       >
@@ -288,7 +347,7 @@ export function ChatInput({onSendMessage, isLoading, userId = 'anonymous'}: Chat
                         size="icon"
                         variant="ghost"
                         className="h-9 w-9 rounded-xl transition-all"
-                        disabled={isLoading || isVoiceChatActive}
+                        disabled={isLoading || isVoiceChatActive || isAnalyzingImage}
                         onClick={() => setShowAudioRecorder(true)}
                         title="Record audio"
                       >
@@ -319,12 +378,12 @@ export function ChatInput({onSendMessage, isLoading, userId = 'anonymous'}: Chat
 
                       <div className="flex items-center gap-2 ml-auto">
                         <span className="hidden text-xs text-muted-foreground md:inline">
-                          Enter to send
+                          {isAnalyzingImage ? 'Analyzing image...' : 'Enter to send'}
                         </span>
                         <Button
                           type="submit"
                           className="h-9 rounded-xl px-4 shadow-sm"
-                          disabled={isLoading || !form.formState.isValid || isVoiceChatActive}
+                          disabled={isLoading || !form.formState.isValid || isVoiceChatActive || isAnalyzingImage}
                         >
                           <Send className="mr-2 h-4 w-4" />
                           Send

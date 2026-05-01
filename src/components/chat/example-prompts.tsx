@@ -1,61 +1,46 @@
-import {Card, CardContent} from '@/components/ui/card';
-import {Code, Calculator, Search, FileText, Sparkles} from 'lucide-react';
+'use client';
+
+import {Sparkles} from 'lucide-react';
 
 interface ExamplePromptsProps {
   onSendMessage: (message: string) => void;
 }
 
 const prompts = [
-  {
-    icon: <Search className="h-5 w-5" />,
-    text: 'What are the top AI trends to watch in 2026?',
-    color: 'text-blue-500',
-    bgColor: 'bg-blue-500/10',
-  },
-  {
-    icon: <Code className="h-5 w-5" />,
-    text: 'Best Future-proof skill to learn in 2026?',
-    color: 'text-purple-500',
-    bgColor: 'bg-purple-500/10',
-  },
-  {
-    icon: <Calculator className="h-5 w-5" />,
-    text: 'Solve the equation: 2x^2 + 3x - 5 = 0',
-    color: 'text-green-500',
-    bgColor: 'bg-green-500/10',
-  },
-  {
-    icon: <FileText className="h-5 w-5" />,
-    text: 'Summarize coding in 3 concise bullet points.',
-    color: 'text-orange-500',
-    bgColor: 'bg-orange-500/10',
-  },
+  'Search who is the current vice president of India.',
+  'Summarize the latest AI trends in 5 bullet points.',
+  'Solve 2x^2 + 3x - 5 = 0 step by step.',
+  'Generate an image of a futuristic eco-friendly city.',
+  'Explain closures in JavaScript with a simple example.',
+  'Find the current BTC price and today’s market sentiment.',
+  'Write a React component for a responsive pricing card.',
+  'Compare Next.js app router vs pages router.',
 ];
+
+const marqueePrompts = [...prompts, ...prompts];
 
 export function ExamplePrompts({onSendMessage}: ExamplePromptsProps) {
   return (
-    <div className="mx-auto max-w-4xl animate-in fade-in-0 slide-in-from-bottom-4 duration-700 delay-300">
-      <div className="mb-4 flex items-center gap-2 text-sm text-muted-foreground">
-        <Sparkles className="h-4 w-4" />
-        <span className="font-medium">Try these examples</span>
-      </div>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {prompts.map((prompt, index) => (
-          <Card
-            key={index}
-            className="group cursor-pointer border-2 transition-all duration-200 hover:border-primary hover:shadow-md hover:scale-[1.02] active:scale-[0.98]"
-            onClick={() => onSendMessage(prompt.text)}
-          >
-            <CardContent className="flex items-start gap-4 p-4">
-              <div className={`flex-shrink-0 rounded-xl p-2.5 ${prompt.bgColor} ${prompt.color} transition-transform group-hover:scale-110`}>
-                {prompt.icon}
-              </div>
-              <div className="flex-1 text-sm leading-relaxed pt-1">
-                {prompt.text}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+    <div className="mx-auto w-full max-w-5xl px-3 pb-3 md:px-4">
+      <div className="chat-prompt-strip rounded-2xl border border-border/70 bg-background/80 p-2 shadow-sm backdrop-blur">
+        <div className="mb-2 flex items-center gap-2 px-2 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+          <Sparkles className="h-3.5 w-3.5" />
+          <span>Try a Prompt</span>
+        </div>
+        <div className="chat-prompt-marquee">
+          <div className="chat-prompt-track">
+            {marqueePrompts.map((prompt, index) => (
+              <button
+                key={`${prompt}-${index}`}
+                type="button"
+                onClick={() => onSendMessage(prompt)}
+                className="chat-prompt-chip"
+              >
+                {prompt}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

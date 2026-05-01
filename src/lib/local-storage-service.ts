@@ -18,6 +18,9 @@ export interface UploadResult {
 export interface UploadOptions {
   userId: string;
   type: 'user-image' | 'generated-image' | 'generated-video' | 'audio';
+  originalFilename?: string;
+  contentType?: string;
+  baseUrl?: string;
   autoDelete?: boolean;
   deleteAfterMs?: number;
 }
@@ -75,7 +78,15 @@ export class LocalStorageService {
     file: Buffer | Blob,
     options: UploadOptions
   ): Promise<UploadResult> {
-    const { userId, type, autoDelete = false, deleteAfterMs = 3600000 } = options;
+    const {
+      userId,
+      type,
+      originalFilename,
+      contentType,
+      baseUrl,
+      autoDelete = false,
+      deleteAfterMs = 3600000,
+    } = options;
     
     // Ensure directory exists
     await this.ensureUploadsDirExists();
@@ -83,7 +94,7 @@ export class LocalStorageService {
     // Generate unique filename
     const timestamp = Date.now();
     const uniqueId = uuidv4().split('-')[0]; // Short UUID
-    const extension = this.getExtension(type);
+    const extension = this.getExtension(type, originalFilename, contentType);
     const filename = `${userId}_${timestamp}_${uniqueId}${extension}`;
     
     // Create file path
@@ -106,7 +117,8 @@ export class LocalStorageService {
     const stats = await fs.stat(filePath);
     
     // Generate public URL
-    const url = `${this.baseUrl}/uploads/${type}/${filename}`;
+    const publicBaseUrl = (baseUrl || this.baseUrl).replace(/\/$/, '');
+    const url = `${publicBaseUrl}/uploads/${type}/${filename}`;
     
     // Schedule auto-deletion if enabled
     if (autoDelete) {
@@ -121,7 +133,7 @@ export class LocalStorageService {
       url,
       path: `${type}/${filename}`,
       size: stats.size,
-      contentType: this.getContentType(type),
+      contentType: this.getContentType(type, contentType, extension),
     };
   }
 
@@ -142,11 +154,21 @@ export class LocalStorageService {
   /**
    * Get file extension based on type
    */
-  private getExtension(type: string): string {
+  private getExtension(type: string, originalFilename?: string, contentType?: string): string {
+    const filenameExtension = originalFilename ? path.extname(originalFilename).toLowerCase() : '';
+    if (filenameExtension) {
+      return filenameExtension;
+    }
+
+    const mimeExtension = this.getExtensionFromMime(contentType);
+    if (mimeExtension) {
+      return mimeExtension;
+    }
+
     switch (type) {
       case 'user-image':
       case 'generated-image':
-        return '.png';
+        return '.jpg';
       case 'generated-video':
         return '.mp4';
       case 'audio':
@@ -159,7 +181,27 @@ export class LocalStorageService {
   /**
    * Get content type based on file type
    */
-  private getContentType(type: string): string {
+  private getContentType(type: string, contentType?: string, extension?: string): string {
+    if (contentType) {
+      return contentType;
+    }
+
+    switch ((extension || '').toLowerCase()) {
+      case '.jpg':
+      case '.jpeg':
+        return 'image/jpeg';
+      case '.png':
+        return 'image/png';
+      case '.webp':
+        return 'image/webp';
+      case '.gif':
+        return 'image/gif';
+      case '.wav':
+        return 'audio/wav';
+      case '.ogg':
+        return 'audio/ogg';
+    }
+
     switch (type) {
       case 'user-image':
       case 'generated-image':
@@ -170,6 +212,29 @@ export class LocalStorageService {
         return 'audio/mpeg';
       default:
         return 'application/octet-stream';
+    }
+  }
+
+  private getExtensionFromMime(contentType?: string): string | null {
+    switch (contentType) {
+      case 'image/jpeg':
+        return '.jpg';
+      case 'image/png':
+        return '.png';
+      case 'image/webp':
+        return '.webp';
+      case 'image/gif':
+        return '.gif';
+      case 'video/mp4':
+        return '.mp4';
+      case 'audio/mpeg':
+        return '.mp3';
+      case 'audio/wav':
+        return '.wav';
+      case 'audio/ogg':
+        return '.ogg';
+      default:
+        return null;
     }
   }
 

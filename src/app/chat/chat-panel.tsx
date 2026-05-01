@@ -116,7 +116,7 @@ export function ChatPanel({
         setIsGeneratingImage(true);
       }
 
-      const isNewChat = messages.length <= 1;
+      const isNewChat = messages.length === 0;
       const newTitle = isNewChat
         ? messageContent.substring(0, 30) + (messageContent.length > 30 ? '...' : '')
         : undefined;
@@ -264,29 +264,21 @@ export function ChatPanel({
     };
   }, []);
 
-  const greetingHeader =
-    messages.length <= 1 && user ? (
-      <div className="mb-8 flex flex-col items-center justify-center gap-2 text-center">
-        <h1 className="text-3xl font-bold">Hello, {user.displayName}!</h1>
-      </div>
-    ) : null;
-
   return (
-    <div className="flex h-[calc(100svh-4rem)] min-h-0 flex-col bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.06),transparent_28%)]">
+    <div className="flex h-[calc(100svh-4rem)] min-h-0 w-full flex-col overflow-hidden bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.06),transparent_28%)]">
       <ChatMessages
         messages={messages}
         isLoading={isLoadingFromAI}
         className="flex-1"
-        header={greetingHeader}
         onRegenerateMessage={handleRegenerateMessage}
         settings={settings}
       />
 
-      {messages.length <= 1 && (
+      {messages.length === 0 && (
         <ExamplePrompts onSendMessage={handleSendMessage} />
       )}
 
-      <div className="border-t bg-background/95 px-3 py-3 backdrop-blur md:px-4 md:py-4">
+      <div className="shrink-0 border-t bg-background/95 px-3 py-3 backdrop-blur md:px-4 md:py-4">
         {isSpeaking && (
           <div className="mb-2 flex items-center justify-center gap-2 text-sm text-muted-foreground">
             <div className="flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2">

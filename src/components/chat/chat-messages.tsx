@@ -10,7 +10,6 @@ import {ThinkingAnimation} from './thinking-animation';
 interface ChatMessagesProps extends React.HTMLAttributes<HTMLDivElement> {
   messages: Message[];
   isLoading?: boolean;
-  header?: React.ReactNode;
   onRegenerateMessage?: (messageId: string) => void;
   settings: Settings;
 }
@@ -19,7 +18,6 @@ export function ChatMessages({
   messages,
   isLoading,
   className,
-  header,
   onRegenerateMessage,
   settings,
 }: ChatMessagesProps) {
@@ -46,8 +44,7 @@ export function ChatMessages({
 
   return (
     <ScrollArea className={cn('w-full overflow-x-hidden', className)} ref={scrollAreaRef}>
-      <div className="mx-auto w-full max-w-5xl overflow-x-hidden px-3 py-4 md:px-6 md:py-6 lg:px-8" ref={viewportRef}>
-        {header}
+      <div className="mx-auto w-full max-w-5xl overflow-x-hidden px-3 py-4 md:px-5 md:py-5 lg:px-8" ref={viewportRef}>
         <div className="space-y-6 md:space-y-8">
           {messages.map((message, index) => (
             <ChatMessage 

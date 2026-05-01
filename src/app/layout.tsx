@@ -10,6 +10,7 @@ import {AuthProvider} from '@/hooks/use-auth';
 import LoadingManager from '@/components/loading-manager';
 import PageTransition from '@/components/page-transition';
 import { PWAPrompt } from '@/components/pwa-prompt';
+import { ServerKeepAlive } from '@/components/server-keepalive';
 import { validateStartup } from '@/lib/startup-validation';
 import { StructuredData } from '@/components/seo/structured-data';
 import { defaultSEO } from '@/lib/seo-config';
@@ -150,15 +151,16 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <Analytics />
+              <ServerKeepAlive />
               <LoadingManager />
               <PageTransition>
                 {children}
               </PageTransition>
-            <PWAPrompt />
-            <Toaster />
-            <SonnerToaster position="top-right" richColors />
-          </ThemeProvider>
-        </AuthProvider>
+              <PWAPrompt />
+              <Toaster />
+              <SonnerToaster position="top-right" richColors />
+            </ThemeProvider>
+          </AuthProvider>
         </ErrorBoundary>
       </body>
     </html>

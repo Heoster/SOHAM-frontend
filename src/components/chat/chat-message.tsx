@@ -284,7 +284,7 @@ export function ChatMessage({message, settings, onRegenerate}: ChatMessageProps)
 
   const isAssistant = message.role === 'assistant';
   const shouldRenderAttachedImage = isAssistant && !!message.imageUrl && !hasEmbeddedImage(message.content);
-  const responseFontWeight = settings.responseFontWeight ?? 'medium';
+  const responseFontWeight = settings.responseFontWeight ?? 'regular';
   const assistantTypographyClass =
     responseFontWeight === 'bold'
       ? 'font-semibold prose-p:font-semibold prose-li:font-semibold prose-strong:font-bold'

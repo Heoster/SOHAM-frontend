@@ -378,6 +378,15 @@ html {
   }
 }
 
+@keyframes promptMarquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 /* Infinity animation for login page */
 .infinity-animation {
   width: 200px;
@@ -427,6 +436,62 @@ html {
   
   input, textarea {
     font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+.chat-prompt-strip {
+  position: relative;
+  overflow: hidden;
+}
+
+.chat-prompt-marquee {
+  position: relative;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+.chat-prompt-track {
+  display: flex;
+  width: max-content;
+  gap: 0.75rem;
+  animation: promptMarquee 26s linear infinite;
+}
+
+.chat-prompt-strip:hover .chat-prompt-track {
+  animation-play-state: paused;
+}
+
+.chat-prompt-chip {
+  flex: 0 0 auto;
+  max-width: min(88vw, 28rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-radius: 9999px;
+  border: 1px solid hsl(var(--border) / 0.8);
+  background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--muted) / 0.7));
+  padding: 0.8rem 1rem;
+  font-size: 0.82rem;
+  color: hsl(var(--foreground) / 0.88);
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.chat-prompt-chip:hover {
+  transform: translateY(-1px);
+  border-color: hsl(var(--primary) / 0.55);
+}
+
+@media (max-width: 640px) {
+  .chat-prompt-track {
+    gap: 0.55rem;
+    animation-duration: 22s;
+  }
+
+  .chat-prompt-chip {
+    max-width: min(84vw, 20rem);
+    padding: 0.72rem 0.9rem;
+    font-size: 0.76rem;
   }
 }
 

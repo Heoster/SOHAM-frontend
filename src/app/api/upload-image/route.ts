@@ -63,6 +63,9 @@ export async function POST(request: NextRequest) {
       const result = await storageService.uploadFile(buffer, {
         userId,
         type: 'user-image',
+        originalFilename: file.name,
+        contentType: file.type,
+        baseUrl: request.nextUrl.origin,
         autoDelete,
         deleteAfterMs: 3600000, // 1 hour
       });
@@ -72,6 +75,7 @@ export async function POST(request: NextRequest) {
         url: result.url,
         path: result.path,
         size: result.size,
+        contentType: result.contentType,
       });
     } catch (storageError) {
       console.error('Local storage error:', storageError);

@@ -119,6 +119,7 @@ export interface SolveImageEquationOutput {
   recognizedEquation: string;
   solutionSteps: string;
   isSolvable: boolean;
+  modelUsed?: string;
 }
 
 export interface AnalyzePdfInput {

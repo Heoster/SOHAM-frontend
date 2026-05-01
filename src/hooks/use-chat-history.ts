@@ -28,6 +28,10 @@ function fromDBMessage(db: DBMessage): Message {
   return { id: db.id, role: db.role, content: db.content, createdAt: db.createdAt, modelUsed: db.modelUsed, autoRouted: db.autoRouted, imageUrl: db.imageUrl, imageProvider: db.imageProvider };
 }
 
+function isLegacyWelcomeMessage(message: Message): boolean {
+  return message.role === 'assistant' && message.content.trim() === 'How can I help you today?';
+}
+
 export function useChatHistory() {
   const {user} = useAuth();
   const userId = user?.uid;
@@ -55,7 +59,7 @@ export function useChatHistory() {
         setActiveChatId(recent.id);
         const dbMsgs = await idbGetMessages(recent.id);
         loadedChatIds.current.add(recent.id);
-        setMessages({ [recent.id]: dbMsgs.map(fromDBMessage) });
+        setMessages({ [recent.id]: dbMsgs.map(fromDBMessage).filter(msg => !isLegacyWelcomeMessage(msg)) });
       }
       setIsLoaded(true);
     }).catch((err) => {
@@ -69,7 +73,7 @@ export function useChatHistory() {
     if (!activeChatId || !isIDBAvailable() || loadedChatIds.current.has(activeChatId)) return;
     idbGetMessages(activeChatId).then((dbMsgs) => {
       loadedChatIds.current.add(activeChatId);
-      setMessages(prev => ({ ...prev, [activeChatId]: dbMsgs.map(fromDBMessage) }));
+      setMessages(prev => ({ ...prev, [activeChatId]: dbMsgs.map(fromDBMessage).filter(msg => !isLegacyWelcomeMessage(msg)) }));
     }).catch(console.warn);
   }, [activeChatId]);
 
@@ -88,16 +92,14 @@ export function useChatHistory() {
     const ownerId = userId ?? 'guest';
     const now = new Date().toISOString();
     const newChat: Chat = { id: crypto.randomUUID(), userId: ownerId, title: 'New Chat', createdAt: now, updatedAt: now };
-    const welcome: Message = { id: crypto.randomUUID(), role: 'assistant', content: 'How can I help you today?', createdAt: now };
 
     setChats(prev => [newChat, ...prev]);
-    setMessages(prev => ({ ...prev, [newChat.id]: [welcome] }));
+    setMessages(prev => ({ ...prev, [newChat.id]: [] }));
     setActiveChatId(newChat.id);
     loadedChatIds.current.add(newChat.id);
 
     if (isIDBAvailable()) {
       idbPutChat(toDBChat(newChat)).catch(console.warn);
-      idbAddMessage(toDBMessage(welcome, newChat.id, ownerId)).catch(console.warn);
     }
   }, [userId]);
 

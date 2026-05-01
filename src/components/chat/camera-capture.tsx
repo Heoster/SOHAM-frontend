@@ -7,7 +7,12 @@ import { useToast } from '@/hooks/use-toast';
 
 interface CameraCaptureProps {
   userId: string;
-  onImageCaptured: (url: string, path: string) => void;
+  onImageCaptured: (payload: {
+    url: string;
+    path: string;
+    imageDataUri: string;
+    contentType?: string;
+  }) => void;
   onCancel?: () => void;
 }
 
@@ -132,7 +137,12 @@ export function CameraCapture({ userId, onImageCaptured, onCancel }: CameraCaptu
         description: 'Your photo is ready to analyze',
       });
 
-      onImageCaptured(data.url, data.path);
+      onImageCaptured({
+        url: data.url,
+        path: data.path,
+        imageDataUri: canvasRef.current.toDataURL('image/jpeg', 0.9),
+        contentType: data.contentType,
+      });
     } catch (error) {
       console.error('Upload error:', error);
       toast({
@@ -168,6 +178,9 @@ export function CameraCapture({ userId, onImageCaptured, onCancel }: CameraCaptu
 
   return (
     <div className="space-y-3">
+      <div className="rounded-md border bg-muted/40 px-3 py-2 text-xs leading-5 text-muted-foreground">
+        Captured images are analyzed with Google Gemini 2.5 Flash free vision.
+      </div>
       <div className="relative rounded-lg overflow-hidden border bg-black">
         {/* Video preview */}
         <video

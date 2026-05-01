@@ -175,7 +175,7 @@ export function QuickSettingsPopover({
         <div className="space-y-2">
           <Label htmlFor="quick-font-weight">Reply font weight</Label>
           <Select
-            value={settings.responseFontWeight ?? 'medium'}
+            value={settings.responseFontWeight ?? 'regular'}
             onValueChange={(value: NonNullable<Settings['responseFontWeight']>) =>
               onSettingsChange({...settings, responseFontWeight: value})
             }
@@ -388,7 +388,7 @@ export function SettingsDialog({
             <CardContent className="space-y-2">
               <Label htmlFor="response-font-weight">Reply font weight</Label>
               <Select
-                value={settings.responseFontWeight ?? 'medium'}
+                value={settings.responseFontWeight ?? 'regular'}
                 onValueChange={(value: NonNullable<Settings['responseFontWeight']>) =>
                   onSettingsChange({...settings, responseFontWeight: value})
                 }
