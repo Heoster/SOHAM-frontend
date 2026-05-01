@@ -5,6 +5,7 @@ import {ChatInput} from '@/components/chat/chat-input';
 import {ChatMessages} from '@/components/chat/chat-messages';
 import {ExamplePrompts} from '@/components/chat/example-prompts';
 import {useState, useRef, useEffect, useCallback} from 'react';
+import Image from 'next/image';
 import {useAuth} from '@/hooks/use-auth';
 import {hybridTTS} from '@/lib/hybrid-tts';
 import {VoiceFilter} from '@/lib/voice-filter';
