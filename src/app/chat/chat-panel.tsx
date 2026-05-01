@@ -283,24 +283,39 @@ export function ChatPanel({
       />
 
       {messages.length === 0 && (
-        <div className="flex flex-col items-center justify-center px-4 py-8 md:py-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <div className="mb-8 flex flex-col items-center text-center">
-            <div className="mb-6 relative">
-              <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full" />
+        <div className="flex flex-col items-center justify-center px-4 py-8 md:py-12 animate-in fade-in slide-in-from-bottom-4 duration-700 flex-1">
+          <div className="mb-10 flex flex-col items-center text-center">
+            <div className="mb-8 relative">
+              <div className="absolute inset-0 bg-primary/15 blur-[100px] rounded-full scale-150" />
               <Image
                 src="/FINALSOHAM.png"
                 alt="SOHAM Logo"
-                width={80}
-                height={80}
-                className="relative rounded-2xl shadow-2xl border border-white/10"
+                width={180}
+                height={180}
+                className="relative rounded-3xl shadow-2xl border border-white/5 opacity-90 transition-transform hover:scale-105 duration-500 md:w-[240px] md:h-[240px]"
                 priority
               />
             </div>
-            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight">
+            <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
               {getTimeGreeting()}, <span className="text-primary">{user?.displayName?.split(' ')[0] || 'User'}</span>
             </h2>
           </div>
+          
           <ExamplePrompts onSendMessage={handleSendMessage} />
+
+          <div className="mt-12 max-w-2xl text-center px-6 opacity-30 hover:opacity-60 transition-opacity duration-500">
+            <p className="text-[11px] md:text-xs leading-relaxed text-muted-foreground font-medium uppercase tracking-widest">
+              SOHAM is an advanced adaptive AI workspace designed by CODEEX-AI. 
+              Built to provide seamless, secure, and intelligent problem-solving experiences.
+            </p>
+            <div className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[10px] md:text-[11px] font-semibold text-muted-foreground uppercase tracking-[0.2em]">
+              <Link href="/about" className="hover:text-primary transition-colors">About</Link>
+              <Link href="/documentation" className="hover:text-primary transition-colors">Docs</Link>
+              <Link href="/privacy" className="hover:text-primary transition-colors">Privacy</Link>
+              <Link href="/contact" className="hover:text-primary transition-colors">Contact</Link>
+              <button onClick={() => window.open('mailto:support@codeex.ai')} className="hover:text-primary transition-colors">Help</button>
+            </div>
+          </div>
         </div>
       )}
 
