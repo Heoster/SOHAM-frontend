@@ -391,7 +391,7 @@ html {
   display: flex;
   width: max-content;
   gap: 0.75rem;
-  animation: promptMarqueeLTR 120s linear infinite;
+  animation: promptMarqueeLTR 180s linear infinite;
 }
 
 .chat-prompt-strip:hover .chat-prompt-track-ltr {
