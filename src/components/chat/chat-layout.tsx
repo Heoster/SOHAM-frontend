@@ -323,8 +323,8 @@ export function ChatLayout() {
           )}
         </SidebarFooter>
       </Sidebar>
-      <SidebarInset>
-        <header className="sticky top-0 z-10 flex h-16 items-center gap-3 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/70 md:px-6">
+      <SidebarInset className="flex flex-col h-[100svh] overflow-hidden">
+        <header className="shrink-0 sticky top-0 z-10 flex h-16 items-center gap-3 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/70 md:px-6">
           <SidebarTrigger className="-ml-2" />
           <div className="flex items-center gap-2 md:hidden">
             <Image src="/FINALSOHAM.png" alt="SOHAM icon" width={26} height={26} className="rounded-md" />
@@ -352,40 +352,42 @@ export function ChatLayout() {
           </div>
         </header>
 
-        {activeChat ? (
-          <div className="h-[calc(100svh-4rem)] overflow-hidden pb-16 md:pb-0">
-            <ChatPanel
-              key={activeChat.id}
-              chat={activeChat}
-              settings={settings}
-              messages={activeChatMessages}
-              addMessage={addMessage}
-            />
-          </div>
-        ) : (
-          <div className="flex h-[calc(100vh-4rem)] items-center justify-center px-4 pb-16 md:pb-0">
-            <div className="text-center space-y-4 max-w-md">
-              <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                <MessageSquarePlus className="h-8 w-8 text-primary" />
-              </div>
-              <div className="space-y-2">
-                <h2 className="text-xl md:text-2xl font-bold">Start a New Conversation</h2>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Create a new chat to begin talking with SOHAM
-                </p>
-              </div>
-              <Button 
-                onClick={createNewChat}
-                disabled={!user}
-                size="lg"
-                className="gap-2"
-              >
-                <MessageSquarePlus className="h-5 w-5" />
-                Chat
-              </Button>
+        <main className="flex-1 min-h-0 relative">
+          {activeChat ? (
+            <div className="absolute inset-0 flex flex-col pb-[64px] md:pb-0">
+              <ChatPanel
+                key={activeChat.id}
+                chat={activeChat}
+                settings={settings}
+                messages={activeChatMessages}
+                addMessage={addMessage}
+              />
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="flex h-full items-center justify-center px-4 pb-[64px] md:pb-0">
+              <div className="text-center space-y-4 max-w-md">
+                <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                  <MessageSquarePlus className="h-8 w-8 text-primary" />
+                </div>
+                <div className="space-y-2">
+                  <h2 className="text-xl md:text-2xl font-bold">Start a New Conversation</h2>
+                  <p className="text-sm md:text-base text-muted-foreground">
+                    Create a new chat to begin talking with SOHAM
+                  </p>
+                </div>
+                <Button 
+                  onClick={createNewChat}
+                  disabled={!user}
+                  size="lg"
+                  className="gap-2"
+                >
+                  <MessageSquarePlus className="h-5 w-5" />
+                  Chat
+                </Button>
+              </div>
+            </div>
+          )}
+        </main>
 
         {/* ── Mobile bottom navigation bar ── */}
         <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 flex items-center justify-around border-t border-border bg-background/95 px-2 pb-safe pt-1 backdrop-blur-sm">

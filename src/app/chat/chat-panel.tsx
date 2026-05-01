@@ -107,6 +107,13 @@ export function ChatPanel({
 
   const isLoading = isLoadingFromAI || isSpeaking;
 
+  const getTimeGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good Morning';
+    if (hour < 17) return 'Good Afternoon';
+    return 'Good Evening';
+  };
+
   const handleSendMessage = useCallback(
     async (messageContent: string) => {
       if (isLoading || !user) return;
@@ -265,17 +272,24 @@ export function ChatPanel({
   }, []);
 
   return (
-    <div className="flex h-[calc(100svh-4rem)] min-h-0 w-full flex-col overflow-hidden bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.06),transparent_28%)]">
+    <div className="flex h-full w-full flex-col overflow-hidden bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.06),transparent_28%)]">
       <ChatMessages
         messages={messages}
         isLoading={isLoadingFromAI}
-        className="flex-1"
+        className="flex-1 min-h-0"
         onRegenerateMessage={handleRegenerateMessage}
         settings={settings}
       />
 
       {messages.length === 0 && (
-        <ExamplePrompts onSendMessage={handleSendMessage} />
+        <div className="flex flex-col items-center justify-center px-4 py-8 md:py-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div className="mb-8 text-center">
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight">
+              {getTimeGreeting()}, <span className="text-primary">{user?.displayName?.split(' ')[0] || 'User'}</span>
+            </h2>
+          </div>
+          <ExamplePrompts onSendMessage={handleSendMessage} />
+        </div>
       )}
 
       <div className="shrink-0 border-t bg-background/95 px-3 py-3 backdrop-blur md:px-4 md:py-4">

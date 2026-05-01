@@ -1,7 +1,6 @@
 'use client';
 
 import {useEffect, useRef} from 'react';
-import {ScrollArea} from '@/components/ui/scroll-area';
 import {cn} from '@/lib/utils';
 import {type Message, type Settings} from '@/lib/types';
 import {ChatMessage} from './chat-message';
@@ -21,30 +20,40 @@ export function ChatMessages({
   onRegenerateMessage,
   settings,
 }: ChatMessagesProps) {
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const viewportRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const prevMessagesLengthRef = useRef(messages.length);
+
+  const scrollToBottom = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   useEffect(() => {
     // Auto-scroll when new messages are added or loading state changes
-    if (viewportRef.current) {
-      const shouldScroll = messages.length > prevMessagesLengthRef.current || isLoading;
-      
-      if (shouldScroll) {
-        // Smooth scroll to bottom
-        viewportRef.current.scrollTo({
-          top: viewportRef.current.scrollHeight,
-          behavior: 'smooth'
-        });
-      }
-      
-      prevMessagesLengthRef.current = messages.length;
+    if (messages.length > prevMessagesLengthRef.current || isLoading) {
+      // Small delay to ensure DOM is updated
+      setTimeout(scrollToBottom, 100);
     }
-  }, [messages, isLoading]);
+    prevMessagesLengthRef.current = messages.length;
+  }, [messages.length, isLoading]);
+
+  // Also scroll on mount if there are messages
+  useEffect(() => {
+    if (messages.length > 0) {
+      scrollToBottom();
+    }
+  }, []);
 
   return (
-    <ScrollArea className={cn('w-full overflow-x-hidden', className)} ref={scrollAreaRef}>
-      <div className="mx-auto w-full max-w-5xl overflow-x-hidden px-3 py-4 md:px-5 md:py-5 lg:px-8" ref={viewportRef}>
+    <div 
+      ref={scrollRef}
+      className={cn('w-full flex-1 overflow-y-auto overflow-x-hidden scroll-smooth custom-scrollbar', className)}
+    >
+      <div className="mx-auto w-full max-w-5xl px-3 py-4 md:px-5 md:py-6 lg:px-8">
         <div className="space-y-6 md:space-y-8">
           {messages.map((message, index) => (
             <ChatMessage 
@@ -58,9 +67,15 @@ export function ChatMessages({
               }
             />
           ))}
-          {isLoading && <ThinkingAnimation />}
+          {isLoading && (
+            <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+              <ThinkingAnimation />
+            </div>
+          )}
         </div>
+        {/* Invisible anchor for scrolling */}
+        <div className="h-4 w-full" />
       </div>
-    </ScrollArea>
+    </div>
   );
 }

@@ -182,6 +182,9 @@ export function ChatInput({onSendMessage, isLoading, userId = 'anonymous'}: Chat
       if (!response.ok || data.error) {
         throw new Error(data.error || 'Image analysis failed');
       }
+      if (!data.isSolvable && data.recognizedContent === 'Unable to process image') {
+        throw new Error(data.solution || 'Image analysis failed');
+      }
 
       onSendMessage(
         [

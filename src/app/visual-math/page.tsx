@@ -53,6 +53,8 @@ export default function VisualMathPage() {
       setError('Failed to process the image. Please try again.');
     } else if ('error' in result) {
       setError(result.error);
+    } else if (!result.isSolvable && result.recognizedEquation === 'Unable to process image') {
+      setError(result.solutionSteps);
     } else {
       setSolution(result);
     }
@@ -170,7 +172,7 @@ export default function VisualMathPage() {
               )}
               {!isLoading && !solution && !error && (
                 <div className="flex h-full items-center justify-center text-center text-muted-foreground">
-                  <p>Upload an image of an equation and click &quot;Solve with AI&quot; to see the solution here.</p>
+                  <p>Upload an image of an equation and click &quot;Solve with Gemini 2.5 Flash&quot; to see the solution here.</p>
                 </div>
               )}
             </CardContent>
