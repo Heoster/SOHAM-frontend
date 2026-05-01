@@ -283,7 +283,18 @@ export function ChatPanel({
 
       {messages.length === 0 && (
         <div className="flex flex-col items-center justify-center px-4 py-8 md:py-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <div className="mb-8 text-center">
+          <div className="mb-8 flex flex-col items-center text-center">
+            <div className="mb-6 relative">
+              <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full" />
+              <Image
+                src="/FINALSOHAM.png"
+                alt="SOHAM Logo"
+                width={80}
+                height={80}
+                className="relative rounded-2xl shadow-2xl border border-white/10"
+                priority
+              />
+            </div>
             <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight">
               {getTimeGreeting()}, <span className="text-primary">{user?.displayName?.split(' ')[0] || 'User'}</span>
             </h2>
