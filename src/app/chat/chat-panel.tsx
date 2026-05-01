@@ -301,10 +301,8 @@ export function ChatPanel({
               {getTimeGreeting()}, <span className="text-primary">{user?.displayName?.split(' ')[0] || 'User'}</span>
             </h2>
           </div>
-          
-          <ExamplePrompts onSendMessage={handleSendMessage} />
 
-          <div className="mt-12 max-w-2xl text-center px-6 opacity-30 hover:opacity-60 transition-opacity duration-500">
+          <div className="mb-10 max-w-2xl text-center px-6 opacity-60 hover:opacity-100 transition-opacity duration-500">
             <p className="text-[11px] md:text-xs leading-relaxed text-muted-foreground font-medium uppercase tracking-widest">
               SOHAM is an advanced adaptive AI workspace designed by CODEEX-AI. 
               Built to provide seamless, secure, and intelligent problem-solving experiences.
@@ -317,6 +315,8 @@ export function ChatPanel({
               <button onClick={() => window.open('mailto:support@codeex.ai')} className="hover:text-primary transition-colors">Help</button>
             </div>
           </div>
+          
+          <ExamplePrompts onSendMessage={handleSendMessage} />
         </div>
       )}
 
