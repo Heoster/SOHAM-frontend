@@ -12,6 +12,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { checkRateLimit, getClientIp, LIMITS } from '@/lib/rate-limiter';
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || process.env.SERVER_URL || 'http://localhost:8080';
 const SOHAM_API_KEY = process.env.SOHAM_API_KEY;
@@ -22,6 +23,16 @@ const backendHeaders = {
 };
 
 export async function POST(request: NextRequest) {
+  // Rate limit: 5 image generations per minute per IP
+  const ip = getClientIp(request);
+  const rl = checkRateLimit(ip, LIMITS.imageGen);
+  if (!rl.success) {
+    return NextResponse.json(
+      { success: false, error: 'RATE_LIMITED', message: 'Too many image requests. Try again in a minute.' },
+      { status: 429, headers: { 'Retry-After': String(Math.ceil(rl.retryAfterMs / 1000)) } }
+    );
+  }
+
   try {
     const body = await request.json();
     const { prompt, userId, style } = body;

@@ -3,6 +3,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { checkRateLimit, getClientIp, LIMITS } from '@/lib/rate-limiter';
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || process.env.SERVER_URL || 'http://localhost:8080';
 const SOHAM_API_KEY = process.env.SOHAM_API_KEY;
@@ -46,6 +47,16 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  // Rate limit: 30 chat requests per minute per IP
+  const ip = getClientIp(request);
+  const rl = checkRateLimit(ip, LIMITS.chat);
+  if (!rl.success) {
+    return NextResponse.json(
+      { error: 'RATE_LIMITED', message: 'Too many requests. Please wait a moment.' },
+      { status: 429, headers: { ...corsHeaders, 'Retry-After': String(Math.ceil(rl.retryAfterMs / 1000)) } }
+    );
+  }
+
   try {
     let body: Record<string, unknown>;
     try {

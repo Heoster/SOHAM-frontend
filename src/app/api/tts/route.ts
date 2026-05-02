@@ -3,6 +3,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { checkRateLimit, getClientIp, LIMITS } from '@/lib/rate-limiter';
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || process.env.SERVER_URL || 'http://localhost:8080';
 const SOHAM_API_KEY = process.env.SOHAM_API_KEY;
@@ -13,6 +14,14 @@ const backendHeaders = {
 };
 
 export async function POST(request: NextRequest) {
+  const ip = getClientIp(request);
+  const rl = checkRateLimit(ip, LIMITS.tts);
+  if (!rl.success) {
+    return NextResponse.json(
+      { success: false, error: 'RATE_LIMITED', message: 'Too many TTS requests.' },
+      { status: 429 }
+    );
+  }
   try {
     const body = await request.json();
     const { text, voice, speed } = body;
