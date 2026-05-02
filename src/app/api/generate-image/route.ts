@@ -14,7 +14,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || process.env.SERVER_URL || 'http://localhost:8080';
-const SOHAM_API_KEY = process.env.SOHAM_API_KEY || 'soham-secret-key-2025';
+const SOHAM_API_KEY = process.env.SOHAM_API_KEY;
 
 const backendHeaders = {
   'Content-Type': 'application/json',

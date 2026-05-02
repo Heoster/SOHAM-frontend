@@ -29,7 +29,7 @@ function resolvePath(path: string): string {
 
 const API_KEY =
   typeof window === 'undefined'
-    ? process.env.SOHAM_API_KEY || 'soham-secret-key-2025'
+    ? process.env.SOHAM_API_KEY
     : '';
 
 // ── Generic fetch helper ──────────────────────────────────────────────────────

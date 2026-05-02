@@ -274,52 +274,65 @@ export function ChatPanel({
   }, []);
 
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.06),transparent_28%)]">
-      <ChatMessages
-        messages={messages}
-        isLoading={isLoadingFromAI}
-        className="flex-1 min-h-0"
-        onRegenerateMessage={handleRegenerateMessage}
-        settings={settings}
-      />
+    /*
+     * Outer shell: fills whatever space the parent gives it.
+     * flex-col + overflow-hidden so children can't blow out the height.
+     * The input bar is ALWAYS the last child with shrink-0 so it is
+     * never squeezed or clipped regardless of screen size.
+     */
+    <div className="flex flex-col w-full h-full overflow-hidden bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.06),transparent_28%)]">
 
-      {messages.length === 0 && (
-        <div className="flex flex-col items-center justify-center px-4 py-8 md:py-12 animate-in fade-in slide-in-from-bottom-4 duration-700 flex-1">
-          <div className="mb-10 flex flex-col items-center text-center">
-            <div className="mb-8 relative">
-              <div className="absolute inset-0 bg-primary/15 blur-[100px] rounded-full scale-150" />
-              <Image
-                src="/FINALSOHAM.png"
-                alt="SOHAM Logo"
-                width={180}
-                height={180}
-                className="relative rounded-3xl shadow-2xl border border-white/5 opacity-90 transition-transform hover:scale-105 duration-500 md:w-[240px] md:h-[240px]"
-                priority
-              />
+      {/* ── Scrollable area (messages OR welcome screen) ── */}
+      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
+        {messages.length === 0 ? (
+          /* Welcome / empty state — scrolls if content is taller than viewport */
+          <div className="flex flex-col items-center justify-center px-4 py-8 md:py-12 min-h-full animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="mb-10 flex flex-col items-center text-center">
+              <div className="mb-8 relative">
+                <div className="absolute inset-0 bg-primary/15 blur-[100px] rounded-full scale-150" />
+                <Image
+                  src="/FINALSOHAM.png"
+                  alt="SOHAM Logo"
+                  width={180}
+                  height={180}
+                  className="relative rounded-3xl shadow-2xl border border-white/5 opacity-90 transition-transform hover:scale-105 duration-500 md:w-[240px] md:h-[240px]"
+                  priority
+                />
+              </div>
+              <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
+                {getTimeGreeting()}, <span className="text-primary">{user?.displayName?.split(' ')[0] || 'User'}</span>
+              </h2>
             </div>
-            <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
-              {getTimeGreeting()}, <span className="text-primary">{user?.displayName?.split(' ')[0] || 'User'}</span>
-            </h2>
-          </div>
 
-          <div className="mb-10 max-w-2xl text-center px-6 opacity-60 hover:opacity-100 transition-opacity duration-500">
-            <p className="text-[11px] md:text-xs leading-relaxed text-muted-foreground font-medium uppercase tracking-widest">
-              SOHAM is an advanced adaptive AI workspace designed by CODEEX-AI. 
-              Built to provide seamless, secure, and intelligent problem-solving experiences.
-            </p>
-            <div className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[10px] md:text-[11px] font-semibold text-muted-foreground uppercase tracking-[0.2em]">
-              <Link href="/about" className="hover:text-primary transition-colors">About</Link>
-              <Link href="/documentation" className="hover:text-primary transition-colors">Docs</Link>
-              <Link href="/privacy" className="hover:text-primary transition-colors">Privacy</Link>
-              <Link href="/contact" className="hover:text-primary transition-colors">Contact</Link>
-              <button onClick={() => window.open('mailto:support@codeex.ai')} className="hover:text-primary transition-colors">Help</button>
+            <div className="mb-10 max-w-2xl text-center px-6 opacity-60 hover:opacity-100 transition-opacity duration-500">
+              <p className="text-[11px] md:text-xs leading-relaxed text-muted-foreground font-medium uppercase tracking-widest">
+                SOHAM is an advanced adaptive AI workspace designed by CODEEX-AI.
+                Built to provide seamless, secure, and intelligent problem-solving experiences.
+              </p>
+              <div className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[10px] md:text-[11px] font-semibold text-muted-foreground uppercase tracking-[0.2em]">
+                <Link href="/about" className="hover:text-primary transition-colors">About</Link>
+                <Link href="/documentation" className="hover:text-primary transition-colors">Docs</Link>
+                <Link href="/privacy" className="hover:text-primary transition-colors">Privacy</Link>
+                <Link href="/contact" className="hover:text-primary transition-colors">Contact</Link>
+                <button onClick={() => window.open('mailto:support@codeex.ai')} className="hover:text-primary transition-colors">Help</button>
+              </div>
             </div>
-          </div>
-          
-          <ExamplePrompts onSendMessage={handleSendMessage} />
-        </div>
-      )}
 
+            <ExamplePrompts onSendMessage={handleSendMessage} />
+          </div>
+        ) : (
+          /* Chat messages — ChatMessages already has overflow-y-auto internally */
+          <ChatMessages
+            messages={messages}
+            isLoading={isLoadingFromAI}
+            className="h-full"
+            onRegenerateMessage={handleRegenerateMessage}
+            settings={settings}
+          />
+        )}
+      </div>
+
+      {/* ── Input bar — always visible, never shrinks ── */}
       <div className="shrink-0 border-t bg-background/95 px-3 py-3 backdrop-blur md:px-4 md:py-4">
         {isSpeaking && (
           <div className="mb-2 flex items-center justify-center gap-2 text-sm text-muted-foreground">

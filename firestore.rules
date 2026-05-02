@@ -37,8 +37,8 @@ service cloud.firestore {
       allow update: if isOwner(userId)
         && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['uid', 'createdAt']);
       
-      // Users cannot delete their profile (use Firebase Auth)
-      allow delete: if false;
+      // Users can delete their own profile (GDPR / right to erasure)
+      allow delete: if isOwner(userId);
     }
 
     // Chats collection

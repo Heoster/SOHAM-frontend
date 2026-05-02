@@ -1,6 +1,6 @@
 'use client';
 
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -26,6 +26,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import {type Settings} from '@/lib/types';
 import {ChatPanel} from '@/app/chat/chat-panel';
 import {Button} from '@/components/ui/button';
@@ -95,6 +103,17 @@ export function ChatLayout() {
   );
   const [isClearHistoryAlertOpen, setIsClearHistoryAlertOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  // ── Rename dialog state ────────────────────────────────────────────────────
+  const [renameDialogOpen, setRenameDialogOpen] = useState(false);
+  const [renameChatId, setRenameChatId] = useState<string | null>(null);
+  const [renameValue, setRenameValue] = useState('');
+  const renameInputRef = useRef<HTMLInputElement>(null);
+
+  // ── Delete single chat dialog state ───────────────────────────────────────
+  const [deleteChatDialogOpen, setDeleteChatDialogOpen] = useState(false);
+  const [deleteChatId, setDeleteChatId] = useState<string | null>(null);
+
   const auth = getAuth();
 
   // Auto-create new chat when user logs in or app restarts
@@ -232,10 +251,9 @@ export function ChatLayout() {
                           size="icon"
                           onClick={(e) => {
                             e.stopPropagation();
-                            const newTitle = window.prompt('Rename chat', chat.title);
-                            if (newTitle && newTitle.trim().length > 0) {
-                              renameChat(chat.id, newTitle.trim());
-                            }
+                            setRenameChatId(chat.id);
+                            setRenameValue(chat.title);
+                            setRenameDialogOpen(true);
                           }}
                           title="Rename chat"
                           className="h-7 w-7"
@@ -269,8 +287,8 @@ export function ChatLayout() {
                           size="icon"
                           onClick={(e) => {
                             e.stopPropagation();
-                            const confirmed = window.confirm('Delete this chat?');
-                            if (confirmed) deleteChat(chat.id);
+                            setDeleteChatId(chat.id);
+                            setDeleteChatDialogOpen(true);
                           }}
                           title="Delete chat"
                           className="h-7 w-7 hover:text-destructive"
@@ -323,7 +341,7 @@ export function ChatLayout() {
           )}
         </SidebarFooter>
       </Sidebar>
-      <SidebarInset className="flex flex-col h-[100svh] overflow-hidden">
+      <SidebarInset className="flex flex-col overflow-hidden" style={{height: '100svh'}}>
         <header className="shrink-0 sticky top-0 z-10 flex h-16 items-center gap-3 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/70 md:px-6">
           <SidebarTrigger className="-ml-2" />
           <div className="flex items-center gap-2 md:hidden">
@@ -352,19 +370,22 @@ export function ChatLayout() {
           </div>
         </header>
 
-        <main className="flex-1 min-h-0 relative">
+        {/*
+         * main fills remaining height after the header.
+         * On mobile we add bottom padding equal to the fixed nav bar height
+         * so the ChatPanel's input bar is never hidden behind it.
+         */}
+        <main className="flex-1 min-h-0 flex flex-col overflow-hidden pb-[64px] md:pb-0">
           {activeChat ? (
-            <div className="absolute inset-0 flex flex-col pb-[64px] md:pb-0">
-              <ChatPanel
-                key={activeChat.id}
-                chat={activeChat}
-                settings={settings}
-                messages={activeChatMessages}
-                addMessage={addMessage}
-              />
-            </div>
+            <ChatPanel
+              key={activeChat.id}
+              chat={activeChat}
+              settings={settings}
+              messages={activeChatMessages}
+              addMessage={addMessage}
+            />
           ) : (
-            <div className="flex h-full items-center justify-center px-4 pb-[64px] md:pb-0">
+            <div className="flex flex-1 items-center justify-center px-4">
               <div className="text-center space-y-4 max-w-md">
                 <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
                   <MessageSquarePlus className="h-8 w-8 text-primary" />
@@ -425,6 +446,90 @@ export function ChatLayout() {
         open={isSettingsOpen}
         onOpenChange={setIsSettingsOpen}
       />
+
+      {/* ── Rename chat dialog ─────────────────────────────────────────────── */}
+      <Dialog
+        open={renameDialogOpen}
+        onOpenChange={(open) => {
+          setRenameDialogOpen(open);
+          if (!open) setRenameChatId(null);
+        }}
+      >
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Rename chat</DialogTitle>
+          </DialogHeader>
+          <Input
+            ref={renameInputRef}
+            value={renameValue}
+            onChange={(e) => setRenameValue(e.target.value.slice(0, 100))}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                if (renameChatId && renameValue.trim().length > 0) {
+                  renameChat(renameChatId, renameValue.trim());
+                  setRenameDialogOpen(false);
+                  setRenameChatId(null);
+                }
+              }
+              if (e.key === 'Escape') setRenameDialogOpen(false);
+            }}
+            maxLength={100}
+            placeholder="Chat name"
+            autoFocus
+            className="mt-1"
+          />
+          <DialogFooter className="gap-2 sm:gap-0">
+            <AlertDialogCancel onClick={() => setRenameDialogOpen(false)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (renameChatId && renameValue.trim().length > 0) {
+                  renameChat(renameChatId, renameValue.trim());
+                  setRenameDialogOpen(false);
+                  setRenameChatId(null);
+                }
+              }}
+              disabled={renameValue.trim().length === 0}
+            >
+              Rename
+            </AlertDialogAction>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* ── Delete single chat dialog ──────────────────────────────────────── */}
+      <AlertDialog
+        open={deleteChatDialogOpen}
+        onOpenChange={(open) => {
+          setDeleteChatDialogOpen(open);
+          if (!open) setDeleteChatId(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this chat?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete the chat and all its messages. This cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (deleteChatId) {
+                  deleteChat(deleteChatId);
+                  setDeleteChatId(null);
+                }
+              }}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <AlertDialog
         open={isClearHistoryAlertOpen}
         onOpenChange={setIsClearHistoryAlertOpen}

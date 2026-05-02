@@ -139,7 +139,17 @@ export const pageSEO = {
   contact: {
     title: `Contact - Get in Touch with SOHAM Team`,
     description: `Contact SOHAM team. Email: ${DEVELOPER_INFO.contact.email} | Connect on LinkedIn, GitHub, Twitter. Based in ${DEVELOPER_INFO.location.city}, India.`,
-    keywords: ['contact', 'support', 'feedback', 'SOHAM contact'],
+    keywords: ['contact', 'support', 'feedback', 'SOHAM contact', 'CODEEX-AI contact', 'bug report', 'feature request'],
+  },
+  faq: {
+    title: 'FAQ — Frequently Asked Questions | SOHAM by CODEEX-AI',
+    description: 'Find answers to the most common questions about SOHAM: free AI models, features, voice, PDF analysis, image generation, privacy, mobile PWA, and troubleshooting.',
+    keywords: ['SOHAM FAQ', 'SOHAM help', 'AI chatbot FAQ', 'free AI FAQ', 'SOHAM troubleshooting', 'SOHAM support'],
+  },
+  community: {
+    title: 'Community | SOHAM by CODEEX-AI — Share, Discuss & Connect',
+    description: 'Join the SOHAM community. Share tips, ask questions, post feedback, and connect with other AI enthusiasts. Powered by Supabase.',
+    keywords: ['SOHAM community', 'AI community', 'SOHAM forum', 'AI discussion', 'share AI tips'],
   },
   privacy: {
     title: 'Privacy Policy - Your Data is Safe | SOHAM',
@@ -469,6 +479,24 @@ export const structuredData = {
         position: 5,
         name: 'About',
         item: 'https://soham-ai.vercel.app/about',
+      },
+      {
+        '@type': 'ListItem',
+        position: 6,
+        name: 'FAQ',
+        item: 'https://soham-ai.vercel.app/faq',
+      },
+      {
+        '@type': 'ListItem',
+        position: 7,
+        name: 'Community',
+        item: 'https://soham-ai.vercel.app/community',
+      },
+      {
+        '@type': 'ListItem',
+        position: 8,
+        name: 'Contact',
+        item: 'https://soham-ai.vercel.app/contact',
       },
     ],
   },

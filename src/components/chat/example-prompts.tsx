@@ -20,7 +20,7 @@ const prompts = [
   'Explain the theory of relativity to a 10-year-old.',
   'Create a 7-day keto meal plan with shopping list.',
   'How do I implement authentication in Next.js 14?',
-  'What are the best practices for SEO in 2024?',
+  'What are the best practices for SEO in 2026?',
   'Write a short story about a time-traveling librarian.',
   'Translate "Where is the nearest train station?" into Japanese.',
   'Give me a list of 10 low-carb snack ideas.',

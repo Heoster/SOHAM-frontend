@@ -51,7 +51,7 @@ export function ChatMessages({
   return (
     <div 
       ref={scrollRef}
-      className={cn('w-full flex-1 overflow-y-auto overflow-x-hidden scroll-smooth custom-scrollbar', className)}
+      className={cn('w-full h-full overflow-y-auto overflow-x-hidden scroll-smooth custom-scrollbar', className)}
     >
       <div className="mx-auto w-full max-w-5xl px-3 py-4 md:px-5 md:py-6 lg:px-8">
         <div className="space-y-6 md:space-y-8">
