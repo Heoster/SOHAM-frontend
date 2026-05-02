@@ -17,6 +17,18 @@ import {
   ShieldCheck,
   UserRound,
   Waves,
+  Cpu,
+  Globe,
+  Zap,
+  Image as ImageIcon,
+  Brain,
+  Code2,
+  Search,
+  Mic,
+  BookOpen,
+  Users,
+  Star,
+  ArrowRight,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { type CoreMode } from '@/components/landing/soham-core';
@@ -34,64 +46,143 @@ const NeuralLatticeBackground = dynamic(
 const heroFeatures = [
   {
     mode: 'chat' as CoreMode,
-    title: 'AI chat for real work',
-    description: 'Ask, iterate, compare models, and keep one thread moving without jumping between tools.',
+    title: '35+ AI Models, One Chat',
+    description: 'Groq, Cerebras, Gemini, DeepSeek, HuggingFace — all in one place. Auto mode picks the best model for every query.',
     icon: MessageSquare,
   },
   {
     mode: 'pdf' as CoreMode,
-    title: 'PDF analyzer',
-    description: 'Read contracts, notes, reports, and study material with direct questions and usable answers.',
+    title: 'PDF Analyzer',
+    description: 'Upload any PDF up to 5MB. Ask questions, get summaries, extract key points — powered by Gemini 2.5 Flash.',
     icon: FileText,
   },
   {
     mode: 'vision' as CoreMode,
-    title: 'Image math solver',
-    description: 'Upload handwritten or printed equations and get a clear, step-by-step solution.',
+    title: 'Image Math Solver',
+    description: 'Snap a photo of any equation — handwritten or printed. Get step-by-step solutions instantly.',
     icon: ScanSearch,
   },
   {
     mode: 'voice' as CoreMode,
-    title: 'Voice access',
-    description: 'Use speech input and playback when typing is slower than talking through the task.',
+    title: 'Voice Both Ways',
+    description: 'Speak to SOHAM with Groq Whisper STT. Hear responses with 6 voice options via Groq Orpheus TTS. Free.',
     icon: AudioLines,
   },
 ];
 
+const allFeatures = [
+  {
+    icon: Cpu,
+    title: '35+ AI Models',
+    description: 'Groq (Llama 4, GPT-OSS 120B), Cerebras (Qwen 3 235B, GLM 4.7), Google (Gemini 2.5 Pro/Flash), HuggingFace (DeepSeek R1), OpenRouter (NVIDIA Nemotron, Arcee Trinity 400B). All free.',
+    badge: 'Core',
+    color: 'text-blue-400',
+    bg: 'bg-blue-400/10',
+  },
+  {
+    icon: Brain,
+    title: 'Smart Auto-Routing',
+    description: 'Intent detector classifies every query into 13 types. Auto mode routes coding to DeepSeek, long docs to Gemini, speed queries to Groq — automatically.',
+    badge: 'Intelligence',
+    color: 'text-purple-400',
+    bg: 'bg-purple-400/10',
+  },
+  {
+    icon: Globe,
+    title: 'Real-Time Web Search',
+    description: 'DuckDuckGo + GNews + Open-Meteo + CricAPI + CoinGecko + Alpha Vantage. Auto-triggers on news, weather, sports, finance, and factual queries. Returns AI-synthesized answers with citations.',
+    badge: 'Live Data',
+    color: 'text-cyan-400',
+    bg: 'bg-cyan-400/10',
+  },
+  {
+    icon: ImageIcon,
+    title: 'Free Image Generation',
+    description: 'Pollinations.ai FLUX (primary) + Cloudflare Workers AI + HuggingFace FLUX.1-schnell fallback. Fast (~5s), free, unlimited. Just describe what you want.',
+    badge: 'Creative',
+    color: 'text-pink-400',
+    bg: 'bg-pink-400/10',
+  },
+  {
+    icon: Mic,
+    title: 'Voice Input & Output',
+    description: 'Groq Whisper V3 Turbo for speech-to-text. Groq Orpheus TTS with 6 voices: troy, diana, hannah, autumn, austin, daniel. Vocal direction: [cheerful], [whisper], [laughs].',
+    badge: 'Voice',
+    color: 'text-green-400',
+    bg: 'bg-green-400/10',
+  },
+  {
+    icon: Code2,
+    title: '13 Specialized Skills',
+    description: 'Translation (50+ languages), Grammar Check, Quiz Generator, Recipe Generator, Sentiment Analysis, Fact-Check, Dictionary, Text Classification — all with dedicated AI pipelines.',
+    badge: 'Skills',
+    color: 'text-orange-400',
+    bg: 'bg-orange-400/10',
+  },
+  {
+    icon: FileText,
+    title: 'PDF & Document Analysis',
+    description: 'Upload PDFs up to 5MB. Ask questions, get summaries, extract key points. Powered by Gemini 2.5 Flash with 1M token context window.',
+    badge: 'Documents',
+    color: 'text-yellow-400',
+    bg: 'bg-yellow-400/10',
+  },
+  {
+    icon: Search,
+    title: 'Slash Commands',
+    description: '/solve /summarize /search /news /weather /sports /finance /translate /grammar /quiz /recipe /joke /define /factcheck /sentiment /classify — 16 commands.',
+    badge: 'Commands',
+    color: 'text-teal-400',
+    bg: 'bg-teal-400/10',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Privacy-First & Open Source',
+    description: 'Conversations stored locally in your browser only. No data selling. No training on your chats. GDPR compliant. MIT License. Code on GitHub.',
+    badge: 'Privacy',
+    color: 'text-red-400',
+    bg: 'bg-red-400/10',
+  },
+];
+
 const trustStats = [
-  { label: 'Reach', value: DEVELOPER_INFO.projectStats.countriesReached },
+  { label: 'AI Models', value: '35+' },
+  { label: 'Countries', value: DEVELOPER_INFO.projectStats.countriesReached },
   { label: 'Uptime', value: DEVELOPER_INFO.projectStats.uptime },
-  { label: 'Models', value: `${DEVELOPER_INFO.projectStats.modelsIntegrated}+` },
-  { label: 'Stack', value: 'Next.js, Firebase, multi-provider routing' },
+  { label: 'Price', value: '$0 Forever' },
 ];
 
 const workflowCards = [
   {
     title: 'One workspace for chat, documents, and visual problem solving',
-    text: 'SOHAM keeps AI chat, PDF analysis, and image math solving on connected routes so users move through one system instead of starting over on every task.',
+    text: 'SOHAM keeps AI chat, PDF analysis, image math solving, web search, and voice on connected routes — one system instead of switching between 5 different tools.',
     image: '/Multi-Chat.png',
     href: '/ai-services',
   },
   {
-    title: 'Protected tools with a stable app shell',
-    text: 'The app surface includes login-aware routing, unified settings, mobile and desktop layouts, and a sidebar structure that makes sense after the first session.',
+    title: 'Auto-routing picks the right model for every query',
+    text: 'The intent detector classifies your message into 13 types and routes it to the best model automatically. Coding → DeepSeek R1. Long docs → Gemini 2.5 Flash. Speed → Groq Llama. You never have to think about it.',
     image: '/search.png',
     href: '/chat',
   },
 ];
 
 const comparisonRows = [
-  ['Model access', '35+ models inside one product', 'Model access spread across separate tools'],
-  ['Workflows', 'Chat, PDFs, image math, and voice in one system', 'A different app or tab for each task'],
-  ['Access control', 'Protected routes for core tools and account-aware workflows', 'Mixed public/private flows'],
-  ['User continuity', 'Saved settings and local chat handling for signed-in sessions', 'Context is often fragmented'],
+  ['Price', '100% free — all 35+ models, image gen, voice, PDF', 'ChatGPT Plus = $20/mo for advanced features'],
+  ['AI Models', '35+ models from 5 providers in one place', 'Locked to OpenAI models only'],
+  ['Image Generation', 'Free, unlimited via FLUX + Cloudflare + HuggingFace', 'Requires Plus ($20/mo), limited generations'],
+  ['Web Search', 'Auto-triggers, always free, DuckDuckGo + 5 data sources', 'Requires Plus, Microsoft Bing only'],
+  ['Voice (STT + TTS)', 'Free — Groq Whisper + Orpheus TTS, 6 voices', 'Advanced Voice requires Plus'],
+  ['PDF Analysis', 'Free — upload up to 5MB, ask anything', 'Requires Plus for file uploads'],
+  ['Privacy', 'Local storage, no training on your chats, open source', 'Trains on chats by default (opt-out available)'],
+  ['Community', 'Live community board at /community', 'No community feature'],
 ];
 
 const securityRows = [
-  'Local chat storage is surfaced as a product security feature so users know where session history lives.',
-  'Protected access for chat, AI Services, PDF Analyzer, and Image Math Solver.',
-  'Firebase authentication, HTTPS in transit, and visible account-management flows.',
-  'Clear company and product identity through separate CODEEX-AI and SOHAM pages.',
+  'Conversations stored in your browser only — never on SOHAM servers.',
+  'No data selling. No training on your conversations. GDPR compliant.',
+  'Firebase authentication, HTTPS in transit, per-IP rate limiting on all API routes.',
+  'Open source under MIT License — verify every claim yourself on GitHub.',
 ];
 
 const sectionVariant = {
@@ -210,12 +301,12 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
         )}
 
         <motion.section {...sectionVariant} className="liquid-section border-y border-white/10">
-          <div className={`mx-auto grid w-full max-w-7xl gap-3 px-4 py-5 sm:px-6 ${isMobile ? 'grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-4'}`}>
+          <div className={`mx-auto grid w-full max-w-7xl gap-3 px-4 py-5 sm:px-6 ${isMobile ? 'grid-cols-2' : 'sm:grid-cols-4'}`}>
             {[
-              '35+ integrated models',
-              'Route-protected core tools',
-              'Local chat storage highlighted as a security control',
-              'Desktop and phone layouts kept in sync',
+              '35+ AI Models Free',
+              'Image Generation Free',
+              'Voice Input & Output Free',
+              'No Signup Required',
             ].map((item) => (
               <div key={item} className="stat-glow-chip">
                 {item}
@@ -224,13 +315,47 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
           </div>
         </motion.section>
 
+        {/* ── All Features Grid ── */}
+        <motion.section {...sectionVariant} className="mx-auto w-full max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
+          <div className="mb-10 max-w-3xl">
+            <p className="section-kicker">Everything Included — Always Free</p>
+            <h2 className="section-title">More than ChatGPT Plus, at $0</h2>
+            <p className="section-copy">
+              SOHAM gives you 35+ AI models, real-time web search, free image generation, voice both ways,
+              PDF analysis, and 13 specialized skills — all free, no credit card, no subscription.
+            </p>
+          </div>
+          <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3'}`}>
+            {allFeatures.map((f) => (
+              <div key={f.title} className="feature-plane">
+                <div className={`mb-3 inline-flex h-10 w-10 items-center justify-center rounded-2xl ${f.bg}`}>
+                  <f.icon className={`h-5 w-5 ${f.color}`} />
+                </div>
+                <div className="mb-1 flex items-center gap-2">
+                  <p className="font-semibold text-white">{f.title}</p>
+                  <span className={`rounded-full border border-white/10 px-2 py-0.5 text-[10px] uppercase tracking-wider ${f.color}`}>{f.badge}</span>
+                </div>
+                <p className="text-sm leading-relaxed text-slate-300">{f.description}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-8 text-center">
+            <Link href="/chat">
+              <Button size="lg" className="h-12 border-0 bg-[linear-gradient(135deg,#5b6cff,#AEE124_52%,#93E1F4)] px-8 text-slate-950 hover:opacity-95">
+                Try All Features Free
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        </motion.section>
+
         <motion.section {...sectionVariant} className="mx-auto w-full max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
           <div className="mb-8 max-w-3xl">
-            <p className="section-kicker">Adaptive Workflows</p>
-            <h2 className="section-title">A landing page should explain the product before it sells it</h2>
+            <p className="section-kicker">How It Works</p>
+            <h2 className="section-title">One workspace, every AI tool you need</h2>
             <p className="section-copy">
-              SOHAM is easier to trust when the structure is obvious. Visitors should be able to see what the app does,
-              which routes matter, and how access and local history behave before they open the workspace.
+              SOHAM is not a wrapper around one model. It's a full AI workspace with smart routing,
+              live data, voice, documents, and image generation — all connected.
             </p>
           </div>
 
@@ -263,19 +388,19 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
         <motion.section {...sectionVariant} className="liquid-section border-y border-white/10">
           <div className="mx-auto grid w-full max-w-7xl gap-8 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[0.92fr_1.08fr]">
             <div>
-              <p className="section-kicker">Why SOHAM</p>
-              <h2 className="section-title">One product surface instead of scattered AI utilities</h2>
+              <p className="section-kicker">SOHAM vs ChatGPT</p>
+              <h2 className="section-title">More features. Zero cost. No paywalls.</h2>
               <p className="section-copy">
-                The value is not the model list alone. The value is that chat, documents, visual solving,
-                account access, and security controls are assembled into one usable system.
+                ChatGPT Plus costs $20/month for image gen, voice, and advanced models.
+                SOHAM gives you all of that — plus 35+ models from 5 providers — completely free.
               </p>
             </div>
 
             <div className="comparison-surface">
               <div className="comparison-head">
-                <span>Capability</span>
-                <span>SOHAM</span>
-                <span>Typical Setup</span>
+                <span>Feature</span>
+                <span>SOHAM ✅</span>
+                <span>ChatGPT</span>
               </div>
               {comparisonRows.map(([label, soham, other]) => (
                 <div key={label} className="comparison-row">
@@ -295,12 +420,12 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
                 <UserRound className="h-3.5 w-3.5" />
                 Company Context
               </div>
-              <h2 className="section-title !text-3xl">A real product should have a visible owner</h2>
+              <h2 className="section-title !text-3xl">Built by a 16-year-old from India</h2>
               <p className="mt-4 text-sm leading-8 text-slate-300">
-                SOHAM is the flagship product. CODEEX-AI is the company behind it. The founder, the product page,
-                and the company context are public so the app does not feel anonymous.
+                SOHAM is built by <strong className="text-white">Heoster (Harsh)</strong>, age 16, from Khatauli, UP, India.
+                He founded CODEEX-AI in 2024 with one mission: make advanced AI completely free for every student.
               </p>
-              <p className="mt-4 text-sm leading-8 text-slate-400">Mission: {DEVELOPER_INFO.mission}</p>
+              <p className="mt-4 text-sm leading-8 text-slate-400">{DEVELOPER_INFO.mission}</p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link href="/soham">
                   <Button variant="outline" className="border-white/15 bg-white/6 text-slate-100 hover:bg-white/10">
@@ -320,10 +445,10 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
                 <LockKeyhole className="h-3.5 w-3.5" />
                 Security
               </div>
-              <h2 className="section-title !text-3xl">Local chat storage is treated as a user-control feature</h2>
+              <h2 className="section-title !text-3xl">Privacy-first. Open source. No data selling.</h2>
               <p className="mt-4 text-sm leading-8 text-slate-300">
-                SOHAM surfaces local chat storage as part of the security story. That matters because users should know
-                when history stays on the device, when account access is required, and how protected routes work before they trust the system.
+                Your conversations never leave your browser. SOHAM doesn't train on your chats,
+                doesn't sell your data, and the entire codebase is open source on GitHub under MIT License.
               </p>
               <div className="mt-5 grid gap-3">
                 {securityRows.map((item) => (
@@ -352,24 +477,24 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
         <motion.section {...sectionVariant} className="mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6 sm:pb-24">
           <div className="cta-surface">
             <div>
-              <p className="section-kicker">Launch Experience</p>
-              <h2 className="section-title">Built for production use, not for a screenshot</h2>
+              <p className="section-kicker">Start Now — It's Free</p>
+              <h2 className="section-title">35+ AI models. $0. No credit card.</h2>
               <p className="section-copy max-w-2xl">
-                If you need a multi-model AI product with protected tools, document workflows, image solving,
-                and a route structure that stays coherent after login, SOHAM is ready to use now.
+                Chat, image generation, voice, PDF analysis, web search, and 13 specialized skills.
+                Everything ChatGPT Plus charges $20/month for — free forever on SOHAM.
               </p>
               <div className="mt-6 flex flex-wrap gap-4 text-sm text-slate-300">
                 <span className="inline-flex items-center gap-2">
-                  <History className="h-4 w-4 text-cyan-200" />
-                  Local chat storage surfaced clearly
+                  <Zap className="h-4 w-4 text-cyan-200" />
+                  35+ models from Groq, Cerebras, Google, HuggingFace
                 </span>
                 <span className="inline-flex items-center gap-2">
                   <ShieldCheck className="h-4 w-4 text-cyan-200" />
-                  Protected tool access
+                  Privacy-first, open source, GDPR compliant
                 </span>
                 <span className="inline-flex items-center gap-2">
                   <Waves className="h-4 w-4 text-cyan-200" />
-                  Voice, PDF, and visual workflows
+                  Voice, PDF, image gen, web search — all free
                 </span>
               </div>
             </div>
@@ -377,12 +502,12 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
             <div className={`flex flex-col gap-3 ${isMobile ? 'w-full' : ''}`}>
               <Link href="/login">
                 <Button size="lg" className={`h-12 border-0 bg-[linear-gradient(135deg,#5b6cff,#AEE124_52%,#93E1F4)] px-7 text-slate-950 hover:opacity-95 ${isMobile ? 'w-full' : ''}`}>
-                  Open SOHAM
+                  Start Free — No Signup Needed
                 </Button>
               </Link>
-              <Link href="/ai-services">
+              <Link href="/faq">
                 <Button size="lg" variant="outline" className={`h-12 border-white/15 bg-white/6 px-7 text-slate-100 hover:bg-white/10 ${isMobile ? 'w-full' : ''}`}>
-                  View AI Services
+                  Read FAQ
                 </Button>
               </Link>
             </div>
@@ -400,17 +525,17 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Production AI Workspace</p>
               </div>
             </div>
-            <div className={`grid gap-3 text-sm ${isMobile ? 'grid-cols-1 w-full' : 'sm:grid-cols-2 lg:grid-cols-4'}`}>
+            <div className={`grid gap-3 text-sm ${isMobile ? 'grid-cols-1 w-full' : 'sm:grid-cols-2 lg:grid-cols-5'}`}>
               <Link href="/chat" className="text-slate-300 hover:text-white">AI Chat</Link>
               <Link href="/ai-services" className="text-slate-300 hover:text-white">AI Services</Link>
               <Link href="/pdf-analyzer" className="text-slate-300 hover:text-white">PDF Analyzer</Link>
               <Link href="/visual-math" className="text-slate-300 hover:text-white">Image Math</Link>
+              <Link href="/faq" className="text-slate-300 hover:text-white">FAQ</Link>
+              <Link href="/community" className="text-slate-300 hover:text-white">Community</Link>
               <Link href="/documentation" className="text-slate-300 hover:text-white">Documentation</Link>
-              <Link href="/blog" className="text-slate-300 hover:text-white">Blog</Link>
+              <Link href="/contact" className="text-slate-300 hover:text-white">Contact</Link>
               <Link href="/privacy" className="text-slate-300 hover:text-white">Privacy</Link>
-              <Link href="/soham" className="text-slate-300 hover:text-white">About SOHAM</Link>
-              <Link href="/about" className="text-slate-300 hover:text-white">About CODEEX-AI</Link>
-              <Link href="/terms" className="text-slate-300 hover:text-white">Terms</Link>
+              <Link href="/about" className="text-slate-300 hover:text-white">About</Link>
             </div>
           </div>
 

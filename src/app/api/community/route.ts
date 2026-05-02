@@ -41,10 +41,12 @@ export async function POST(request: NextRequest) {
 
   // Sanitize inputs
   const content = sanitizeText(String(body.content ?? ''));
+  const title = typeof body.title === 'string' ? sanitizeText(body.title).slice(0, 200) || null : null;
   const user_name = sanitizeName(String(body.user_name ?? 'Anonymous')) || 'Anonymous';
   const tags = sanitizeTags(body.tags);
   const user_id = typeof body.user_id === 'string' ? body.user_id.slice(0, 128) : null;
   const user_avatar = typeof body.user_avatar === 'string' ? body.user_avatar.slice(0, 512) : null;
+  const sub_slug = typeof body.sub_slug === 'string' ? body.sub_slug.replace(/[^a-z0-9-]/g, '').slice(0, 64) || null : null;
 
   // Validate
   if (content.length < 10) {
@@ -61,7 +63,7 @@ export async function POST(request: NextRequest) {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/community_posts`, {
       method: 'POST',
       headers: sbHeaders({ Prefer: 'return=representation' }),
-      body: JSON.stringify({ content, user_name, tags, user_id, user_avatar, likes: 0, comment_count: 0, is_pinned: false }),
+      body: JSON.stringify({ title, content, user_name, tags, sub_slug, user_id, user_avatar, likes: 0, dislikes: 0, comment_count: 0, is_pinned: false }),
     });
 
     if (!res.ok) {

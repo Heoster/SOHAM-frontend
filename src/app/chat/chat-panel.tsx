@@ -11,13 +11,18 @@ import {useAuth} from '@/hooks/use-auth';
 import {hybridTTS} from '@/lib/hybrid-tts';
 import {VoiceFilter} from '@/lib/voice-filter';
 
-/** Quick client-side check — mirrors the server intent detector for UI feedback only */
+/** Client-side image request check — mirrors the server intent detector for UI feedback only */
 function looksLikeImageRequest(msg: string): boolean {
-  return /\b(generate|create|make|draw|paint|design|produce|sketch|illustrate|render)\b.*(image|picture|photo|illustration|artwork|painting|drawing)/i.test(msg)
-    || /\b(draw|paint|sketch|illustrate|render)\s+me\b/i.test(msg)
-    || /\b(image|picture|photo|illustration)\s+(of|showing|depicting)\b/i.test(msg)
-    || /\bi\s+(want|need|would like)\s+(an?|the)?\s*(image|picture|photo|illustration|drawing|painting|sketch)\b/i.test(msg)
-    || /\b(can you|could you|please)\s+(generate|create|make|draw|paint|design|produce)\b/i.test(msg);
+  return (
+    /\b(generate|create|make|draw|paint|design|produce|sketch|illustrate|render|visualize|depict)\b.*(image|picture|photo|illustration|artwork|painting|drawing|sketch|wallpaper|poster|logo|banner|thumbnail|avatar|portrait|landscape|scene)/i.test(msg) ||
+    /\b(draw|paint|sketch|illustrate|render|visualize)\s+(me|a|an|the|this)\b/i.test(msg) ||
+    /\b(image|picture|photo|illustration|pic|painting|sketch|drawing|artwork)\s+(of|showing|depicting|with|featuring)\b/i.test(msg) ||
+    /\b(show|give|send)\s+me\s+(an?|the)?\s*(image|picture|photo|illustration|drawing|painting|sketch)\b/i.test(msg) ||
+    /\b(i\s+)?(want|need|would like)\s+(an?|the|me\s+an?)?\s*(image|picture|photo|illustration|drawing|painting|sketch|artwork)\b/i.test(msg) ||
+    /\b(photo-?realistic|photorealistic|anime|manga|cartoon|3d render|watercolor|oil painting|digital art|pixel art|concept art)\b/i.test(msg) ||
+    /\b(tasveer|chitra)\s+(bana|banao|dikhao|chahiye)\b/i.test(msg) ||
+    /\bgenerate\s+image\b/i.test(msg)
+  );
 }
 
 interface ChatPanelProps {

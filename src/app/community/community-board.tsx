@@ -39,24 +39,28 @@ const REPORT_REASONS = [
 const PLACEHOLDER_POSTS: CommunityPost[] = [
   {
     id: 'demo-1', user_name: 'Vidhan', user_avatar: null, user_id: null,
+    title: null, sub_slug: null, dislikes: 0,
     content: 'Pro tip: Use /solve for math problems — it gives step-by-step solutions with the best model automatically selected. Way better than just asking normally!',
     likes: 24, comment_count: 3, is_pinned: true,
     created_at: new Date(Date.now() - 3600000 * 2).toISOString(), tags: ['tip', 'math'],
   },
   {
     id: 'demo-2', user_name: 'Avineet', user_avatar: null, user_id: null,
+    title: null, sub_slug: null, dislikes: 0,
     content: 'Just tried the PDF analyzer on a 40-page research paper and it answered every question perfectly. The Gemini model is incredible for long documents.',
     likes: 18, comment_count: 5, is_pinned: false,
     created_at: new Date(Date.now() - 3600000 * 5).toISOString(), tags: ['showcase', 'pdf'],
   },
   {
     id: 'demo-3', user_name: 'Vansh', user_avatar: null, user_id: null,
+    title: null, sub_slug: null, dislikes: 0,
     content: 'Question: Which model is best for generating creative writing? I tried a few but Auto mode keeps picking Llama 3.3 — is that the right choice?',
     likes: 7, comment_count: 2, is_pinned: false,
     created_at: new Date(Date.now() - 3600000 * 12).toISOString(), tags: ['question'],
   },
   {
     id: 'demo-4', user_name: 'Aayush', user_avatar: null, user_id: null,
+    title: null, sub_slug: null, dislikes: 0,
     content: 'Tried the image generation with a detailed prompt: "a futuristic city at sunset with flying cars and neon lights". The result was stunning! FLUX.1 is really good.',
     likes: 31, comment_count: 8, is_pinned: false,
     created_at: new Date(Date.now() - 3600000 * 20).toISOString(), tags: ['showcase', 'image-gen'],
@@ -121,6 +125,7 @@ function CommentThread({
     setSubmitting(true);
     const result = await addComment({
       post_id: postId,
+      parent_id: null,
       user_name: currentUser?.displayName || 'Anonymous',
       user_id: currentUser?.uid || null,
       content: text.trim().slice(0, 500),
