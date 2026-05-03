@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, LockKeyhole, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Check, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { type CoreMode } from '@/components/landing/soham-core';
 
@@ -23,280 +23,253 @@ interface HeroProps {
   setActiveMode: (mode: CoreMode) => void;
   heroFeatures: HeroFeature[];
   trustStats: TrustStat[];
-  sectionVariant: {
-    initial: { opacity: number; y: number };
-    whileInView: { opacity: number; y: number };
-    viewport: { once: boolean; amount: number };
-    transition: { duration: number; ease: [number, number, number, number] };
-  };
+  sectionVariant: object;
 }
 
-function ProductSnapshot({
-  activeMode,
-  setActiveMode,
-  heroFeatures,
-  trustStats,
-  compact = false,
-}: {
-  activeMode: CoreMode;
-  setActiveMode: (mode: CoreMode) => void;
-  heroFeatures: HeroFeature[];
-  trustStats: TrustStat[];
-  compact?: boolean;
-}) {
+const FREE_BULLETS = [
+  '35+ AI models — Groq, Gemini, Cerebras, DeepSeek',
+  'Free image generation — just describe it',
+  'Real-time web search with citations',
+  'Voice input & output — 6 voices',
+  'PDF analysis up to 5MB',
+  'No credit card. No subscription. Ever.',
+];
+
+const TESTERS = ['Vidhan', 'Avineet', 'Vansh', 'Aayush', 'Varun', 'Pankaj', 'Masum', 'Sachin'];
+
+export function DesktopLandingHero({ heroFeatures, trustStats, sectionVariant }: HeroProps) {
   return (
-    <div className="space-y-5">
-      <div className="hero-logo-panel">
-        <div className="hero-logo-panel__glow hero-logo-panel__glow--orange" />
-        <div className="hero-logo-panel__glow hero-logo-panel__glow--green" />
-        <div className="hero-logo-panel__glow hero-logo-panel__glow--blue" />
+    <section className="relative mx-auto w-full max-w-6xl px-6 pt-16 pb-20">
+      <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
 
-        <div className="relative z-10 flex flex-col gap-6">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#93E1F4]">
-                SOHAM Workspace
-              </p>
-              <p className={`${compact ? 'mt-2 text-xl leading-tight' : 'mt-2 text-2xl'} font-semibold text-white`}>
-                A single product surface for actual tasks
-              </p>
-            </div>
-            <span className="rounded-full border border-white/10 bg-white/6 px-3 py-1 text-xs font-medium uppercase tracking-[0.14em] text-slate-200">
-              {activeMode}
-            </span>
+        {/* ── Left: Copy ── */}
+        <div className="space-y-8">
+          {/* Founder badge */}
+          <div className="inline-flex items-center gap-2.5 rounded-full border border-white/12 bg-white/5 px-4 py-2 text-xs text-slate-300">
+            <div className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+            Built by Heoster, age 16 · Khatauli, India · CODEEX-AI
           </div>
 
-          <div className={`grid gap-4 ${compact ? 'md:grid-cols-1' : 'lg:grid-cols-[220px_1fr]'}`}>
-            <div className={`relative flex items-center justify-center rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] ${compact ? 'p-5' : 'p-8'}`}>
-              <div className="absolute inset-0 rounded-[28px] bg-[radial-gradient(circle_at_top,#5b6cff22,transparent_52%),radial-gradient(circle_at_bottom,#93E1F422,transparent_56%)]" />
-              <Image
-                src="/FINALSOHAM.png"
-                alt="SOHAM colored logo"
-                width={220}
-                height={220}
-                priority
-                className={`relative z-10 h-auto w-full object-contain drop-shadow-[0_24px_60px_rgba(0,0,0,0.38)] ${compact ? 'max-w-[112px]' : 'max-w-[170px]'}`}
-              />
-            </div>
+          <div className="space-y-4">
+            <h1 className="text-5xl font-bold leading-[1.05] tracking-tight text-white lg:text-6xl">
+              The free AI that does{' '}
+              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                everything
+              </span>
+            </h1>
+            <p className="text-lg leading-relaxed text-slate-400 max-w-lg">
+              35+ AI models, image generation, voice, web search, PDF analysis — all free.
+              No paywalls. No signup required to start.
+            </p>
+          </div>
 
-            <div className="grid gap-3">
-              {heroFeatures.map((feature) => {
-                const Icon = feature.icon;
-                const isActive = activeMode === feature.mode;
+          {/* Free bullets */}
+          <ul className="space-y-2.5">
+            {FREE_BULLETS.map((b) => (
+              <li key={b} className="flex items-center gap-3 text-sm text-slate-300">
+                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-500/15">
+                  <Check className="h-3 w-3 text-green-400" />
+                </div>
+                {b}
+              </li>
+            ))}
+          </ul>
 
-                return (
-                  <button
-                    key={feature.title}
-                    type="button"
-                    className={`rounded-[22px] border px-4 py-4 text-left transition-all ${
-                      isActive
-                        ? 'border-white/20 bg-white/10 shadow-[0_18px_48px_rgba(0,0,0,0.24)]'
-                        : 'border-white/10 bg-white/[0.04] hover:bg-white/[0.07]'
-                    }`}
-                    onMouseEnter={() => setActiveMode(feature.mode)}
-                    onFocus={() => setActiveMode(feature.mode)}
-                    onMouseLeave={() => !compact && setActiveMode('general')}
-                    onClick={() => setActiveMode(activeMode === feature.mode && compact ? 'general' : feature.mode)}
+          {/* CTAs */}
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href="/chat">
+              <Button
+                size="lg"
+                className="h-11 bg-white px-6 text-slate-900 font-semibold hover:bg-white/90 shadow-lg shadow-white/10"
+              >
+                Start chatting free
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+            <Link href="/faq">
+              <Button
+                size="lg"
+                variant="ghost"
+                className="h-11 px-6 text-slate-300 hover:text-white hover:bg-white/8"
+              >
+                See how it works
+              </Button>
+            </Link>
+          </div>
+
+          {/* Social proof */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <div className="flex -space-x-2">
+                {TESTERS.slice(0, 5).map((name) => (
+                  <div
+                    key={name}
+                    className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#060608] bg-gradient-to-br from-blue-500 to-purple-600 text-[10px] font-bold text-white"
                   >
-                    <div className="flex items-start gap-4">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-black/20 text-[#93E1F4]">
-                        <Icon className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <p className="text-base font-semibold text-white">{feature.title}</p>
-                        <p className={`mt-1 text-slate-300 ${compact ? 'text-[13px] leading-5' : 'text-sm leading-6'}`}>
-                          {feature.description}
-                        </p>
-                      </div>
-                    </div>
-                  </button>
-                );
-              })}
+                    {name[0]}
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-slate-400">
+                Tested by {TESTERS.length}+ friends · 100+ countries · 99.9% uptime
+              </p>
             </div>
+            <p className="text-xs text-slate-500">
+              Open source · MIT License · Privacy-first · No data selling
+            </p>
           </div>
+        </div>
 
-          <div className={`grid gap-3 ${compact ? 'grid-cols-2' : 'sm:grid-cols-2 xl:grid-cols-4'}`}>
-            {(compact ? trustStats.slice(0, 2) : trustStats).map((stat) => (
-              <div key={stat.label} className="rounded-[20px] border border-white/10 bg-black/20 px-4 py-3">
-                <p className="text-[11px] uppercase tracking-[0.16em] text-slate-500">{stat.label}</p>
-                <p className="mt-2 text-sm font-medium text-slate-100">{stat.value}</p>
+        {/* ── Right: Feature cards ── */}
+        <div className="space-y-3">
+          {/* Stats row */}
+          <div className="grid grid-cols-3 gap-3 mb-4">
+            {trustStats.map((s) => (
+              <div key={s.label} className="rounded-2xl border border-white/8 bg-white/4 p-4 text-center">
+                <p className="text-2xl font-bold text-white">{s.value}</p>
+                <p className="text-[11px] text-slate-500 mt-0.5">{s.label}</p>
               </div>
             ))}
           </div>
-        </div>
-      </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <div className="rounded-[26px] border border-white/10 bg-white/[0.04] p-5">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-slate-300">
-            <LockKeyhole className="h-3.5 w-3.5 text-[#AEE124]" />
-            Data handling
-          </div>
-          <p className="text-lg font-semibold text-white">Local chat storage stays visible as a trust feature</p>
-          <p className="mt-2 text-sm leading-7 text-slate-300">
-            Users can see that chat history is handled locally on the device while account-gated tools use protected
-            routes for document and workspace access.
-          </p>
-        </div>
+          {/* Feature cards */}
+          {heroFeatures.map((f) => {
+            const Icon = f.icon;
+            return (
+              <div
+                key={f.title}
+                className="flex items-start gap-4 rounded-2xl border border-white/8 bg-white/[0.03] p-4 hover:bg-white/[0.06] hover:border-white/15 transition-all"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/8 text-white">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-white">{f.title}</p>
+                  <p className="mt-0.5 text-xs leading-relaxed text-slate-400">{f.description}</p>
+                </div>
+                <div className="ml-auto shrink-0">
+                  <span className="rounded-full bg-green-500/15 px-2 py-0.5 text-[10px] font-semibold text-green-400">
+                    Free
+                  </span>
+                </div>
+              </div>
+            );
+          })}
 
-        <div className="rounded-[26px] border border-white/10 bg-white/[0.04] p-5">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-slate-300">
-            <ShieldCheck className="h-3.5 w-3.5 text-[#5b6cff]" />
-            App structure
-          </div>
-          <p className="text-lg font-semibold text-white">Fast routes, protected tools, and one consistent system</p>
-          <p className="mt-2 text-sm leading-7 text-slate-300">
-            Chat, AI Services, PDF Analyzer, and Image Math Solver are part of one route structure, so the product
-            feels like a workspace instead of a collection of isolated screens.
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export function DesktopLandingHero({
-  activeMode,
-  setActiveMode,
-  heroFeatures,
-  trustStats,
-  sectionVariant,
-}: HeroProps) {
-  return (
-    <section className="relative mx-auto grid w-full max-w-7xl gap-12 px-4 pb-24 pt-14 sm:px-6 lg:grid-cols-[0.88fr_1.12fr] lg:items-start lg:pt-20">
-      <div {...sectionVariant} className="relative z-10">
-        <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#93E1F4]/25 bg-[#93E1F4]/10 px-4 py-2 text-xs uppercase tracking-[0.22em] text-[#dff8ff]">
-          <ShieldCheck className="h-3.5 w-3.5" />
-          Production AI workspace
-        </div>
-
-        <div className="flex items-center gap-4">
-          <Image
-            src="/FINALSOHAM.png"
-            alt="SOHAM colored logo"
-            width={84}
-            height={84}
-            priority
-            className="h-16 w-16 rounded-[18px] bg-white/5 p-2 shadow-[0_18px_50px_rgba(0,0,0,0.24)] sm:h-20 sm:w-20"
-          />
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-400">SOHAM</p>
-            <p className="mt-1 text-sm uppercase tracking-[0.18em] text-slate-500">by CODEEX-AI</p>
+          {/* SOHAM logo card */}
+          <div className="flex items-center gap-4 rounded-2xl border border-white/8 bg-gradient-to-r from-blue-500/8 to-purple-500/8 p-4">
+            <Image src="/FINALSOHAM.png" alt="SOHAM" width={40} height={40} className="rounded-xl" />
+            <div>
+              <p className="text-sm font-semibold text-white">SOHAM by CODEEX-AI</p>
+              <p className="text-xs text-slate-400">Self Organising Hyper Adaptive Machine</p>
+            </div>
+            <Link href="/chat" className="ml-auto">
+              <Button size="sm" className="h-8 bg-white text-slate-900 hover:bg-white/90 text-xs font-semibold">
+                Open <ArrowRight className="ml-1 h-3 w-3" />
+              </Button>
+            </Link>
           </div>
         </div>
-
-        <h1 className="mt-7 font-[family:var(--font-manrope)] text-5xl font-semibold leading-[0.95] text-white sm:text-6xl lg:text-7xl">
-          One workspace for chat, PDFs, and image solving.
-        </h1>
-
-        <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
-          SOHAM is the product from CODEEX-AI. It combines protected chat, PDF analysis, image math solving,
-          voice access, and multi-model routing into a product that is designed for regular use on desktop and phone.
-        </p>
-
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <Link href="/login">
-            <Button
-              size="lg"
-              className="h-12 border-0 bg-[linear-gradient(135deg,#5b6cff,#AEE124_52%,#93E1F4)] px-7 text-slate-950 shadow-[0_20px_50px_rgba(147,225,244,0.18)] hover:opacity-95"
-            >
-              Open SOHAM
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
-          <Link href="/documentation">
-            <Button
-              size="lg"
-              variant="outline"
-              className="h-12 border-white/15 bg-white/6 px-7 text-slate-100 backdrop-blur-md hover:bg-white/10"
-            >
-              View Documentation
-            </Button>
-          </Link>
-        </div>
-        <p className="mt-3 text-sm text-slate-400">Protected routes for core tools. Free to start. Built for repeat use.</p>
-      </div>
-
-      <div {...sectionVariant} className="relative z-10">
-        <ProductSnapshot
-          activeMode={activeMode}
-          setActiveMode={setActiveMode}
-          heroFeatures={heroFeatures}
-          trustStats={trustStats}
-        />
       </div>
     </section>
   );
 }
 
-export function MobileLandingHero({
-  activeMode,
-  setActiveMode,
-  heroFeatures,
-  trustStats,
-  sectionVariant,
-}: HeroProps) {
+export function MobileLandingHero({ heroFeatures, trustStats, sectionVariant }: HeroProps) {
   return (
-    <section className="relative mx-auto w-full max-w-7xl px-4 pb-12 pt-6">
-      <div {...sectionVariant} className="relative z-10">
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#93E1F4]/25 bg-[#93E1F4]/10 px-3 py-2 text-[10px] uppercase tracking-[0.18em] text-[#dff8ff]">
-          <ShieldCheck className="h-3.5 w-3.5" />
-          Production AI workspace
-        </div>
+    <section className="px-4 pt-8 pb-12 space-y-8">
 
-        <div className="flex items-center gap-3">
-          <Image
-            src="/FINALSOHAM.png"
-            alt="SOHAM colored logo"
-            width={58}
-            height={58}
-            priority
-            className="h-14 w-14 rounded-[16px] bg-white/5 p-2"
-          />
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">SOHAM</p>
-            <p className="mt-1 text-[11px] uppercase tracking-[0.18em] text-slate-500">by CODEEX-AI</p>
-          </div>
-        </div>
+      {/* Founder badge */}
+      <div className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-3 py-1.5 text-[11px] text-slate-300">
+        <div className="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse" />
+        Built by Heoster, 16 · CODEEX-AI · India
+      </div>
 
-        <h1 className="mt-5 max-w-[11ch] font-[family:var(--font-manrope)] text-[2.35rem] font-semibold leading-[0.92] text-white">
-          Chat, docs, and solving in one mobile-ready workspace.
+      {/* Headline */}
+      <div className="space-y-3">
+        <h1 className="text-4xl font-bold leading-[1.05] tracking-tight text-white">
+          The free AI that does{' '}
+          <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            everything
+          </span>
         </h1>
-
-        <p className="mt-4 max-w-xl text-sm leading-6 text-slate-300">
-          Open chat, analyze a PDF, or solve from an image in a route structure that is compact on a phone and still
-          feels like one product.
+        <p className="text-base leading-relaxed text-slate-400">
+          35+ models, image gen, voice, web search, PDF — all free. No card needed.
         </p>
+      </div>
 
-        <div className="mt-6 grid gap-3">
-          <Link href="/login">
-            <Button className="h-12 w-full border-0 bg-[linear-gradient(135deg,#5b6cff,#AEE124_52%,#93E1F4)] text-slate-950 hover:opacity-95">
-              Open SOHAM
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
-          <Link href="/ai-services">
-            <Button variant="outline" className="h-11 w-full border-white/15 bg-white/6 text-slate-100 hover:bg-white/10">
-              View AI Services
-            </Button>
-          </Link>
-        </div>
+      {/* CTAs */}
+      <div className="flex gap-3">
+        <Link href="/chat" className="flex-1">
+          <Button className="w-full h-11 bg-white text-slate-900 font-semibold hover:bg-white/90">
+            Start free
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        </Link>
+        <Link href="/faq">
+          <Button variant="outline" className="h-11 border-white/15 bg-white/5 text-slate-200 hover:bg-white/10">
+            FAQ
+          </Button>
+        </Link>
+      </div>
 
-        <div className="mt-4 flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.14em] text-slate-400">
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">35+ models</span>
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">Protected tools</span>
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">Phone-first flows</span>
-        </div>
+      {/* Stats */}
+      <div className="grid grid-cols-3 gap-2">
+        {trustStats.map((s) => (
+          <div key={s.label} className="rounded-xl border border-white/8 bg-white/4 p-3 text-center">
+            <p className="text-xl font-bold text-white">{s.value}</p>
+            <p className="text-[10px] text-slate-500 mt-0.5">{s.label}</p>
+          </div>
+        ))}
+      </div>
 
-        <div className="mt-6">
-          <ProductSnapshot
-            activeMode={activeMode}
-            setActiveMode={setActiveMode}
-            heroFeatures={heroFeatures}
-            trustStats={trustStats}
-            compact
-          />
+      {/* Feature list */}
+      <div className="space-y-2">
+        {FREE_BULLETS.map((b) => (
+          <div key={b} className="flex items-center gap-2.5 text-sm text-slate-300">
+            <Check className="h-3.5 w-3.5 shrink-0 text-green-400" />
+            {b}
+          </div>
+        ))}
+      </div>
+
+      {/* Feature cards */}
+      <div className="space-y-2.5">
+        {heroFeatures.map((f) => {
+          const Icon = f.icon;
+          return (
+            <div
+              key={f.title}
+              className="flex items-start gap-3 rounded-xl border border-white/8 bg-white/[0.03] p-3.5"
+            >
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/8 text-white">
+                <Icon className="h-4.5 w-4.5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-white">{f.title}</p>
+                <p className="mt-0.5 text-xs leading-relaxed text-slate-400 line-clamp-2">{f.description}</p>
+              </div>
+              <span className="shrink-0 rounded-full bg-green-500/15 px-2 py-0.5 text-[10px] font-semibold text-green-400">
+                Free
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Social proof */}
+      <div className="flex items-center gap-2.5">
+        <div className="flex -space-x-1.5">
+          {TESTERS.slice(0, 4).map((name) => (
+            <div
+              key={name}
+              className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-[#060608] bg-gradient-to-br from-blue-500 to-purple-600 text-[9px] font-bold text-white"
+            >
+              {name[0]}
+            </div>
+          ))}
         </div>
+        <p className="text-xs text-slate-400">Tested by {TESTERS.length}+ friends · 100+ countries</p>
       </div>
     </section>
   );

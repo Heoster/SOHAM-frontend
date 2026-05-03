@@ -10,13 +10,9 @@ import {
   AudioLines,
   CheckCircle2,
   FileText,
-  History,
-  LockKeyhole,
   MessageSquare,
   ScanSearch,
   ShieldCheck,
-  UserRound,
-  Waves,
   Cpu,
   Globe,
   Zap,
@@ -25,10 +21,12 @@ import {
   Code2,
   Search,
   Mic,
-  BookOpen,
-  Users,
-  Star,
   ArrowRight,
+  Check,
+  Github,
+  Star,
+  Lock,
+  Sparkles,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { type CoreMode } from '@/components/landing/soham-core';
@@ -42,6 +40,8 @@ const NeuralLatticeBackground = dynamic(
   () => import('@/components/landing/neural-lattice-background').then((mod) => mod.NeuralLatticeBackground),
   { ssr: false }
 );
+
+// ── Data ──────────────────────────────────────────────────────────────────────
 
 const heroFeatures = [
   {
@@ -70,127 +70,95 @@ const heroFeatures = [
   },
 ];
 
-const allFeatures = [
-  {
-    icon: Cpu,
-    title: '35+ AI Models',
-    description: 'Groq (Llama 4, GPT-OSS 120B), Cerebras (Qwen 3 235B, GLM 4.7), Google (Gemini 2.5 Pro/Flash), HuggingFace (DeepSeek R1), OpenRouter (NVIDIA Nemotron, Arcee Trinity 400B). All free.',
-    badge: 'Core',
-    color: 'text-blue-400',
-    bg: 'bg-blue-400/10',
-  },
-  {
-    icon: Brain,
-    title: 'Smart Auto-Routing',
-    description: 'Intent detector classifies every query into 13 types. Auto mode routes coding to DeepSeek, long docs to Gemini, speed queries to Groq — automatically.',
-    badge: 'Intelligence',
-    color: 'text-purple-400',
-    bg: 'bg-purple-400/10',
-  },
-  {
-    icon: Globe,
-    title: 'Real-Time Web Search',
-    description: 'DuckDuckGo + GNews + Open-Meteo + CricAPI + CoinGecko + Alpha Vantage. Auto-triggers on news, weather, sports, finance, and factual queries. Returns AI-synthesized answers with citations.',
-    badge: 'Live Data',
-    color: 'text-cyan-400',
-    bg: 'bg-cyan-400/10',
-  },
-  {
-    icon: ImageIcon,
-    title: 'Free Image Generation',
-    description: 'Pollinations.ai FLUX (primary) + Cloudflare Workers AI + HuggingFace FLUX.1-schnell fallback. Fast (~5s), free, unlimited. Just describe what you want.',
-    badge: 'Creative',
-    color: 'text-pink-400',
-    bg: 'bg-pink-400/10',
-  },
-  {
-    icon: Mic,
-    title: 'Voice Input & Output',
-    description: 'Groq Whisper V3 Turbo for speech-to-text. Groq Orpheus TTS with 6 voices: troy, diana, hannah, autumn, austin, daniel. Vocal direction: [cheerful], [whisper], [laughs].',
-    badge: 'Voice',
-    color: 'text-green-400',
-    bg: 'bg-green-400/10',
-  },
-  {
-    icon: Code2,
-    title: '13 Specialized Skills',
-    description: 'Translation (50+ languages), Grammar Check, Quiz Generator, Recipe Generator, Sentiment Analysis, Fact-Check, Dictionary, Text Classification — all with dedicated AI pipelines.',
-    badge: 'Skills',
-    color: 'text-orange-400',
-    bg: 'bg-orange-400/10',
-  },
-  {
-    icon: FileText,
-    title: 'PDF & Document Analysis',
-    description: 'Upload PDFs up to 5MB. Ask questions, get summaries, extract key points. Powered by Gemini 2.5 Flash with 1M token context window.',
-    badge: 'Documents',
-    color: 'text-yellow-400',
-    bg: 'bg-yellow-400/10',
-  },
-  {
-    icon: Search,
-    title: 'Slash Commands',
-    description: '/solve /summarize /search /news /weather /sports /finance /translate /grammar /quiz /recipe /joke /define /factcheck /sentiment /classify — 16 commands.',
-    badge: 'Commands',
-    color: 'text-teal-400',
-    bg: 'bg-teal-400/10',
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Privacy-First & Open Source',
-    description: 'Conversations stored locally in your browser only. No data selling. No training on your chats. GDPR compliant. MIT License. Code on GitHub.',
-    badge: 'Privacy',
-    color: 'text-red-400',
-    bg: 'bg-red-400/10',
-  },
-];
-
 const trustStats = [
   { label: 'AI Models', value: '35+' },
   { label: 'Countries', value: DEVELOPER_INFO.projectStats.countriesReached },
   { label: 'Uptime', value: DEVELOPER_INFO.projectStats.uptime },
-  { label: 'Price', value: '$0 Forever' },
+  { label: 'Price', value: '$0' },
 ];
 
-const workflowCards = [
+const features = [
   {
-    title: 'One workspace for chat, documents, and visual problem solving',
-    text: 'SOHAM keeps AI chat, PDF analysis, image math solving, web search, and voice on connected routes — one system instead of switching between 5 different tools.',
-    image: '/Multi-Chat.png',
-    href: '/ai-services',
+    icon: Cpu,
+    title: '35+ AI Models',
+    desc: 'Groq (Llama 4, GPT-OSS 120B), Cerebras (Qwen 3 235B), Gemini 2.5 Pro, DeepSeek R1, NVIDIA Nemotron 120B, Arcee Trinity 400B — all free.',
+    tag: 'Core',
   },
   {
-    title: 'Auto-routing picks the right model for every query',
-    text: 'The intent detector classifies your message into 13 types and routes it to the best model automatically. Coding → DeepSeek R1. Long docs → Gemini 2.5 Flash. Speed → Groq Llama. You never have to think about it.',
-    image: '/search.png',
-    href: '/chat',
+    icon: Brain,
+    title: 'Smart Auto-Routing',
+    desc: 'Every query is classified into 13 intent types. Coding → DeepSeek. Long docs → Gemini. Speed → Groq. You never have to pick.',
+    tag: 'AI',
+  },
+  {
+    icon: Globe,
+    title: 'Real-Time Web Search',
+    desc: 'Auto-triggers on news, weather, sports, finance, and factual queries. DuckDuckGo + GNews + Open-Meteo + CricAPI + CoinGecko.',
+    tag: 'Live',
+  },
+  {
+    icon: ImageIcon,
+    title: 'Free Image Generation',
+    desc: 'Pollinations.ai FLUX + Cloudflare Workers AI + HuggingFace fallback. ~5 seconds. Unlimited. Just describe what you want.',
+    tag: 'Creative',
+  },
+  {
+    icon: Mic,
+    title: 'Voice Input & Output',
+    desc: 'Groq Whisper V3 Turbo for speech-to-text. Groq Orpheus TTS with 6 voices. Vocal direction: [cheerful], [whisper], [laughs].',
+    tag: 'Voice',
+  },
+  {
+    icon: FileText,
+    title: 'PDF Analysis',
+    desc: 'Upload PDFs up to 5MB. Ask questions, get summaries, extract key points. Gemini 2.5 Flash with 1M token context.',
+    tag: 'Docs',
+  },
+  {
+    icon: Code2,
+    title: '13 Specialized Skills',
+    desc: 'Translation (50+ languages), Grammar Check, Quiz Generator, Recipe Generator, Sentiment Analysis, Fact-Check, Dictionary.',
+    tag: 'Skills',
+  },
+  {
+    icon: Search,
+    title: '16 Slash Commands',
+    desc: '/solve /summarize /search /news /weather /translate /grammar /quiz /recipe /joke /define /factcheck /sentiment /classify and more.',
+    tag: 'Commands',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Privacy-First',
+    desc: 'Conversations stored locally in your browser. No data selling. No training on your chats. GDPR compliant. MIT License.',
+    tag: 'Privacy',
   },
 ];
 
 const comparisonRows = [
-  ['Price', '100% free — all 35+ models, image gen, voice, PDF', 'ChatGPT Plus = $20/mo for advanced features'],
-  ['AI Models', '35+ models from 5 providers in one place', 'Locked to OpenAI models only'],
-  ['Image Generation', 'Free, unlimited via FLUX + Cloudflare + HuggingFace', 'Requires Plus ($20/mo), limited generations'],
-  ['Web Search', 'Auto-triggers, always free, DuckDuckGo + 5 data sources', 'Requires Plus, Microsoft Bing only'],
-  ['Voice (STT + TTS)', 'Free — Groq Whisper + Orpheus TTS, 6 voices', 'Advanced Voice requires Plus'],
-  ['PDF Analysis', 'Free — upload up to 5MB, ask anything', 'Requires Plus for file uploads'],
-  ['Privacy', 'Local storage, no training on your chats, open source', 'Trains on chats by default (opt-out available)'],
-  ['Community', 'Live community board at /community', 'No community feature'],
+  { feature: 'Price', soham: '$0 forever', other: '$20/month (Plus)' },
+  { feature: 'AI Models', soham: '35+ from 5 providers', other: 'OpenAI only' },
+  { feature: 'Image Generation', soham: 'Free, unlimited', other: 'Plus only, limited' },
+  { feature: 'Web Search', soham: 'Free, auto-triggers', other: 'Plus only' },
+  { feature: 'Voice (STT + TTS)', soham: 'Free, 6 voices', other: 'Advanced Voice = Plus' },
+  { feature: 'PDF Analysis', soham: 'Free, up to 5MB', other: 'Plus only' },
+  { feature: 'Privacy', soham: 'Local storage, open source', other: 'Trains on chats by default' },
 ];
 
-const securityRows = [
-  'Conversations stored in your browser only — never on SOHAM servers.',
+const privacyPoints = [
+  'Conversations stored in your browser only — never on our servers',
   'No data selling. No training on your conversations. GDPR compliant.',
-  'Firebase authentication, HTTPS in transit, per-IP rate limiting on all API routes.',
-  'Open source under MIT License — verify every claim yourself on GitHub.',
+  'Firebase auth, HTTPS, per-IP rate limiting on all API routes',
+  'Open source MIT License — verify every claim on GitHub',
 ];
 
 const sectionVariant = {
-  initial: { opacity: 0, y: 32 },
+  initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.2 },
-  transition: { duration: 0.7, ease: [0.2, 0.8, 0.2, 1] as [number, number, number, number] },
+  viewport: { once: true, amount: 0.15 },
+  transition: { duration: 0.55, ease: [0.2, 0.8, 0.2, 1] as [number, number, number, number] },
 };
+
+// ── Shell ─────────────────────────────────────────────────────────────────────
 
 export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
   const router = useRouter();
@@ -202,23 +170,13 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
 
   useEffect(() => {
     if (typeof window === 'undefined' || loading) return;
-
     const isStandalone =
       window.matchMedia('(display-mode: standalone)').matches ||
       (window.navigator as Navigator & { standalone?: boolean }).standalone === true;
-
-    if (isStandalone) {
-      router.push(user ? '/chat' : '/login');
-      return;
-    }
-
-    // Read visit flag from IndexedDB asynchronously
-    idbGet<string>('hasVisitedBefore').then((hasVisitedBefore) => {
-      if (user && hasVisitedBefore) {
-        router.push('/chat');
-      } else if (!hasVisitedBefore) {
-        idbSet('hasVisitedBefore', 'true');
-      }
+    if (isStandalone) { router.push(user ? '/chat' : '/login'); return; }
+    idbGet<string>('hasVisitedBefore').then((v) => {
+      if (user && v) router.push('/chat');
+      else if (!v) idbSet('hasVisitedBefore', 'true');
     });
   }, [user, loading, router]);
 
@@ -231,588 +189,351 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const deviceNavigator = navigator as Navigator & {
-      connection?: {
-        saveData?: boolean;
-        effectiveType?: string;
-      };
-      deviceMemory?: number;
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const nav = navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string }; deviceMemory?: number };
+    const conn = nav.connection;
+    const mem = nav.deviceMemory ?? 4;
+    const update = () => {
+      setShouldRender3D(!(
+        window.innerWidth < 768 || mq.matches ||
+        conn?.saveData === true ||
+        ['slow-2g', '2g'].includes(conn?.effectiveType ?? '') ||
+        mem <= 4
+      ));
     };
-    const connection = deviceNavigator.connection;
-    const memory = deviceNavigator.deviceMemory ?? 4;
-
-    const update3DPreference = () => {
-      const compactViewport = window.innerWidth < 768;
-      const reducedMotion = mediaQuery.matches;
-      const saveData = connection?.saveData === true;
-      const slowNetwork = ['slow-2g', '2g'].includes(connection?.effectiveType ?? '');
-      const lowMemory = memory <= 4;
-
-      setShouldRender3D(!(compactViewport || reducedMotion || saveData || slowNetwork || lowMemory));
-    };
-
-    update3DPreference();
-    mediaQuery.addEventListener('change', update3DPreference);
-    window.addEventListener('resize', update3DPreference, { passive: true });
-
-    return () => {
-      mediaQuery.removeEventListener('change', update3DPreference);
-      window.removeEventListener('resize', update3DPreference);
-    };
+    update();
+    mq.addEventListener('change', update);
+    window.addEventListener('resize', update, { passive: true });
+    return () => { mq.removeEventListener('change', update); window.removeEventListener('resize', update); };
   }, []);
 
   return (
-    <div className="neural-obsidian min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-[#060608] text-foreground">
+      {/* Background */}
       {shouldRender3D ? (
         <NeuralLatticeBackground />
       ) : (
-        <div className="pointer-events-none fixed inset-0 -z-20 bg-[radial-gradient(circle_at_top,rgba(0,242,255,0.07),transparent_30%),radial-gradient(circle_at_bottom,rgba(112,0,255,0.11),transparent_34%),linear-gradient(180deg,#050505,#0a0a15_48%,#050505)]" />
+        <div className="pointer-events-none fixed inset-0 -z-20"
+          style={{ background: 'radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99,102,241,0.15), transparent), radial-gradient(ellipse 60% 40% at 80% 80%, rgba(147,51,234,0.10), transparent), #060608' }}
+        />
       )}
 
+      {/* Header */}
       {isMobile ? (
-        <MobileLandingHeader
-          isScrolled={isScrolled}
-          mobileNavOpen={mobileNavOpen}
-          onToggleMobileNav={() => setMobileNavOpen((open) => !open)}
-        />
+        <MobileLandingHeader isScrolled={isScrolled} mobileNavOpen={mobileNavOpen} onToggleMobileNav={() => setMobileNavOpen(o => !o)} />
       ) : (
         <DesktopLandingHeader isScrolled={isScrolled} />
       )}
 
       <main>
+        {/* ── Hero ── */}
         {isMobile ? (
-          <MobileLandingHero
-            activeMode={activeMode}
-            setActiveMode={setActiveMode}
-            heroFeatures={heroFeatures}
-            trustStats={trustStats}
-            sectionVariant={sectionVariant}
-          />
+          <MobileLandingHero activeMode={activeMode} setActiveMode={setActiveMode} heroFeatures={heroFeatures} trustStats={trustStats} sectionVariant={sectionVariant} />
         ) : (
-          <DesktopLandingHero
-            activeMode={activeMode}
-            setActiveMode={setActiveMode}
-            heroFeatures={heroFeatures}
-            trustStats={trustStats}
-            sectionVariant={sectionVariant}
-          />
+          <DesktopLandingHero activeMode={activeMode} setActiveMode={setActiveMode} heroFeatures={heroFeatures} trustStats={trustStats} sectionVariant={sectionVariant} />
         )}
 
-        <motion.section {...sectionVariant} className="liquid-section border-y border-white/10">
-          <div className={`mx-auto grid w-full max-w-7xl gap-3 px-4 py-5 sm:px-6 ${isMobile ? 'grid-cols-2' : 'sm:grid-cols-4'}`}>
-            {[
-              '35+ AI Models Free',
-              'Image Generation Free',
-              'Voice Input & Output Free',
-              'No Signup Required',
-            ].map((item) => (
-              <div key={item} className="stat-glow-chip">
-                {item}
-              </div>
+        {/* ── Ticker bar ── */}
+        <div className="border-y border-white/8 bg-white/[0.02]">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-8 gap-y-2 px-6 py-3">
+            {['35+ AI Models', 'Free Image Generation', 'Voice Input & Output', 'Real-Time Web Search', 'PDF Analysis', 'No Signup Required', 'Open Source MIT'].map((t) => (
+              <span key={t} className="flex items-center gap-1.5 text-xs text-slate-400">
+                <span className="h-1 w-1 rounded-full bg-green-400" />
+                {t}
+              </span>
             ))}
           </div>
-        </motion.section>
+        </div>
 
-        {/* ── All Features Grid ── */}
-        <motion.section {...sectionVariant} className="mx-auto w-full max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
-          <div className="mb-10 max-w-3xl">
-            <p className="section-kicker">Everything Included — Always Free</p>
-            <h2 className="section-title">More than ChatGPT Plus, at $0</h2>
-            <p className="section-copy">
-              SOHAM gives you 35+ AI models, real-time web search, free image generation, voice both ways,
-              PDF analysis, and 13 specialized skills — all free, no credit card, no subscription.
+        {/* ── Features grid ── */}
+        <motion.section {...sectionVariant} className="mx-auto w-full max-w-6xl px-6 py-20">
+          <div className="mb-12 max-w-2xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-blue-400">Everything included — always free</p>
+            <h2 className="text-3xl font-bold text-white sm:text-4xl">
+              More than ChatGPT Plus.<br />At $0.
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-slate-400">
+              ChatGPT charges $20/month for image generation, voice, and advanced models.
+              SOHAM gives you all of that — plus 35+ models from 5 providers — completely free.
             </p>
           </div>
+
           <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3'}`}>
-            {allFeatures.map((f) => (
-              <div key={f.title} className="feature-plane">
-                <div className={`mb-3 inline-flex h-10 w-10 items-center justify-center rounded-2xl ${f.bg}`}>
-                  <f.icon className={`h-5 w-5 ${f.color}`} />
+            {features.map((f) => (
+              <div key={f.title} className="group rounded-2xl border border-white/8 bg-white/[0.03] p-5 transition-all hover:border-white/15 hover:bg-white/[0.06]">
+                <div className="mb-4 flex items-center justify-between">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/8 text-white">
+                    <f.icon className="h-4.5 w-4.5" />
+                  </div>
+                  <span className="rounded-full border border-white/10 px-2.5 py-0.5 text-[10px] font-medium text-slate-400">
+                    {f.tag}
+                  </span>
                 </div>
-                <div className="mb-1 flex items-center gap-2">
-                  <p className="font-semibold text-white">{f.title}</p>
-                  <span className={`rounded-full border border-white/10 px-2 py-0.5 text-[10px] uppercase tracking-wider ${f.color}`}>{f.badge}</span>
-                </div>
-                <p className="text-sm leading-relaxed text-slate-300">{f.description}</p>
+                <p className="mb-1.5 font-semibold text-white">{f.title}</p>
+                <p className="text-sm leading-relaxed text-slate-400">{f.desc}</p>
               </div>
             ))}
           </div>
-          <div className="mt-8 text-center">
+
+          <div className="mt-10 text-center">
             <Link href="/chat">
-              <Button size="lg" className="h-12 border-0 bg-[linear-gradient(135deg,#5b6cff,#AEE124_52%,#93E1F4)] px-8 text-slate-950 hover:opacity-95">
-                Try All Features Free
+              <Button size="lg" className="h-11 bg-white px-8 text-slate-900 font-semibold hover:bg-white/90 shadow-lg shadow-white/10">
+                Try all features free
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
           </div>
         </motion.section>
 
-        <motion.section {...sectionVariant} className="mx-auto w-full max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
-          <div className="mb-8 max-w-3xl">
-            <p className="section-kicker">How It Works</p>
-            <h2 className="section-title">One workspace, every AI tool you need</h2>
-            <p className="section-copy">
-              SOHAM is not a wrapper around one model. It's a full AI workspace with smart routing,
-              live data, voice, documents, and image generation — all connected.
-            </p>
-          </div>
-
-          <div className="grid gap-5 lg:grid-cols-2">
-            {workflowCards.map((card, index) => (
-              <motion.div
-                key={card.title}
-                whileHover={isMobile ? undefined : { rotateX: -5, rotateY: index % 2 === 0 ? 6 : -6, y: -8 }}
-                transition={{ duration: 0.24 }}
-                className="workflow-card"
-              >
-                <Link href={card.href}>
-                  <div className={`relative overflow-hidden rounded-[24px] border border-white/10 ${isMobile ? 'aspect-[4/3]' : 'aspect-[1.05/1]'}`}>
-                    <Image src={card.image} alt={card.title} fill className="object-cover" />
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent,rgba(5,5,5,0.88))]" />
-                    <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-[#050505]/55 px-3 py-1 text-xs uppercase tracking-[0.16em] text-cyan-100">
-                      Product route
-                    </div>
-                  </div>
-                  <div className="p-5">
-                    <p className="text-xl font-semibold text-white">{card.title}</p>
-                    <p className="mt-3 text-sm leading-7 text-slate-300">{card.text}</p>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
-
-        <motion.section {...sectionVariant} className="liquid-section border-y border-white/10">
-          <div className="mx-auto grid w-full max-w-7xl gap-8 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[0.92fr_1.08fr]">
-            <div>
-              <p className="section-kicker">SOHAM vs ChatGPT</p>
-              <h2 className="section-title">More features. Zero cost. No paywalls.</h2>
-              <p className="section-copy">
-                ChatGPT Plus costs $20/month for image gen, voice, and advanced models.
-                SOHAM gives you all of that — plus 35+ models from 5 providers — completely free.
-              </p>
-            </div>
-
-            <div className="comparison-surface">
-              <div className="comparison-head">
-                <span>Feature</span>
-                <span>SOHAM ✅</span>
-                <span>ChatGPT</span>
-              </div>
-              {comparisonRows.map(([label, soham, other]) => (
-                <div key={label} className="comparison-row">
-                  <span className="font-medium text-slate-100">{label}</span>
-                  <span className="text-slate-200">{soham}</span>
-                  <span className="text-slate-400">{other}</span>
+        {/* ── Comparison ── */}
+        <motion.section {...sectionVariant} className="border-y border-white/8 bg-white/[0.015]">
+          <div className="mx-auto w-full max-w-6xl px-6 py-20">
+            <div className={`grid gap-12 ${isMobile ? '' : 'lg:grid-cols-2 lg:items-start'}`}>
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-purple-400">SOHAM vs ChatGPT</p>
+                <h2 className="text-3xl font-bold text-white sm:text-4xl">
+                  Why pay $20/month<br />for less?
+                </h2>
+                <p className="mt-4 text-base leading-relaxed text-slate-400">
+                  ChatGPT Plus locks image generation, voice, and advanced models behind a paywall.
+                  SOHAM gives you all of that — plus 35+ models from 5 different providers — for free.
+                </p>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <Link href="/chat">
+                    <Button className="h-10 bg-white text-slate-900 font-semibold hover:bg-white/90">
+                      Start free
+                    </Button>
+                  </Link>
+                  <Link href="/faq">
+                    <Button variant="ghost" className="h-10 text-slate-300 hover:text-white hover:bg-white/8">
+                      See FAQ
+                    </Button>
+                  </Link>
                 </div>
-              ))}
-            </div>
-          </div>
-        </motion.section>
+              </div>
 
-        <motion.section {...sectionVariant} className="mx-auto w-full max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
-          <div className="grid gap-5 lg:grid-cols-2">
-            <div className="panel-card">
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-xs uppercase tracking-[0.16em] text-slate-300">
-                <UserRound className="h-3.5 w-3.5" />
-                Company Context
-              </div>
-              <h2 className="section-title !text-3xl">Built by a 16-year-old from India</h2>
-              <p className="mt-4 text-sm leading-8 text-slate-300">
-                SOHAM is built by <strong className="text-white">Heoster (Harsh)</strong>, age 16, from Khatauli, UP, India.
-                He founded CODEEX-AI in 2024 with one mission: make advanced AI completely free for every student.
-              </p>
-              <p className="mt-4 text-sm leading-8 text-slate-400">{DEVELOPER_INFO.mission}</p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link href="/soham">
-                  <Button variant="outline" className="border-white/15 bg-white/6 text-slate-100 hover:bg-white/10">
-                    About SOHAM
-                  </Button>
-                </Link>
-                <Link href="/about">
-                  <Button variant="outline" className="border-white/15 bg-white/6 text-slate-100 hover:bg-white/10">
-                    About CODEEX-AI
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
-            <div className="panel-card">
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-xs uppercase tracking-[0.16em] text-slate-300">
-                <LockKeyhole className="h-3.5 w-3.5" />
-                Security
-              </div>
-              <h2 className="section-title !text-3xl">Privacy-first. Open source. No data selling.</h2>
-              <p className="mt-4 text-sm leading-8 text-slate-300">
-                Your conversations never leave your browser. SOHAM doesn't train on your chats,
-                doesn't sell your data, and the entire codebase is open source on GitHub under MIT License.
-              </p>
-              <div className="mt-5 grid gap-3">
-                {securityRows.map((item) => (
-                  <div key={item} className="security-row">
-                    <CheckCircle2 className="mt-1 h-4 w-4 text-cyan-200" />
-                    <p className="text-sm leading-7 text-slate-200">{item}</p>
+              <div className="overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03]">
+                {/* Table header */}
+                <div className="grid grid-cols-3 border-b border-white/8 bg-white/[0.03] px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                  <span>Feature</span>
+                  <span className="text-green-400">SOHAM ✓</span>
+                  <span>ChatGPT</span>
+                </div>
+                {comparisonRows.map((row, i) => (
+                  <div
+                    key={row.feature}
+                    className={`grid grid-cols-3 gap-2 px-5 py-3.5 text-sm ${i < comparisonRows.length - 1 ? 'border-b border-white/6' : ''}`}
+                  >
+                    <span className="font-medium text-slate-200">{row.feature}</span>
+                    <span className="text-green-400">{row.soham}</span>
+                    <span className="text-slate-500">{row.other}</span>
                   </div>
                 ))}
               </div>
-              <div className="mt-6 flex flex-wrap gap-3">
+            </div>
+          </div>
+        </motion.section>
+
+        {/* ── Founder + Privacy ── */}
+        <motion.section {...sectionVariant} className="mx-auto w-full max-w-6xl px-6 py-20">
+          <div className={`grid gap-6 ${isMobile ? '' : 'lg:grid-cols-2'}`}>
+
+            {/* Founder card */}
+            <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-7">
+              <div className="mb-5 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 text-base font-bold text-white">
+                  H
+                </div>
+                <div>
+                  <p className="font-semibold text-white">Heoster (Harsh)</p>
+                  <p className="text-xs text-slate-400">Founder, CODEEX-AI · Age 16 · Khatauli, India</p>
+                </div>
+              </div>
+              <h3 className="mb-3 text-xl font-bold text-white">
+                Built by a student, for everyone
+              </h3>
+              <p className="text-sm leading-relaxed text-slate-400">
+                I started CODEEX-AI in 2024 because I was frustrated that the best AI tools cost money.
+                I'm 16, studying PCM in Class 12, and I built SOHAM from scratch — 50,000+ lines of code,
+                35+ models, 100+ countries — while balancing school.
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-slate-400">
+                The mission is simple: advanced AI should be free for every student, everywhere.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                <Link href="/about">
+                  <Button variant="ghost" size="sm" className="h-8 border border-white/10 text-slate-300 hover:text-white hover:bg-white/8 text-xs">
+                    Read the story
+                  </Button>
+                </Link>
+                <Link href={DEVELOPER_INFO.contact.github} target="_blank" rel="noopener noreferrer">
+                  <Button variant="ghost" size="sm" className="h-8 border border-white/10 text-slate-300 hover:text-white hover:bg-white/8 text-xs gap-1.5">
+                    <Github className="h-3.5 w-3.5" />
+                    GitHub
+                  </Button>
+                </Link>
+              </div>
+              {/* Testing team */}
+              <div className="mt-5 border-t border-white/8 pt-4">
+                <p className="mb-2 text-[11px] text-slate-500 uppercase tracking-wider">Tested by</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {DEVELOPER_INFO.friends.slice(0, 8).map((f) => (
+                    <span key={f.name} className="rounded-full border border-white/8 bg-white/4 px-2.5 py-0.5 text-[11px] text-slate-300">
+                      {f.name}
+                    </span>
+                  ))}
+                  <span className="rounded-full border border-white/8 bg-white/4 px-2.5 py-0.5 text-[11px] text-slate-400">
+                    +{DEVELOPER_INFO.friends.length - 8} more
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Privacy card */}
+            <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-7">
+              <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-green-500/15">
+                <Lock className="h-5 w-5 text-green-400" />
+              </div>
+              <h3 className="mb-3 text-xl font-bold text-white">
+                Privacy-first. Open source. No surprises.
+              </h3>
+              <p className="text-sm leading-relaxed text-slate-400">
+                Your conversations never leave your browser. We don't sell data, we don't train on your chats,
+                and the entire codebase is on GitHub so you can verify every claim yourself.
+              </p>
+              <ul className="mt-5 space-y-3">
+                {privacyPoints.map((p) => (
+                  <li key={p} className="flex items-start gap-3 text-sm text-slate-300">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-green-400" />
+                    {p}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 flex flex-wrap gap-2">
                 <Link href="/privacy">
-                  <Button variant="outline" className="border-white/15 bg-white/6 text-slate-100 hover:bg-white/10">
-                    Privacy & Data Security
+                  <Button variant="ghost" size="sm" className="h-8 border border-white/10 text-slate-300 hover:text-white hover:bg-white/8 text-xs">
+                    Privacy Policy
                   </Button>
                 </Link>
-                <Link href="/terms">
-                  <Button variant="outline" className="border-white/15 bg-white/6 text-slate-100 hover:bg-white/10">
-                    Terms of Service
+                <Link href={DEVELOPER_INFO.contact.github} target="_blank" rel="noopener noreferrer">
+                  <Button variant="ghost" size="sm" className="h-8 border border-white/10 text-slate-300 hover:text-white hover:bg-white/8 text-xs gap-1.5">
+                    <Star className="h-3.5 w-3.5" />
+                    Star on GitHub
                   </Button>
                 </Link>
+              </div>
+              {/* Stats */}
+              <div className="mt-5 grid grid-cols-3 gap-3 border-t border-white/8 pt-4">
+                {[
+                  { v: '35+', l: 'AI Models' },
+                  { v: '100+', l: 'Countries' },
+                  { v: '99.9%', l: 'Uptime' },
+                ].map((s) => (
+                  <div key={s.l} className="text-center">
+                    <p className="text-lg font-bold text-white">{s.v}</p>
+                    <p className="text-[10px] text-slate-500">{s.l}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </motion.section>
 
-        <motion.section {...sectionVariant} className="mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6 sm:pb-24">
-          <div className="cta-surface">
-            <div>
-              <p className="section-kicker">Start Now — It's Free</p>
-              <h2 className="section-title">35+ AI models. $0. No credit card.</h2>
-              <p className="section-copy max-w-2xl">
-                Chat, image generation, voice, PDF analysis, web search, and 13 specialized skills.
-                Everything ChatGPT Plus charges $20/month for — free forever on SOHAM.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-4 text-sm text-slate-300">
-                <span className="inline-flex items-center gap-2">
-                  <Zap className="h-4 w-4 text-cyan-200" />
-                  35+ models from Groq, Cerebras, Google, HuggingFace
-                </span>
-                <span className="inline-flex items-center gap-2">
-                  <ShieldCheck className="h-4 w-4 text-cyan-200" />
-                  Privacy-first, open source, GDPR compliant
-                </span>
-                <span className="inline-flex items-center gap-2">
-                  <Waves className="h-4 w-4 text-cyan-200" />
-                  Voice, PDF, image gen, web search — all free
-                </span>
+        {/* ── CTA ── */}
+        <motion.section {...sectionVariant} className="border-t border-white/8">
+          <div className="mx-auto w-full max-w-6xl px-6 py-20">
+            <div className={`rounded-2xl border border-white/8 bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-8 md:p-12 ${isMobile ? '' : 'flex items-center justify-between gap-10'}`}>
+              <div className={isMobile ? 'mb-8' : 'max-w-xl'}>
+                <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-green-500/25 bg-green-500/10 px-3 py-1.5 text-xs text-green-400">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  Free forever — no credit card
+                </div>
+                <h2 className="text-3xl font-bold text-white sm:text-4xl">
+                  Start using SOHAM now
+                </h2>
+                <p className="mt-3 text-base leading-relaxed text-slate-400">
+                  35+ AI models, image generation, voice, web search, PDF analysis.
+                  Everything ChatGPT Plus charges $20/month for — free on SOHAM.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-3 text-sm text-slate-400">
+                  {['No signup required', 'No credit card', 'No rate limits on free tier', 'Open source'].map((t) => (
+                    <span key={t} className="flex items-center gap-1.5">
+                      <Check className="h-3.5 w-3.5 text-green-400" />
+                      {t}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-
-            <div className={`flex flex-col gap-3 ${isMobile ? 'w-full' : ''}`}>
-              <Link href="/login">
-                <Button size="lg" className={`h-12 border-0 bg-[linear-gradient(135deg,#5b6cff,#AEE124_52%,#93E1F4)] px-7 text-slate-950 hover:opacity-95 ${isMobile ? 'w-full' : ''}`}>
-                  Start Free — No Signup Needed
-                </Button>
-              </Link>
-              <Link href="/faq">
-                <Button size="lg" variant="outline" className={`h-12 border-white/15 bg-white/6 px-7 text-slate-100 hover:bg-white/10 ${isMobile ? 'w-full' : ''}`}>
-                  Read FAQ
-                </Button>
-              </Link>
+              <div className={`flex flex-col gap-3 ${isMobile ? 'w-full' : 'shrink-0'}`}>
+                <Link href="/chat" className={isMobile ? 'w-full' : ''}>
+                  <Button size="lg" className={`h-12 bg-white px-8 text-slate-900 font-semibold hover:bg-white/90 shadow-xl shadow-white/10 ${isMobile ? 'w-full' : ''}`}>
+                    Open SOHAM — it's free
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+                <Link href="/documentation" className={isMobile ? 'w-full' : ''}>
+                  <Button size="lg" variant="ghost" className={`h-12 border border-white/12 text-slate-300 hover:text-white hover:bg-white/8 ${isMobile ? 'w-full' : ''}`}>
+                    Read the docs
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </motion.section>
       </main>
 
-      <footer className="border-t border-white/10 bg-[#050505]/70 backdrop-blur-2xl">
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6">
-          <div className="flex flex-col items-start justify-between gap-6 lg:flex-row">
-            <div className="flex items-center gap-3">
-              <Image src="/FINALSOHAM.png" alt="SOHAM logo" width={34} height={34} />
-              <div>
-                <p className="text-sm font-semibold text-slate-100">SOHAM</p>
-                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Production AI Workspace</p>
+      {/* ── Footer ── */}
+      <footer className="border-t border-white/8 bg-[#040406]">
+        <div className="mx-auto w-full max-w-6xl px-6 py-10">
+          <div className={`flex ${isMobile ? 'flex-col gap-8' : 'items-start justify-between gap-10'}`}>
+            {/* Brand */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2.5">
+                <Image src="/FINALSOHAM.png" alt="SOHAM" width={28} height={28} className="rounded-lg" />
+                <span className="font-bold text-white">SOHAM</span>
+              </div>
+              <p className="text-xs text-slate-500 max-w-[200px] leading-relaxed">
+                Free AI platform by CODEEX-AI.<br />
+                Built by Heoster, age 16, India.
+              </p>
+              <p className="text-xs text-slate-600">© {new Date().getFullYear()} CODEEX-AI</p>
+            </div>
+
+            {/* Links */}
+            <div className={`grid gap-x-12 gap-y-4 text-sm ${isMobile ? 'grid-cols-2' : 'grid-cols-4'}`}>
+              <div className="space-y-2.5">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Product</p>
+                {[['AI Chat', '/chat'], ['AI Services', '/ai-services'], ['PDF Analyzer', '/pdf-analyzer'], ['Image Math', '/visual-math']].map(([l, h]) => (
+                  <Link key={h} href={h} className="block text-slate-400 hover:text-white transition-colors">{l}</Link>
+                ))}
+              </div>
+              <div className="space-y-2.5">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Learn</p>
+                {[['Documentation', '/documentation'], ['FAQ', '/faq'], ['Community', '/community'], ['Contact', '/contact']].map(([l, h]) => (
+                  <Link key={h} href={h} className="block text-slate-400 hover:text-white transition-colors">{l}</Link>
+                ))}
+              </div>
+              <div className="space-y-2.5">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Company</p>
+                {[['About Heoster', '/about'], ['About SOHAM', '/soham'], ['Privacy', '/privacy'], ['Terms', '/terms']].map(([l, h]) => (
+                  <Link key={h} href={h} className="block text-slate-400 hover:text-white transition-colors">{l}</Link>
+                ))}
+              </div>
+              <div className="space-y-2.5">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Connect</p>
+                {[
+                  ['GitHub', DEVELOPER_INFO.contact.github],
+                  ['Twitter', DEVELOPER_INFO.contact.twitter],
+                  ['LinkedIn', DEVELOPER_INFO.contact.linkedin],
+                  ['Email', `mailto:${DEVELOPER_INFO.contact.email}`],
+                ].map(([l, h]) => (
+                  <Link key={l} href={h} target="_blank" rel="noopener noreferrer" className="block text-slate-400 hover:text-white transition-colors">{l}</Link>
+                ))}
               </div>
             </div>
-            <div className={`grid gap-3 text-sm ${isMobile ? 'grid-cols-1 w-full' : 'sm:grid-cols-2 lg:grid-cols-5'}`}>
-              <Link href="/chat" className="text-slate-300 hover:text-white">AI Chat</Link>
-              <Link href="/ai-services" className="text-slate-300 hover:text-white">AI Services</Link>
-              <Link href="/pdf-analyzer" className="text-slate-300 hover:text-white">PDF Analyzer</Link>
-              <Link href="/visual-math" className="text-slate-300 hover:text-white">Image Math</Link>
-              <Link href="/faq" className="text-slate-300 hover:text-white">FAQ</Link>
-              <Link href="/community" className="text-slate-300 hover:text-white">Community</Link>
-              <Link href="/documentation" className="text-slate-300 hover:text-white">Documentation</Link>
-              <Link href="/contact" className="text-slate-300 hover:text-white">Contact</Link>
-              <Link href="/privacy" className="text-slate-300 hover:text-white">Privacy</Link>
-              <Link href="/about" className="text-slate-300 hover:text-white">About</Link>
-            </div>
-          </div>
-
-          <div className="text-xs text-slate-400">
-            <p>&copy; {new Date().getFullYear()} CODEEX-AI. All rights reserved.</p>
-            <p className="mt-1">Self Organising Hyper Adaptive Machine</p>
           </div>
         </div>
       </footer>
-
-      <style jsx>{`
-        .neural-obsidian {
-          background:
-            radial-gradient(circle at top left, rgba(91, 108, 255, 0.14), transparent 24%),
-            radial-gradient(circle at top right, rgba(147, 225, 244, 0.16), transparent 26%),
-            radial-gradient(circle at bottom left, rgba(174, 225, 36, 0.1), transparent 22%),
-            linear-gradient(180deg, hsl(var(--background)) 0%, color-mix(in srgb, hsl(var(--background)) 82%, #0b1013) 45%, hsl(var(--background)) 100%);
-        }
-
-        .glass-heading {
-          background: linear-gradient(135deg, #ffffff, #5b6cff 22%, #AEE124 56%, #93E1F4 88%);
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-          text-shadow: 0 0 30px rgba(147, 225, 244, 0.1);
-          filter: drop-shadow(0 8px 26px rgba(91, 108, 255, 0.16));
-        }
-
-        .feature-plane {
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          background: linear-gradient(180deg, hsl(var(--card) / 0.86), hsl(var(--card) / 0.58));
-          backdrop-filter: blur(22px);
-          border-radius: 28px;
-          padding: 1.35rem;
-          box-shadow: 0 22px 60px rgba(0, 0, 0, 0.22);
-          transform-style: preserve-3d;
-        }
-
-        .core-shell {
-          position: relative;
-          min-height: 600px;
-          perspective: 1600px;
-        }
-
-        .core-backdrop {
-          position: absolute;
-          border-radius: 999px;
-          filter: blur(48px);
-          opacity: 0.8;
-        }
-
-        .core-backdrop-a {
-          top: 8%;
-          left: 12%;
-          height: 180px;
-          width: 180px;
-          background: rgba(0, 242, 255, 0.18);
-        }
-
-        .core-backdrop-b {
-          right: 10%;
-          bottom: 12%;
-          height: 220px;
-          width: 220px;
-          background: rgba(112, 0, 255, 0.22);
-        }
-
-        .glass-orb-panel {
-          position: relative;
-          z-index: 1;
-          overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
-          backdrop-filter: blur(30px);
-          border-radius: 36px;
-          padding: 1.5rem;
-          box-shadow: 0 40px 120px rgba(0, 0, 0, 0.28);
-        }
-
-        .info-glass-card {
-          border: 1px solid rgba(255, 255, 255, 0.07);
-          background: rgba(255, 255, 255, 0.04);
-          border-radius: 22px;
-          padding: 1rem;
-        }
-
-        .liquid-section {
-          position: relative;
-          background:
-            radial-gradient(circle at top left, rgba(91, 108, 255, 0.09), transparent 28%),
-            radial-gradient(circle at bottom right, rgba(147, 225, 244, 0.12), transparent 30%),
-            radial-gradient(circle at center right, rgba(174, 225, 36, 0.08), transparent 24%),
-            linear-gradient(180deg, hsl(var(--card) / 0.5), hsl(var(--background) / 0.2));
-        }
-
-        .liquid-section::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.05), transparent 35%);
-          mix-blend-mode: screen;
-          opacity: 0.7;
-          pointer-events: none;
-        }
-
-        .stat-glow-chip {
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          background: hsl(var(--card) / 0.72);
-          border-radius: 999px;
-          padding: 0.9rem 1rem;
-          text-align: center;
-          font-size: 0.8rem;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: #d9e4ff;
-          backdrop-filter: blur(14px);
-        }
-
-        .section-kicker {
-          font-size: 0.72rem;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: #95a3c3;
-        }
-
-        .section-title {
-          margin-top: 0.75rem;
-          font-family: var(--font-manrope);
-          font-size: clamp(2rem, 3vw, 3.4rem);
-          line-height: 1.02;
-          font-weight: 600;
-          color: #fff;
-        }
-
-        .section-copy {
-          margin-top: 1rem;
-          font-size: 0.98rem;
-          line-height: 1.9;
-          color: #bcc6df;
-        }
-
-        .workflow-card {
-          overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, 0.09);
-          background: linear-gradient(180deg, hsl(var(--card) / 0.86), hsl(var(--card) / 0.62));
-          border-radius: 32px;
-          box-shadow: 0 26px 70px rgba(0, 0, 0, 0.24);
-          backdrop-filter: blur(18px);
-          transform-style: preserve-3d;
-        }
-
-        .comparison-surface {
-          overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          background: linear-gradient(180deg, hsl(var(--card) / 0.86), hsl(var(--card) / 0.62));
-          border-radius: 30px;
-          box-shadow: 0 30px 90px rgba(0, 0, 0, 0.24);
-          backdrop-filter: blur(20px);
-        }
-
-        .comparison-head,
-        .comparison-row {
-          display: grid;
-          grid-template-columns: 1.05fr 1fr 1fr;
-          gap: 1rem;
-          padding: 1rem 1.25rem;
-        }
-
-        .comparison-head {
-          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-          background: rgba(255, 255, 255, 0.03);
-          font-size: 0.72rem;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          color: #8897b7;
-        }
-
-        .comparison-row {
-          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-          font-size: 0.92rem;
-        }
-
-        .comparison-row:last-child {
-          border-bottom: none;
-        }
-
-        .panel-card {
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          background: linear-gradient(180deg, hsl(var(--card) / 0.86), hsl(var(--card) / 0.62));
-          border-radius: 32px;
-          padding: 1.75rem;
-          box-shadow: 0 26px 70px rgba(0, 0, 0, 0.22);
-          backdrop-filter: blur(18px);
-        }
-
-        .security-row {
-          display: flex;
-          gap: 0.75rem;
-          border: 1px solid rgba(255, 255, 255, 0.07);
-          background: hsl(var(--card) / 0.7);
-          border-radius: 22px;
-          padding: 1rem;
-        }
-
-        .cta-surface {
-          display: grid;
-          gap: 2rem;
-          align-items: center;
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          background:
-            radial-gradient(circle at top left, rgba(91, 108, 255, 0.14), transparent 35%),
-            radial-gradient(circle at center, rgba(174, 225, 36, 0.08), transparent 28%),
-            radial-gradient(circle at bottom right, rgba(147, 225, 244, 0.16), transparent 35%),
-            linear-gradient(180deg, hsl(var(--card) / 0.86), hsl(var(--card) / 0.62));
-          border-radius: 36px;
-          padding: 2rem;
-          box-shadow: 0 32px 90px rgba(0, 0, 0, 0.26);
-          backdrop-filter: blur(22px);
-        }
-
-        .hero-logo-panel {
-          position: relative;
-          overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, 0.09);
-          background: linear-gradient(180deg, hsl(var(--card) / 0.9), hsl(var(--card) / 0.62));
-          border-radius: 36px;
-          padding: 1.5rem;
-          box-shadow: 0 32px 90px rgba(0, 0, 0, 0.24);
-          backdrop-filter: blur(20px);
-        }
-
-        .hero-logo-panel__glow {
-          position: absolute;
-          border-radius: 999px;
-          filter: blur(60px);
-          opacity: 0.28;
-          pointer-events: none;
-        }
-
-        .hero-logo-panel__glow--orange {
-          top: -20px;
-          left: -20px;
-          height: 180px;
-          width: 180px;
-          background: #5b6cff;
-        }
-
-        .hero-logo-panel__glow--green {
-          top: 30%;
-          right: 14%;
-          height: 180px;
-          width: 180px;
-          background: #AEE124;
-        }
-
-        .hero-logo-panel__glow--blue {
-          right: -10px;
-          bottom: -10px;
-          height: 220px;
-          width: 220px;
-          background: #93E1F4;
-        }
-
-        @media (max-width: 767px) {
-          .comparison-head,
-          .comparison-row {
-            grid-template-columns: 1fr;
-          }
-
-          .comparison-head span:nth-child(3),
-          .comparison-row span:nth-child(3) {
-            display: none;
-          }
-        }
-      `}</style>
     </div>
   );
 }
-
-

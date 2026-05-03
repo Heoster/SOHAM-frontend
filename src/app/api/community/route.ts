@@ -9,7 +9,12 @@ import { sanitizeText, sanitizeName, sanitizeTags, looksLikeSpam, isValidUUID } 
 
 const SUPABASE_URL =
   process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://scilkcnqnfusynzviutq.supabase.co';
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+// Server-side: prefer service role key, fall back to anon key
+const SUPABASE_ANON_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_ANON_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  '';
 
 function sbHeaders(extra: Record<string, string> = {}) {
   return {

@@ -75,11 +75,14 @@ async function sbFetch(url: string, init: RequestInit = {}): Promise<Response> {
 
 /** Fetch all sub-communities */
 export async function fetchSubs(): Promise<CommunitySub[]> {
+  // If anon key is not configured, return empty (caller uses placeholder)
+  if (!SUPABASE_ANON_KEY) return [];
   try {
     const res = await sbFetch(
       `${SUPABASE_URL}/rest/v1/community_subs?select=*&order=member_count.desc`,
       { headers: headers() }
     );
+    // 401 = key not configured or RLS blocking — return empty silently
     if (!res.ok) return [];
     return (await res.json()) as CommunitySub[];
   } catch {

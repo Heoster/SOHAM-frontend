@@ -8,7 +8,11 @@ import { isValidUUID } from '@/lib/sanitize';
 
 const SUPABASE_URL =
   process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://scilkcnqnfusynzviutq.supabase.co';
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const SUPABASE_ANON_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_ANON_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  '';
 
 const VALID_REASONS = ['spam', 'harassment', 'misinformation', 'inappropriate', 'other'] as const;
 
