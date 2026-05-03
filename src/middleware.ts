@@ -34,17 +34,18 @@ const SECURITY_HEADERS: Record<string, string> = {
   // Content Security Policy
   'Content-Security-Policy': [
     "default-src 'self'",
-    // Scripts: self + Vercel analytics + Google Analytics
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://va.vercel-scripts.com",
-    // Styles: self + inline (needed for Tailwind)
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    // Scripts: self + Vercel analytics + Google Analytics + Firebase/Google APIs
+    // apis.google.com is required for Firebase Auth Google Sign-In (loads api.js)
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://va.vercel-scripts.com https://apis.google.com https://accounts.google.com",
+    // Styles: self + inline (needed for Tailwind) + Google Fonts
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com",
     // Fonts
     "font-src 'self' https://fonts.gstatic.com",
     // Images: self + data URIs + Supabase storage + Firebase + external CDNs
-    "img-src 'self' data: blob: https://*.supabase.co https://*.googleapis.com https://*.googleusercontent.com https://soham-ai.vercel.app",
+    "img-src 'self' data: blob: https://*.supabase.co https://*.googleapis.com https://*.googleusercontent.com https://soham-ai.vercel.app https://lh3.googleusercontent.com",
     // Media (audio/video)
     "media-src 'self' blob: data:",
-    // API connections
+    // API connections — includes Firebase Auth endpoints
     [
       "connect-src 'self'",
       'https://*.supabase.co',
@@ -56,18 +57,22 @@ const SECURITY_HEADERS: Record<string, string> = {
       'https://api-inference.huggingface.co',
       'https://openrouter.ai',
       'https://api.cerebras.ai',
+      'https://identitytoolkit.googleapis.com',
+      'https://securetoken.googleapis.com',
+      'https://accounts.google.com',
+      'https://apis.google.com',
       'wss://*.supabase.co',
     ].join(' '),
     // Workers (for PWA service worker)
     "worker-src 'self' blob:",
-    // Frames
-    "frame-src 'none'",
+    // Frames — Firebase Auth uses iframes for Google Sign-In
+    "frame-src https://accounts.google.com https://*.firebaseapp.com",
     // Object/embed
     "object-src 'none'",
     // Base URI
     "base-uri 'self'",
     // Form action
-    "form-action 'self'",
+    "form-action 'self' https://accounts.google.com",
   ].join('; '),
 };
 

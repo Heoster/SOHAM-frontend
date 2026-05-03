@@ -97,71 +97,78 @@ class HybridTTS {
   }
 
   /**
-   * Play audio from ArrayBuffer
+   * Play audio from ArrayBuffer — single-play guaranteed.
+   * Never calls load() explicitly (setting src is sufficient and avoids
+   * the double-ended event that some browsers fire when load() is called
+   * after src is already set).
    */
   private async playAudio(audioData: ArrayBuffer, options: HybridTTSOptions, contentType: string = 'audio/wav'): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
-        // Clean up previous audio element if exists
-        if (this.audioElement) {
-          this.audioElement.pause();
-          this.audioElement.src = '';
-          this.audioElement = null;
-        }
+        // Tear down any previous element completely before creating a new one
+        this._destroyAudioElement();
 
         const blob = new Blob([audioData], { type: contentType });
         const url = URL.createObjectURL(blob);
 
-        this.audioElement = new Audio();
-        this.audioElement.preload = 'auto';
-        this.audioElement.volume = options.volume || 1.0;
+        const el = new Audio();
+        el.preload = 'auto';
+        el.volume = options.volume ?? 1.0;
+        this.audioElement = el;
 
-        // Set up event listeners before setting src
-        this.audioElement.onended = () => {
+        // Track whether the terminal callback has already fired so it can
+        // never be called twice (guards against browsers that fire onended
+        // more than once, or both onended and the play-promise rejection).
+        let settled = false;
+        const finish = (err?: unknown) => {
+          if (settled) return;
+          settled = true;
           URL.revokeObjectURL(url);
-          if (this.audioElement) {
-            this.audioElement.src = '';
-          }
-          options.onEnd?.();
-          resolve();
-        };
-
-        this.audioElement.onerror = (event) => {
-          console.error('[Hybrid TTS] Audio playback error:', event);
-          URL.revokeObjectURL(url);
-          if (this.audioElement) {
-            this.audioElement.src = '';
-          }
-          // Don't reject, fall back to browser TTS
-          this.useBrowserTTS(options).then(resolve).catch(reject);
-        };
-
-        this.audioElement.oncanplaythrough = () => {
-          console.log('[Hybrid TTS] Audio ready to play');
-        };
-
-        // Set src and load
-        this.audioElement.src = url;
-        this.audioElement.load();
-
-        // Play with error handling
-        const playPromise = this.audioElement.play();
-        if (playPromise !== undefined) {
-          playPromise.catch((error) => {
-            console.error('[Hybrid TTS] Play error:', error);
-            URL.revokeObjectURL(url);
-            if (this.audioElement) {
-              this.audioElement.src = '';
-            }
-            // Fall back to browser TTS
+          this._destroyAudioElement();
+          if (err) {
             this.useBrowserTTS(options).then(resolve).catch(reject);
-          });
-        }
+          } else {
+            options.onEnd?.();
+            resolve();
+          }
+        };
+
+        el.onended = () => finish();
+
+        el.onerror = (event) => {
+          console.error('[Hybrid TTS] Audio playback error:', event);
+          finish(event);
+        };
+
+        // Set src — browser starts buffering automatically; no need for load()
+        el.src = url;
+
+        // Play and handle the promise (autoplay policy rejections, etc.)
+        el.play().catch((err) => {
+          console.error('[Hybrid TTS] play() rejected:', err);
+          finish(err);
+        });
       } catch (error) {
         console.error('[Hybrid TTS] Setup error:', error);
         reject(error);
       }
     });
+  }
+
+  /** Fully detach and null out the current audio element. */
+  private _destroyAudioElement(): void {
+    if (!this.audioElement) return;
+    try {
+      this.audioElement.pause();
+      this.audioElement.onended = null;
+      this.audioElement.onerror = null;
+      this.audioElement.src = '';
+      // Calling load() after clearing src releases the media resource
+      this.audioElement.load();
+    } catch {
+      // ignore — element may already be in a bad state
+    }
+    this.audioElement = null;
   }
 
   /**
@@ -190,15 +197,7 @@ class HybridTTS {
    * Cancel ongoing speech
    */
   cancel(): void {
-    if (this.audioElement) {
-      try {
-        this.audioElement.pause();
-        this.audioElement.src = '';
-        this.audioElement = null;
-      } catch (error) {
-        console.error('[Hybrid TTS] Cancel error:', error);
-      }
-    }
+    this._destroyAudioElement();
     edgeTTS.cancel();
     browserTTS.cancel();
   }
