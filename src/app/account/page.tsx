@@ -41,8 +41,11 @@ import {
   MessageSquare,
   Zap,
   Settings as SettingsIcon,
-  Palette
+  Palette,
+  Users,
+  ArrowRight,
 } from 'lucide-react';
+import Link from 'next/link';
 import { toast } from 'sonner';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -356,6 +359,30 @@ export default function AccountPage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Community Banner */}
+          <Link href="/community">
+            <Card className="mb-8 border-primary/30 bg-gradient-to-r from-primary/10 via-primary/5 to-transparent hover:border-primary/60 hover:shadow-md transition-all cursor-pointer group">
+              <CardContent className="pt-5 pb-5">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-2xl">
+                      🌐
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-base group-hover:text-primary transition-colors">
+                        SOHAM Community
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Share tips, ask questions, and connect with other users
+                      </p>
+                    </div>
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0" />
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
 
           <Tabs defaultValue="profile" className="space-y-6">
             <TabsList className="grid w-full grid-cols-4">

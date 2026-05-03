@@ -47,6 +47,7 @@ import {
   LayoutGrid,
   Boxes,
   LayoutDashboard,
+  Users,
 } from 'lucide-react';
 import {Edit2, Download, User} from 'lucide-react';
 import {QuickSettingsPopover, SettingsDialog} from '../settings-dialog';
@@ -223,6 +224,14 @@ export function ChatLayout() {
                   <Link href="/account" className="gap-3">
                     <User className="h-4 w-4" />
                     <span>Account</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild className="h-9">
+                  <Link href="/community" className="gap-3">
+                    <Users className="h-4 w-4" />
+                    <span>Community</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -429,6 +438,14 @@ export function ChatLayout() {
           >
             <Boxes className="h-5 w-5" />
             <span className="text-[10px] font-medium">Services</span>
+          </Link>
+
+          <Link
+            href="/community"
+            className="flex flex-col items-center gap-0.5 rounded-xl px-3 py-2 text-muted-foreground transition-colors active:bg-accent touch-manipulation"
+          >
+            <Users className="h-5 w-5" />
+            <span className="text-[10px] font-medium">Community</span>
           </Link>
 
           <button

@@ -233,51 +233,78 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
           <DesktopLandingHero activeMode={activeMode} setActiveMode={setActiveMode} heroFeatures={heroFeatures} trustStats={trustStats} sectionVariant={sectionVariant} />
         )}
 
-        {/* ── Ticker bar ── */}
-        <div className="border-y border-white/8 bg-white/[0.02]">
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-8 gap-y-2 px-6 py-3">
-            {['35+ AI Models', 'Free Image Generation', 'Voice Input & Output', 'Real-Time Web Search', 'PDF Analysis', 'No Signup Required', 'Open Source MIT'].map((t) => (
-              <span key={t} className="flex items-center gap-1.5 text-xs text-slate-400">
-                <span className="h-1 w-1 rounded-full bg-green-400" />
-                {t}
+        {/* ── Provider ticker ── */}
+        <div className="border-y border-white/8 bg-white/[0.02] overflow-hidden">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-6 gap-y-2 px-4 py-3">
+            {[
+              { name: 'Groq', color: '#f97316' },
+              { name: 'Cerebras', color: '#60a5fa' },
+              { name: 'Google Gemini', color: '#34d399' },
+              { name: 'HuggingFace', color: '#fbbf24' },
+              { name: 'OpenRouter', color: '#a78bfa' },
+              { name: 'DeepSeek R1', color: '#e879f9' },
+              { name: 'NVIDIA Nemotron', color: '#22d3ee' },
+            ].map((p) => (
+              <span key={p.name} className="flex items-center gap-1.5 text-xs font-medium" style={{ color: p.color }}>
+                <span className="h-1.5 w-1.5 rounded-full" style={{ background: p.color }} />
+                {p.name}
               </span>
             ))}
+            <span className="text-xs text-slate-600">+ 28 more models · all free</span>
           </div>
         </div>
 
-        {/* ── Features grid ── */}
-        <motion.section {...sectionVariant} className="mx-auto w-full max-w-6xl px-6 py-20">
-          <div className="mb-12 max-w-2xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-blue-400">Everything included — always free</p>
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">
-              More than ChatGPT Plus.<br />At $0.
+        {/* ── Features: 3 large + bento grid ── */}
+        <motion.section {...sectionVariant} className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+          <div className="mb-10 max-w-2xl">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-blue-400">Everything included — always free</p>
+            <h2 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, color: '#fff', lineHeight: 1.1 }}>
+              More than ChatGPT Plus. At $0.
             </h2>
-            <p className="mt-4 text-base leading-relaxed text-slate-400">
+            <p className="mt-3 text-base leading-relaxed text-slate-400">
               ChatGPT charges $20/month for image generation, voice, and advanced models.
               SOHAM gives you all of that — plus 35+ models from 5 providers — completely free.
             </p>
           </div>
 
-          <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3'}`}>
-            {features.map((f) => (
-              <div key={f.title} className="group rounded-2xl border border-white/8 bg-white/[0.03] p-5 transition-all hover:border-white/15 hover:bg-white/[0.06]">
-                <div className="mb-4 flex items-center justify-between">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/8 text-white">
-                    <f.icon className="h-4.5 w-4.5" />
-                  </div>
-                  <span className="rounded-full border border-white/10 px-2.5 py-0.5 text-[10px] font-medium text-slate-400">
-                    {f.tag}
-                  </span>
+          {/* Top 3 large feature cards */}
+          <div className={`grid gap-4 mb-4 ${isMobile ? 'grid-cols-1' : 'sm:grid-cols-3'}`}>
+            {features.slice(0, 3).map((f) => (
+              <div key={f.title} className="rounded-2xl border border-white/8 bg-white/[0.03] p-6 hover:border-white/15 hover:bg-white/[0.06] transition-all">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-white/8 text-white">
+                  <f.icon className="h-5 w-5" />
                 </div>
-                <p className="mb-1.5 font-semibold text-white">{f.title}</p>
+                <p className="mb-2 text-base font-bold text-white">{f.title}</p>
                 <p className="text-sm leading-relaxed text-slate-400">{f.desc}</p>
+                <span className="mt-3 inline-block rounded-full bg-green-500/15 px-2.5 py-0.5 text-[10px] font-semibold text-green-400">
+                  {f.tag} · Free
+                </span>
               </div>
             ))}
           </div>
 
-          <div className="mt-10 text-center">
+          {/* Bento grid for remaining features */}
+          <div className={`grid gap-3 ${isMobile ? 'grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3'}`}>
+            {features.slice(3).map((f) => (
+              <div key={f.title} className="rounded-xl border border-white/8 bg-white/[0.025] p-4 hover:border-white/12 hover:bg-white/[0.05] transition-all">
+                <div className="mb-2.5 flex items-center gap-2.5">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/8 text-white">
+                    <f.icon className="h-3.5 w-3.5" />
+                  </div>
+                  <p className="text-sm font-semibold text-white">{f.title}</p>
+                </div>
+                <p className="text-xs leading-relaxed text-slate-500">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 text-center">
             <Link href="/chat">
-              <Button size="lg" className="h-11 bg-white px-8 text-slate-900 font-semibold hover:bg-white/90 shadow-lg shadow-white/10">
+              <Button
+                size="lg"
+                className="h-11 px-8 font-semibold text-white border-0"
+                style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4)', boxShadow: '0 8px 32px rgba(99,102,241,0.3)' }}
+              >
                 Try all features free
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -287,25 +314,28 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
 
         {/* ── Comparison ── */}
         <motion.section {...sectionVariant} className="border-y border-white/8 bg-white/[0.015]">
-          <div className="mx-auto w-full max-w-6xl px-6 py-20">
-            <div className={`grid gap-12 ${isMobile ? '' : 'lg:grid-cols-2 lg:items-start'}`}>
+          <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+            <div className={`grid gap-10 ${isMobile ? '' : 'lg:grid-cols-2 lg:items-start'}`}>
               <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-purple-400">SOHAM vs ChatGPT</p>
-                <h2 className="text-3xl font-bold text-white sm:text-4xl">
-                  Why pay $20/month<br />for less?
+                <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-purple-400">SOHAM vs ChatGPT</p>
+                <h2 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, color: '#fff', lineHeight: 1.1 }}>
+                  Why pay $20/month for less?
                 </h2>
-                <p className="mt-4 text-base leading-relaxed text-slate-400">
-                  ChatGPT Plus locks image generation, voice, and advanced models behind a paywall.
-                  SOHAM gives you all of that — plus 35+ models from 5 different providers — for free.
+                <p className="mt-3 text-base leading-relaxed text-slate-400">
+                  ChatGPT Plus locks image generation, voice, and advanced models behind a $20/month paywall.
+                  SOHAM gives you all of that — plus 35+ models from 5 providers — for free.
                 </p>
-                <div className="mt-6 flex flex-wrap gap-3">
+                <div className="mt-5 flex flex-wrap gap-3">
                   <Link href="/chat">
-                    <Button className="h-10 bg-white text-slate-900 font-semibold hover:bg-white/90">
-                      Start free
+                    <Button
+                      className="h-10 font-semibold text-white border-0"
+                      style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}
+                    >
+                      Start free now
                     </Button>
                   </Link>
                   <Link href="/faq">
-                    <Button variant="ghost" className="h-10 text-slate-300 hover:text-white hover:bg-white/8">
+                    <Button variant="outline" className="h-10 border-white/15 bg-transparent text-slate-300 hover:text-white hover:bg-white/8">
                       See FAQ
                     </Button>
                   </Link>
@@ -313,20 +343,25 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
               </div>
 
               <div className="overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03]">
-                {/* Table header */}
-                <div className="grid grid-cols-3 border-b border-white/8 bg-white/[0.03] px-5 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                  <span>Feature</span>
-                  <span className="text-green-400">SOHAM ✓</span>
-                  <span>ChatGPT</span>
+                <div className="grid grid-cols-3 border-b border-white/8 bg-white/[0.04] px-4 py-3 text-[11px] font-semibold uppercase tracking-wider">
+                  <span className="text-slate-500">Feature</span>
+                  <span className="text-green-400">SOHAM</span>
+                  <span className="text-slate-500">ChatGPT</span>
                 </div>
                 {comparisonRows.map((row, i) => (
                   <div
                     key={row.feature}
-                    className={`grid grid-cols-3 gap-2 px-5 py-3.5 text-sm ${i < comparisonRows.length - 1 ? 'border-b border-white/6' : ''}`}
+                    className={`grid grid-cols-3 items-center gap-2 px-4 py-3 text-xs ${i < comparisonRows.length - 1 ? 'border-b border-white/6' : ''}`}
                   >
-                    <span className="font-medium text-slate-200">{row.feature}</span>
-                    <span className="text-green-400">{row.soham}</span>
-                    <span className="text-slate-500">{row.other}</span>
+                    <span className="font-medium text-slate-300">{row.feature}</span>
+                    <span className="flex items-center gap-1.5 text-green-400">
+                      <Check className="h-3.5 w-3.5 shrink-0" />
+                      {row.soham}
+                    </span>
+                    <span className="flex items-center gap-1.5 text-slate-500">
+                      <span className="h-3.5 w-3.5 shrink-0 flex items-center justify-center text-slate-600">—</span>
+                      {row.other}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -334,74 +369,112 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
           </div>
         </motion.section>
 
-        {/* ── Founder + Privacy ── */}
-        <motion.section {...sectionVariant} className="mx-auto w-full max-w-6xl px-6 py-20">
-          <div className={`grid gap-6 ${isMobile ? '' : 'lg:grid-cols-2'}`}>
+        {/* ── Founder social card + Privacy ── */}
+        <motion.section {...sectionVariant} className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+          <div className={`grid gap-5 ${isMobile ? '' : 'lg:grid-cols-2'}`}>
 
-            {/* Founder card */}
-            <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-7">
-              <div className="mb-5 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 text-base font-bold text-white">
-                  H
+            {/* Founder social card */}
+            <div className="rounded-2xl border border-white/8 bg-white/[0.03] overflow-hidden">
+              {/* Card header with gradient */}
+              <div className="h-2 w-full" style={{ background: 'linear-gradient(90deg, #6366f1, #8b5cf6, #06b6d4)' }} />
+              <div className="p-6">
+                <div className="flex items-start gap-4 mb-5">
+                  <div className="relative shrink-0">
+                    <Image
+                      src="/harsh.png"
+                      alt="Heoster — Founder of CODEEX-AI"
+                      width={64}
+                      height={64}
+                      className="rounded-2xl object-cover"
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
+                    <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-[#060608] bg-green-400">
+                      <span className="text-[8px] font-bold text-black">✓</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="font-bold text-white text-lg leading-tight">Heoster</p>
+                    <p className="text-sm text-slate-400">Harsh · Age 16 · Khatauli, India</p>
+                    <div className="mt-1.5 flex flex-wrap gap-1.5">
+                      <span className="rounded-full bg-blue-500/15 px-2 py-0.5 text-[10px] font-semibold text-blue-400">Founder</span>
+                      <span className="rounded-full bg-purple-500/15 px-2 py-0.5 text-[10px] font-semibold text-purple-400">CODEEX-AI</span>
+                      <span className="rounded-full bg-green-500/15 px-2 py-0.5 text-[10px] font-semibold text-green-400">Class 12 PCM</span>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-semibold text-white">Heoster (Harsh)</p>
-                  <p className="text-xs text-slate-400">Founder, CODEEX-AI · Age 16 · Khatauli, India</p>
-                </div>
-              </div>
-              <h3 className="mb-3 text-xl font-bold text-white">
-                Built by a student, for everyone
-              </h3>
-              <p className="text-sm leading-relaxed text-slate-400">
-                I started CODEEX-AI in 2024 because I was frustrated that the best AI tools cost money.
-                I'm 16, studying PCM in Class 12, and I built SOHAM from scratch — 50,000+ lines of code,
-                35+ models, 100+ countries — while balancing school.
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-slate-400">
-                The mission is simple: advanced AI should be free for every student, everywhere.
-              </p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                <Link href="/about">
-                  <Button variant="ghost" size="sm" className="h-8 border border-white/10 text-slate-300 hover:text-white hover:bg-white/8 text-xs">
-                    Read the story
-                  </Button>
-                </Link>
-                <Link href={DEVELOPER_INFO.contact.github} target="_blank" rel="noopener noreferrer">
-                  <Button variant="ghost" size="sm" className="h-8 border border-white/10 text-slate-300 hover:text-white hover:bg-white/8 text-xs gap-1.5">
-                    <Github className="h-3.5 w-3.5" />
-                    GitHub
-                  </Button>
-                </Link>
-              </div>
-              {/* Testing team */}
-              <div className="mt-5 border-t border-white/8 pt-4">
-                <p className="mb-2 text-[11px] text-slate-500 uppercase tracking-wider">Tested by</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {DEVELOPER_INFO.friends.slice(0, 8).map((f) => (
-                    <span key={f.name} className="rounded-full border border-white/8 bg-white/4 px-2.5 py-0.5 text-[11px] text-slate-300">
-                      {f.name}
-                    </span>
+
+                <blockquote className="border-l-2 border-white/15 pl-4 mb-4">
+                  <p className="text-sm leading-relaxed text-slate-300 italic">
+                    "I started CODEEX-AI in 2024 because I was frustrated that the best AI tools cost money.
+                    I built SOHAM from scratch — 50,000+ lines of code, 35+ models, 100+ countries — while
+                    studying for my Class 12 exams. Advanced AI should be free for every student, everywhere."
+                  </p>
+                </blockquote>
+
+                {/* Timeline */}
+                <div className="space-y-2 mb-5">
+                  {[
+                    { year: '2023', event: 'Started web development' },
+                    { year: '2024', event: 'Founded CODEEX-AI, launched SOHAM' },
+                    { year: '2025', event: 'Reached 100+ countries, 35+ models' },
+                    { year: '2026', event: 'v2.0 — community, security, new models' },
+                  ].map((t) => (
+                    <div key={t.year} className="flex items-center gap-3 text-xs">
+                      <span className="w-8 shrink-0 font-bold text-slate-500">{t.year}</span>
+                      <span className="h-px flex-1 bg-white/8" />
+                      <span className="text-slate-400">{t.event}</span>
+                    </div>
                   ))}
-                  <span className="rounded-full border border-white/8 bg-white/4 px-2.5 py-0.5 text-[11px] text-slate-400">
-                    +{DEVELOPER_INFO.friends.length - 8} more
-                  </span>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  <Link href="/about">
+                    <Button variant="ghost" size="sm" className="h-8 border border-white/10 text-slate-300 hover:text-white hover:bg-white/8 text-xs">
+                      Full story
+                    </Button>
+                  </Link>
+                  <Link href={DEVELOPER_INFO.contact.github} target="_blank" rel="noopener noreferrer">
+                    <Button variant="ghost" size="sm" className="h-8 border border-white/10 text-slate-300 hover:text-white hover:bg-white/8 text-xs gap-1.5">
+                      <Github className="h-3.5 w-3.5" />
+                      GitHub
+                    </Button>
+                  </Link>
+                  <Link href={DEVELOPER_INFO.contact.twitter} target="_blank" rel="noopener noreferrer">
+                    <Button variant="ghost" size="sm" className="h-8 border border-white/10 text-slate-300 hover:text-white hover:bg-white/8 text-xs">
+                      @The_Heoster_
+                    </Button>
+                  </Link>
+                </div>
+
+                <div className="mt-4 border-t border-white/8 pt-4">
+                  <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-slate-600">Tested by real friends</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {DEVELOPER_INFO.friends.slice(0, 8).map((f) => (
+                      <span key={f.name} className="rounded-full border border-white/8 bg-white/4 px-2 py-0.5 text-[11px] text-slate-400">
+                        {f.name}
+                      </span>
+                    ))}
+                    <span className="rounded-full border border-white/8 bg-white/4 px-2 py-0.5 text-[11px] text-slate-500">
+                      +{DEVELOPER_INFO.friends.length - 8} more
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Privacy card */}
-            <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-7">
+            <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-6">
               <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-green-500/15">
                 <Lock className="h-5 w-5 text-green-400" />
               </div>
-              <h3 className="mb-3 text-xl font-bold text-white">
+              <h3 className="mb-2 text-xl font-bold text-white">
                 Privacy-first. Open source. No surprises.
               </h3>
-              <p className="text-sm leading-relaxed text-slate-400">
+              <p className="text-sm leading-relaxed text-slate-400 mb-5">
                 Your conversations never leave your browser. We don't sell data, we don't train on your chats,
                 and the entire codebase is on GitHub so you can verify every claim yourself.
               </p>
-              <ul className="mt-5 space-y-3">
+              <ul className="space-y-3 mb-6">
                 {privacyPoints.map((p) => (
                   <li key={p} className="flex items-start gap-3 text-sm text-slate-300">
                     <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-green-400" />
@@ -409,7 +482,30 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
                   </li>
                 ))}
               </ul>
-              <div className="mt-6 flex flex-wrap gap-2">
+
+              {/* Live stats */}
+              <div className="grid grid-cols-3 gap-3 rounded-xl border border-white/8 bg-white/[0.03] p-4 mb-5">
+                {[
+                  { v: '35+', l: 'AI Models' },
+                  { v: '100+', l: 'Countries' },
+                  { v: '99.9%', l: 'Uptime', live: true },
+                ].map((s) => (
+                  <div key={s.l} className="text-center">
+                    <div className="flex items-center justify-center gap-1">
+                      <p className="text-lg font-bold text-white">{s.v}</p>
+                      {s.live && (
+                        <span className="relative flex h-2 w-2">
+                          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+                          <span className="relative inline-flex h-2 w-2 rounded-full bg-green-400" />
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[10px] text-slate-500">{s.l}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap gap-2">
                 <Link href="/privacy">
                   <Button variant="ghost" size="sm" className="h-8 border border-white/10 text-slate-300 hover:text-white hover:bg-white/8 text-xs">
                     Privacy Policy
@@ -422,41 +518,30 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
                   </Button>
                 </Link>
               </div>
-              {/* Stats */}
-              <div className="mt-5 grid grid-cols-3 gap-3 border-t border-white/8 pt-4">
-                {[
-                  { v: '35+', l: 'AI Models' },
-                  { v: '100+', l: 'Countries' },
-                  { v: '99.9%', l: 'Uptime' },
-                ].map((s) => (
-                  <div key={s.l} className="text-center">
-                    <p className="text-lg font-bold text-white">{s.v}</p>
-                    <p className="text-[10px] text-slate-500">{s.l}</p>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </motion.section>
 
         {/* ── CTA ── */}
         <motion.section {...sectionVariant} className="border-t border-white/8">
-          <div className="mx-auto w-full max-w-6xl px-6 py-20">
-            <div className={`rounded-2xl border border-white/8 bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-8 md:p-12 ${isMobile ? '' : 'flex items-center justify-between gap-10'}`}>
+          <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+            <div className={`rounded-2xl border border-white/8 p-8 md:p-12 ${isMobile ? '' : 'flex items-center justify-between gap-10'}`}
+              style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(99,102,241,0.12), transparent), rgba(255,255,255,0.02)' }}
+            >
               <div className={isMobile ? 'mb-8' : 'max-w-xl'}>
                 <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-green-500/25 bg-green-500/10 px-3 py-1.5 text-xs text-green-400">
                   <Sparkles className="h-3.5 w-3.5" />
-                  Free forever — no credit card
+                  Free forever — no credit card required
                 </div>
-                <h2 className="text-3xl font-bold text-white sm:text-4xl">
+                <h2 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, color: '#fff', lineHeight: 1.1 }}>
                   Start using SOHAM now
                 </h2>
                 <p className="mt-3 text-base leading-relaxed text-slate-400">
                   35+ AI models, image generation, voice, web search, PDF analysis.
                   Everything ChatGPT Plus charges $20/month for — free on SOHAM.
                 </p>
-                <div className="mt-5 flex flex-wrap gap-3 text-sm text-slate-400">
-                  {['No signup required', 'No credit card', 'No rate limits on free tier', 'Open source'].map((t) => (
+                <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm text-slate-400">
+                  {['No signup required', 'No credit card', 'Open source MIT', 'GDPR compliant'].map((t) => (
                     <span key={t} className="flex items-center gap-1.5">
                       <Check className="h-3.5 w-3.5 text-green-400" />
                       {t}
@@ -466,13 +551,17 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
               </div>
               <div className={`flex flex-col gap-3 ${isMobile ? 'w-full' : 'shrink-0'}`}>
                 <Link href="/chat" className={isMobile ? 'w-full' : ''}>
-                  <Button size="lg" className={`h-12 bg-white px-8 text-slate-900 font-semibold hover:bg-white/90 shadow-xl shadow-white/10 ${isMobile ? 'w-full' : ''}`}>
+                  <Button
+                    size="lg"
+                    className={`h-12 px-8 font-semibold text-white border-0 ${isMobile ? 'w-full' : ''}`}
+                    style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4)', boxShadow: '0 8px 32px rgba(99,102,241,0.35)' }}
+                  >
                     Open SOHAM — it's free
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
                 <Link href="/documentation" className={isMobile ? 'w-full' : ''}>
-                  <Button size="lg" variant="ghost" className={`h-12 border border-white/12 text-slate-300 hover:text-white hover:bg-white/8 ${isMobile ? 'w-full' : ''}`}>
+                  <Button size="lg" variant="outline" className={`h-12 border-white/15 bg-transparent text-slate-300 hover:text-white hover:bg-white/8 ${isMobile ? 'w-full' : ''}`}>
                     Read the docs
                   </Button>
                 </Link>
@@ -480,60 +569,3 @@ export function LandingPageShell({ isMobile }: { isMobile: boolean }) {
             </div>
           </div>
         </motion.section>
-      </main>
-
-      {/* ── Footer ── */}
-      <footer className="border-t border-white/8 bg-[#040406]">
-        <div className="mx-auto w-full max-w-6xl px-6 py-10">
-          <div className={`flex ${isMobile ? 'flex-col gap-8' : 'items-start justify-between gap-10'}`}>
-            {/* Brand */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2.5">
-                <Image src="/FINALSOHAM.png" alt="SOHAM" width={28} height={28} className="rounded-lg" />
-                <span className="font-bold text-white">SOHAM</span>
-              </div>
-              <p className="text-xs text-slate-500 max-w-[200px] leading-relaxed">
-                Free AI platform by CODEEX-AI.<br />
-                Built by Heoster, age 16, India.
-              </p>
-              <p className="text-xs text-slate-600">© {new Date().getFullYear()} CODEEX-AI</p>
-            </div>
-
-            {/* Links */}
-            <div className={`grid gap-x-12 gap-y-4 text-sm ${isMobile ? 'grid-cols-2' : 'grid-cols-4'}`}>
-              <div className="space-y-2.5">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Product</p>
-                {[['AI Chat', '/chat'], ['AI Services', '/ai-services'], ['PDF Analyzer', '/pdf-analyzer'], ['Image Math', '/visual-math']].map(([l, h]) => (
-                  <Link key={h} href={h} className="block text-slate-400 hover:text-white transition-colors">{l}</Link>
-                ))}
-              </div>
-              <div className="space-y-2.5">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Learn</p>
-                {[['Documentation', '/documentation'], ['FAQ', '/faq'], ['Community', '/community'], ['Contact', '/contact']].map(([l, h]) => (
-                  <Link key={h} href={h} className="block text-slate-400 hover:text-white transition-colors">{l}</Link>
-                ))}
-              </div>
-              <div className="space-y-2.5">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Company</p>
-                {[['About Heoster', '/about'], ['About SOHAM', '/soham'], ['Privacy', '/privacy'], ['Terms', '/terms']].map(([l, h]) => (
-                  <Link key={h} href={h} className="block text-slate-400 hover:text-white transition-colors">{l}</Link>
-                ))}
-              </div>
-              <div className="space-y-2.5">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Connect</p>
-                {[
-                  ['GitHub', DEVELOPER_INFO.contact.github],
-                  ['Twitter', DEVELOPER_INFO.contact.twitter],
-                  ['LinkedIn', DEVELOPER_INFO.contact.linkedin],
-                  ['Email', `mailto:${DEVELOPER_INFO.contact.email}`],
-                ].map(([l, h]) => (
-                  <Link key={l} href={h} target="_blank" rel="noopener noreferrer" className="block text-slate-400 hover:text-white transition-colors">{l}</Link>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
-}

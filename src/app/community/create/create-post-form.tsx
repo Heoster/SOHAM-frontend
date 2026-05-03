@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
-  Send, Loader2, Tag, User, MessageSquare, ChevronDown, ArrowLeft,
-  FileText, Hash,
+  Send, Loader2, Tag, User, MessageSquare, ArrowLeft,
+  FileText, Hash, ChevronDown, ChevronUp,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -21,12 +21,12 @@ const SUGGESTED_TAGS = [
 ];
 
 const SUB_OPTIONS = [
-  { slug: 'general',        name: 'General',        icon: '💬' },
-  { slug: 'tips',           name: 'Tips & Tricks',  icon: '💡' },
-  { slug: 'showcase',       name: 'Showcase',       icon: '🎨' },
-  { slug: 'help',           name: 'Help & Support', icon: '🙋' },
-  { slug: 'feature-ideas',  name: 'Feature Ideas',  icon: '🚀' },
-  { slug: 'announcements',  name: 'Announcements',  icon: '📢' },
+  { slug: 'general',       name: 'General',        icon: '💬', desc: 'General discussion' },
+  { slug: 'tips',          name: 'Tips & Tricks',  icon: '💡', desc: 'Prompts & workflows' },
+  { slug: 'showcase',      name: 'Showcase',       icon: '🎨', desc: 'AI experiments' },
+  { slug: 'help',          name: 'Help & Support', icon: '🙋', desc: 'Ask questions' },
+  { slug: 'feature-ideas', name: 'Feature Ideas',  icon: '🚀', desc: 'Suggest features' },
+  { slug: 'announcements', name: 'Announcements',  icon: '📢', desc: 'Official updates' },
 ];
 
 export function CreatePostForm() {
@@ -43,10 +43,11 @@ export function CreatePostForm() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedSub, setSelectedSub] = useState(defaultSub);
   const [submitting, setSubmitting] = useState(false);
+  const [showTags, setShowTags] = useState(false);
 
   const toggleTag = (tag: string) =>
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag].slice(0, 4)
+    setSelectedTags(prev =>
+      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag].slice(0, 4)
     );
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -92,7 +93,7 @@ export function CreatePostForm() {
     <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <Button asChild variant="ghost" size="sm" className="gap-2 -ml-2">
+        <Button asChild variant="ghost" size="sm" className="gap-1.5 -ml-2 text-muted-foreground">
           <Link href="/community">
             <ArrowLeft className="h-4 w-4" /> Back
           </Link>
@@ -100,11 +101,13 @@ export function CreatePostForm() {
         <h1 className="text-xl font-bold">Create a Post</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-3">
+
         {/* Community selector */}
-        <div className="rounded-xl border bg-card p-4 space-y-3">
+        <div className="rounded-xl border border-border/60 bg-card p-4 space-y-3">
           <label className="text-sm font-semibold flex items-center gap-2">
-            <Hash className="h-4 w-4 text-muted-foreground" /> Choose a Community
+            <Hash className="h-4 w-4 text-muted-foreground" />
+            Choose a Community
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             <button
@@ -112,101 +115,136 @@ export function CreatePostForm() {
               onClick={() => setSelectedSub('')}
               className={cn(
                 'flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm font-medium transition-all text-left',
-                !selectedSub ? 'border-primary bg-primary/10 text-primary' : 'border-border hover:border-primary/40 text-muted-foreground hover:text-foreground'
+                !selectedSub
+                  ? 'border-primary bg-primary/10 text-primary'
+                  : 'border-border/60 hover:border-primary/40 text-muted-foreground hover:text-foreground'
               )}
             >
               <span className="text-base">🌐</span>
-              <span>General Feed</span>
+              <div className="min-w-0">
+                <p className="text-xs font-semibold truncate">General Feed</p>
+                <p className="text-[10px] text-muted-foreground">All communities</p>
+              </div>
             </button>
-            {SUB_OPTIONS.map((sub) => (
+            {SUB_OPTIONS.map(sub => (
               <button
                 key={sub.slug}
                 type="button"
                 onClick={() => setSelectedSub(sub.slug)}
                 className={cn(
                   'flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm font-medium transition-all text-left',
-                  selectedSub === sub.slug ? 'border-primary bg-primary/10 text-primary' : 'border-border hover:border-primary/40 text-muted-foreground hover:text-foreground'
+                  selectedSub === sub.slug
+                    ? 'border-primary bg-primary/10 text-primary'
+                    : 'border-border/60 hover:border-primary/40 text-muted-foreground hover:text-foreground'
                 )}
               >
                 <span className="text-base">{sub.icon}</span>
-                <span className="truncate">{sub.name}</span>
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold truncate">{sub.name}</p>
+                  <p className="text-[10px] text-muted-foreground truncate">{sub.desc}</p>
+                </div>
               </button>
             ))}
           </div>
         </div>
 
         {/* Post content */}
-        <div className="rounded-xl border bg-card p-4 space-y-4">
-          {/* Author name */}
+        <div className="rounded-xl border border-border/60 bg-card p-4 space-y-4">
+
+          {/* Author */}
           <div className="space-y-1.5">
-            <label className="text-sm font-medium flex items-center gap-1.5">
-              <User className="h-3.5 w-3.5 text-muted-foreground" /> Your Name
+            <label className="text-sm font-medium flex items-center gap-1.5 text-muted-foreground">
+              <User className="h-3.5 w-3.5" /> Your Name
             </label>
             <Input
               placeholder="Anonymous"
               value={authorName}
-              onChange={(e) => setAuthorName(e.target.value)}
+              onChange={e => setAuthorName(e.target.value)}
               maxLength={50}
-              className="max-w-xs"
+              className="max-w-xs rounded-lg border-border/60"
             />
           </div>
 
           {/* Title */}
           <div className="space-y-1.5">
-            <label className="text-sm font-medium flex items-center gap-1.5">
-              <FileText className="h-3.5 w-3.5 text-muted-foreground" />
-              Title <span className="text-xs text-muted-foreground font-normal">(optional)</span>
+            <label className="text-sm font-medium flex items-center gap-1.5 text-muted-foreground">
+              <FileText className="h-3.5 w-3.5" />
+              Title
+              <span className="text-xs font-normal">(optional)</span>
             </label>
             <Input
-              placeholder="Give your post a title…"
+              placeholder="Give your post a descriptive title…"
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={e => setTitle(e.target.value)}
               maxLength={200}
+              className="rounded-lg border-border/60"
             />
           </div>
 
           {/* Content */}
           <div className="space-y-1.5">
-            <label className="text-sm font-medium flex items-center gap-1.5">
-              <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" /> Post Content
+            <label className="text-sm font-medium flex items-center gap-1.5 text-muted-foreground">
+              <MessageSquare className="h-3.5 w-3.5" /> Post Content
             </label>
             <Textarea
               placeholder="Share a tip, ask a question, show off an AI experiment, or give feedback…"
               value={content}
-              onChange={(e) => setContent(e.target.value)}
+              onChange={e => setContent(e.target.value)}
               rows={6}
               maxLength={1000}
-              className="resize-none"
+              className="resize-none rounded-lg border-border/60"
             />
             <div className="flex items-center justify-between">
               <p className="text-xs text-muted-foreground">{content.length}/1000</p>
-              {content.length > 900 && <p className="text-xs text-orange-500">Almost at limit</p>}
+              {content.length > 900 && <p className="text-xs text-orange-500 font-medium">Almost at limit</p>}
             </div>
           </div>
 
-          {/* Tags */}
+          {/* Tags — collapsible */}
           <div className="space-y-2">
-            <label className="text-sm font-medium flex items-center gap-1.5">
-              <Tag className="h-3.5 w-3.5 text-muted-foreground" />
-              Tags <span className="text-xs text-muted-foreground font-normal">(up to 4)</span>
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {SUGGESTED_TAGS.map((tag) => (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => toggleTag(tag)}
-                  className={cn(
-                    'rounded-full border px-3 py-1 text-xs font-medium transition-all',
-                    selectedTags.includes(tag)
-                      ? 'border-primary bg-primary/10 text-primary'
-                      : 'border-border text-muted-foreground hover:border-primary/50 hover:text-foreground'
-                  )}
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
+            <button
+              type="button"
+              onClick={() => setShowTags(v => !v)}
+              className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Tag className="h-3.5 w-3.5" />
+              Tags
+              {selectedTags.length > 0 && (
+                <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4 ml-1">
+                  {selectedTags.length}
+                </Badge>
+              )}
+              {showTags ? <ChevronUp className="h-3.5 w-3.5 ml-auto" /> : <ChevronDown className="h-3.5 w-3.5 ml-auto" />}
+            </button>
+            {showTags && (
+              <div className="flex flex-wrap gap-2 pt-1">
+                {SUGGESTED_TAGS.map(tag => (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => toggleTag(tag)}
+                    className={cn(
+                      'rounded-full border px-3 py-1 text-xs font-medium transition-all',
+                      selectedTags.includes(tag)
+                        ? 'border-primary bg-primary/10 text-primary'
+                        : 'border-border/60 text-muted-foreground hover:border-primary/50 hover:text-foreground'
+                    )}
+                  >
+                    {tag}
+                  </button>
+                ))}
+                <p className="w-full text-[10px] text-muted-foreground">Up to 4 tags</p>
+              </div>
+            )}
+            {selectedTags.length > 0 && !showTags && (
+              <div className="flex flex-wrap gap-1.5">
+                {selectedTags.map(tag => (
+                  <Badge key={tag} variant="secondary" className="text-[10px] gap-1 rounded-full">
+                    <Tag className="h-2.5 w-2.5" />{tag}
+                  </Badge>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -216,12 +254,12 @@ export function CreatePostForm() {
             type="submit"
             disabled={submitting || content.trim().length < 10}
             size="lg"
-            className="gap-2"
+            className="gap-2 rounded-full px-8"
           >
             {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
             {submitting ? 'Posting…' : 'Post to Community'}
           </Button>
-          <Button asChild type="button" variant="outline" size="lg">
+          <Button asChild type="button" variant="outline" size="lg" className="rounded-full">
             <Link href="/community">Cancel</Link>
           </Button>
         </div>
